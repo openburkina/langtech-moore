@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefConfig.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefKeys.dart';
 
 class LoginPage extends StatefulWidget {
