@@ -18,7 +18,7 @@ class InputSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 60,
+      height: 55,
       margin: const EdgeInsets.symmetric(horizontal: 30),
       decoration: BoxDecoration(
         border: Border.all(color: kBlue, width: 2),

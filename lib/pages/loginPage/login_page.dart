@@ -15,11 +15,11 @@ class LoginPage extends StatelessWidget {
         child: Column(
           children: [
             SizedBox(
-              height: 150,
+              height: 100,
             ),
             AppLogo(),
             SizedBox(
-              height: 50,
+              height: 20,
             ),
             Text(
               'Connexion',

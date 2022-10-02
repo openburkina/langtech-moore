@@ -57,6 +57,10 @@ class LoginForm extends StatelessWidget {
   }
 
   void _login(BuildContext context) {
+    print(
+        "loginPage => loginForm => login => emailController => ${emailController.text}");
+    print(
+        "loginPage => loginForm => login => pwdController => ${pwdController.text}");
     // Navigator.push(
     //   context,
     //   MaterialPageRoute(builder: (context) {
