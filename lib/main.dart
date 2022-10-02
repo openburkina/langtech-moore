@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:langtech_moore_mobile/pages/loginPage/loginPage.dart';
+import 'package:langtech_moore_mobile/pages/loginPage/login_page.dart';
 
 void main() {
   runApp(const MyApp());
