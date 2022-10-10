@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:delayed_display/delayed_display.dart';
+import 'package:langtech_moore_mobile/models/loginVM.dart';
+import 'package:langtech_moore_mobile/services/http.dart';
 import 'package:langtech_moore_mobile/widgets/loginPage/button_section.dart';
 import 'package:langtech_moore_mobile/widgets/loginPage/input_section.dart';
 import 'package:langtech_moore_mobile/widgets/loginPage/not_signup_section.dart';
+import 'package:langtech_moore_mobile/widgets/shared/tabs.dart';
 
 class LoginForm extends StatelessWidget {
   final int delayDuration;
@@ -57,15 +60,22 @@ class LoginForm extends StatelessWidget {
   }
 
   void _login(BuildContext context) {
-    print(
-        "loginPage => loginForm => login => emailController => ${emailController.text}");
-    print(
-        "loginPage => loginForm => login => pwdController => ${pwdController.text}");
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(builder: (context) {
-    //     return Tabs();
-    //   }),
-    // );
+    LoginVM loginVM = new LoginVM();
+    loginVM.username = emailController.text.trim().toLowerCase();
+    loginVM.password = pwdController.text.trim().toLowerCase();
+    print(loginVM.toJson());
+    // try {
+    //   Http.onAuthenticate(loginVM).then((response) {
+    //     print(response.body);
+    //   });
+    // } catch (exception) {
+    //   print(exception);
+    // }
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) {
+        return Tabs();
+      }),
+    );
   }
 }
