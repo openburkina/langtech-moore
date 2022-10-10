@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:langtech_moore_mobile/constants/colors.dart';
-import 'package:langtech_moore_mobile/pages/loginPage/login_page.dart';
+import 'package:langtech_moore_mobile/pages/signinPage/signinPage.dart';
 
 class NotSignupSection extends StatelessWidget {
   const NotSignupSection({super.key});
@@ -25,7 +25,7 @@ class NotSignupSection extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) {
-                  return LoginPage();
+                  return SigninPage();
                 }),
               );
             },

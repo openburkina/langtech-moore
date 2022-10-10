@@ -67,7 +67,7 @@ class InputSection extends StatelessWidget {
                       )
                     : null,
                 hintStyle: GoogleFonts.montserrat(
-                  fontSize: 17,
+                  fontSize: 14,
                   color: kBlue,
                 ),
               ),
