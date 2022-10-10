@@ -2,13 +2,16 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:delayed_display/delayed_display.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefConfig.dart';
 import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefKeys.dart';
+import 'package:langtech_moore_mobile/constants/colors.dart';
 import 'package:langtech_moore_mobile/models/loginVM.dart';
 import 'package:langtech_moore_mobile/services/http.dart';
 import 'package:langtech_moore_mobile/widgets/loginPage/button_section.dart';
 import 'package:langtech_moore_mobile/widgets/loginPage/input_section.dart';
 import 'package:langtech_moore_mobile/widgets/loginPage/not_signup_section.dart';
+import 'package:langtech_moore_mobile/widgets/shared/loadingSpinner.dart';
 import 'package:langtech_moore_mobile/widgets/shared/tabs.dart';
 import 'package:langtech_moore_mobile/widgets/shared/toast.dart';
 
@@ -60,6 +63,7 @@ class LoginForm extends StatelessWidget {
           delay: Duration(milliseconds: delayDuration * 6),
           child: const NotSignupSection(),
         ),
+        LoadingSpinner(),
       ],
     );
   }
