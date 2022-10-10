@@ -1,11 +1,16 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:delayed_display/delayed_display.dart';
+import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefConfig.dart';
+import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefKeys.dart';
 import 'package:langtech_moore_mobile/models/loginVM.dart';
 import 'package:langtech_moore_mobile/services/http.dart';
 import 'package:langtech_moore_mobile/widgets/loginPage/button_section.dart';
 import 'package:langtech_moore_mobile/widgets/loginPage/input_section.dart';
 import 'package:langtech_moore_mobile/widgets/loginPage/not_signup_section.dart';
 import 'package:langtech_moore_mobile/widgets/shared/tabs.dart';
+import 'package:langtech_moore_mobile/widgets/shared/toast.dart';
 
 class LoginForm extends StatelessWidget {
   final int delayDuration;
@@ -64,18 +69,39 @@ class LoginForm extends StatelessWidget {
     loginVM.username = emailController.text.trim().toLowerCase();
     loginVM.password = pwdController.text.trim().toLowerCase();
     print(loginVM.toJson());
-    // try {
-    //   Http.onAuthenticate(loginVM).then((response) {
-    //     print(response.body);
-    //   });
-    // } catch (exception) {
-    //   print(exception);
-    // }
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) {
-        return Tabs();
-      }),
-    );
+    try {
+      Http.onAuthenticate(loginVM).then((response) {
+        print(response.body);
+        if (response.statusCode == 200) {
+          _saveToken(context, jsonDecode(response.body)['id_token']);
+        } else if (response.statusCode == 401) {
+          Toast.showFlutterToast(
+              context, jsonDecode(response.body)['detail'], 'error');
+        } else {
+          Toast.showFlutterToast(context,
+              "Une erreur est survenue lors de la connexion !", 'error');
+        }
+      });
+    } catch (exception) {
+      print(exception);
+    }
+  }
+
+  void _saveToken(BuildContext context, String token) {
+    SharedPrefConfig.saveStringData(SharePrefKeys.JWT_TOKEN, token)
+        .then((value) {
+      if (value) {
+        Toast.showFlutterToast(context, 'Bienvenue !', 'success');
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) {
+            return Tabs();
+          }),
+        );
+      } else {
+        Toast.showFlutterToast(
+            context, "Une erreur est survenue lors de la connexion !", 'error');
+      }
+    });
   }
 }
