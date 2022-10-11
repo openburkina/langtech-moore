@@ -29,6 +29,7 @@ class _SigninForm extends State<SigninForm> {
             hint: 'Entrez votre email',
             obscureText: false,
             controller: emailController,
+            keyboardType: TextInputType.emailAddress,
           ),
         ),
         const SizedBox(
@@ -41,6 +42,7 @@ class _SigninForm extends State<SigninForm> {
             hint: 'Entrez votre mot de passe',
             obscureText: true,
             controller: pwdController,
+            keyboardType: TextInputType.text,
           ),
         ),
         const SizedBox(
@@ -53,6 +55,7 @@ class _SigninForm extends State<SigninForm> {
             hint: 'Confirmez le mot de passe',
             obscureText: true,
             controller: pwdController,
+            keyboardType: TextInputType.text,
           ),
         ),
         const SizedBox(

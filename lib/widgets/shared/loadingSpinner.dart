@@ -3,7 +3,13 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:langtech_moore_mobile/constants/colors.dart';
 
 class LoadingSpinner extends StatelessWidget {
-  const LoadingSpinner({super.key});
+  final double size;
+  final Color color;
+  const LoadingSpinner({
+    super.key,
+    this.size = 75,
+    this.color = kBlue,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -11,8 +17,8 @@ class LoadingSpinner extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.all(10),
         child: SpinKitCircle(
-          size: 75,
-          color: kBlue,
+          size: size,
+          color: color,
         ),
       ),
     );

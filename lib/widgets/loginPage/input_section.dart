@@ -6,6 +6,7 @@ class InputSection extends StatelessWidget {
   final IconData icon;
   final String hint;
   final bool obscureText;
+  final TextInputType keyboardType;
   final TextEditingController controller;
   const InputSection({
     super.key,
@@ -13,6 +14,7 @@ class InputSection extends StatelessWidget {
     required this.hint,
     required this.obscureText,
     required this.controller,
+    required this.keyboardType,
   });
 
   @override
@@ -47,21 +49,24 @@ class InputSection extends StatelessWidget {
             width: 10,
           ),
           Expanded(
-            child: TextField(
+            child: TextFormField(
               controller: controller,
+              keyboardType: keyboardType,
               style: GoogleFonts.montserrat(
                 fontSize: 20,
                 color: kBlue,
               ),
               obscureText: obscureText,
+              obscuringCharacter: '*',
               decoration: InputDecoration(
                 border: InputBorder.none,
                 hintText: hint,
+                errorStyle: TextStyle(fontSize: 0, height: 0),
                 suffixIcon: obscureText
                     ? Container(
                         padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
                         child: Icon(
-                          Icons.remove_red_eye,
+                          Icons.visibility_off,
                           color: kBlue,
                         ),
                       )
