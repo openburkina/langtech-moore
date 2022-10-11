@@ -95,6 +95,7 @@ class _SigninForm extends State<SigninForm> {
       user.email = email;
       user.login = email;
       user.password = password;
+      user.typeUtilisateur = 'CONTRIBUTEUR';
       _onSignIn(context);
     }
   }
