@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:langtech_moore_mobile/pages/loginPage/login_page.dart';
 import 'package:langtech_moore_mobile/pages/slidePage/splash.dart';
 
 void main() {
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: SplashScreen(),
+      home: LoginPage(),
     );
   }
 }
