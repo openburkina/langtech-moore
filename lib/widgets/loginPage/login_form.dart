@@ -87,10 +87,10 @@ class _LoginFormState extends State<LoginForm> {
     loginVM.username = emailController.text.trim().toLowerCase();
     loginVM.password = pwdController.text.trim().toLowerCase();
     if (loginVM.username == null || loginVM.username == '') {
-      Toast.showFlutterToast(context, "L'email est obligatoire !", 'warning');
+      Toast.showFlutterToast(context, "L'email est obligatoire !", 'error');
     } else if (loginVM.password == null || loginVM.password == '') {
       Toast.showFlutterToast(
-          context, "Le mot de passe est obligatoire !", 'warning');
+          context, "Le mot de passe est obligatoire !", 'error');
     } else {
       _login(context);
     }

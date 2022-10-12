@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:langtech_moore_mobile/constants/colors.dart';
 
-class InputSection extends StatelessWidget {
+class InputSection extends StatefulWidget {
   final IconData icon;
   final String hint;
   final bool obscureText;
@@ -10,6 +10,31 @@ class InputSection extends StatelessWidget {
   final TextEditingController controller;
   const InputSection({
     super.key,
+    required this.icon,
+    required this.hint,
+    required this.obscureText,
+    required this.controller,
+    required this.keyboardType,
+  });
+
+  @override
+  _InputSectionState createState() => _InputSectionState(
+        icon: icon,
+        hint: hint,
+        obscureText: obscureText,
+        controller: controller,
+        keyboardType: keyboardType,
+      );
+}
+
+class _InputSectionState extends State<InputSection> {
+  final IconData icon;
+  final String hint;
+  final bool obscureText;
+  final TextInputType keyboardType;
+  final TextEditingController controller;
+  late bool showObscureText = false;
+  _InputSectionState({
     required this.icon,
     required this.hint,
     required this.obscureText,
@@ -56,18 +81,22 @@ class InputSection extends StatelessWidget {
                 fontSize: 20,
                 color: kBlue,
               ),
-              obscureText: obscureText,
+              obscureText: obscureText ? !showObscureText : showObscureText,
               obscuringCharacter: '*',
               decoration: InputDecoration(
                 border: InputBorder.none,
                 hintText: hint,
-                errorStyle: TextStyle(fontSize: 0, height: 0),
                 suffixIcon: obscureText
                     ? Container(
                         padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                        child: Icon(
-                          Icons.visibility_off,
-                          color: kBlue,
+                        child: GestureDetector(
+                          onTap: _onChangeObscureTextStatus,
+                          child: Icon(
+                            showObscureText
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: kBlue,
+                          ),
                         ),
                       )
                     : null,
@@ -81,5 +110,11 @@ class InputSection extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _onChangeObscureTextStatus() {
+    setState(() {
+      showObscureText = !showObscureText;
+    });
   }
 }

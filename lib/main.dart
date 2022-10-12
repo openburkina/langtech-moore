@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:langtech_moore_mobile/pages/loginPage/login_page.dart';
 import 'package:langtech_moore_mobile/pages/slidePage/splash.dart';
 
 void main() {
@@ -8,7 +9,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: SplashScreen(),
+      home: LoginPage(),
     );
   }
 }
