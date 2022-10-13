@@ -28,16 +28,26 @@ class _TabsState extends State<Tabs> {
       bottomNavigationBar: ConvexAppBar(
         items: <TabItem>[
           TabItem(
-            icon: Icon(Icons.home),
+            icon: Icon(
+              Icons.home,
+              size: _selectedIndex == 0 ? 35 : 25,
+              color: _selectedIndex == 0 ? kBlue : kWhite,
+            ),
             title: 'Accueil',
           ),
           TabItem(
-            icon: Icon(Icons.mic_outlined),
+            icon: Icon(
+              Icons.mic_outlined,
+              size: _selectedIndex == 1 ? 35 : 25,
+              color: _selectedIndex == 1 ? kBlue : kWhite,
+            ),
             title: 'Mes contributions',
           ),
           TabItem(
             icon: Icon(
               Icons.person,
+              size: _selectedIndex == 2 ? 35 : 25,
+              color: _selectedIndex == 2 ? kBlue : kWhite,
             ),
             title: 'Mon Profil',
           ),

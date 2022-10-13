@@ -1,8 +1,16 @@
+import 'dart:convert';
+
 import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/material.dart';
+import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefConfig.dart';
+import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefKeys.dart';
+import 'package:langtech_moore_mobile/models/loginVM.dart';
 import 'package:langtech_moore_mobile/models/user.dart';
+import 'package:langtech_moore_mobile/services/http.dart';
 import 'package:langtech_moore_mobile/widgets/loginPage/button_section.dart';
 import 'package:langtech_moore_mobile/widgets/loginPage/input_section.dart';
+import 'package:langtech_moore_mobile/widgets/shared/loadingSpinner.dart';
+import 'package:langtech_moore_mobile/widgets/shared/tabs.dart';
 import 'package:langtech_moore_mobile/widgets/shared/toast.dart';
 
 class SigninForm extends StatefulWidget {
@@ -19,6 +27,7 @@ class _SigninForm extends State<SigninForm> {
   final pwdController = TextEditingController();
   final confirmPwdController = TextEditingController();
   late User user = new User();
+  late bool isEnaableSpinner = false;
 
   _SigninForm(this.delayDuration);
 
@@ -72,6 +81,7 @@ class _SigninForm extends State<SigninForm> {
             buttonFonction: () => _onCheckFormValidate(context),
           ),
         ),
+        isEnaableSpinner ? LoadingSpinner() : Center(),
       ],
     );
   }
@@ -101,11 +111,88 @@ class _SigninForm extends State<SigninForm> {
   }
 
   void _onSignIn(BuildContext context) {
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(builder: (context) {
-    //     return Tabs();
-    //   }),
-    // );
+    setState(() {
+      isEnaableSpinner = true;
+    });
+    try {
+      Http.onRegister(user).then((response) {
+        print(response.body);
+        print(response.statusCode);
+        if (response.statusCode == 201) {
+          Toast.showFlutterToast(
+              context,
+              "Félicitations! Votre inscription a été effectué avec succès !",
+              'success');
+
+          _login(context);
+        } else {
+          Toast.showFlutterToast(context,
+              "Une erreur est survenue lors de la connexion !", 'error');
+          setState(() {
+            isEnaableSpinner = false;
+          });
+        }
+      });
+    } catch (exception) {
+      print(exception);
+      Toast.showFlutterToast(
+          context, "Une erreur est survenue lors de la connexion !", 'error');
+    }
+  }
+
+  void _login(BuildContext context) {
+    setState(() {
+      isEnaableSpinner = true;
+    });
+    LoginVM loginVM = new LoginVM();
+    loginVM.username = user.login;
+    loginVM.password = user.password;
+    loginVM.rememberMe = true;
+    try {
+      Http.onAuthenticate(loginVM).then((response) {
+        print(response.body);
+        if (response.statusCode == 200) {
+          _saveToken(context, jsonDecode(response.body)['id_token']);
+        } else if (response.statusCode == 401) {
+          Toast.showFlutterToast(
+              context, jsonDecode(response.body)['detail'], 'error');
+          setState(() {
+            isEnaableSpinner = false;
+          });
+        } else {
+          Toast.showFlutterToast(context,
+              "Une erreur est survenue lors de la connexion !", 'error');
+          setState(() {
+            isEnaableSpinner = false;
+          });
+        }
+      });
+    } catch (exception) {
+      print(exception);
+      Toast.showFlutterToast(
+          context, "Une erreur est survenue lors de la connexion !", 'error');
+    }
+  }
+
+  void _saveToken(BuildContext context, String token) {
+    SharedPrefConfig.saveStringData(SharePrefKeys.JWT_TOKEN, token)
+        .then((value) {
+      if (value) {
+        Toast.showFlutterToast(context, 'Bienvenue !', 'success');
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) {
+            return Tabs();
+          }),
+        );
+      } else {
+        Toast.showFlutterToast(
+            context, "Une erreur est survenue lors de la connexion !", 'error');
+      }
+
+      setState(() {
+        isEnaableSpinner = false;
+      });
+    });
   }
 }

@@ -146,45 +146,93 @@ class _HomePageState extends State<Home> {
                 ),
               ]),
             ),
-
-
             SizedBox(height: 20),
             Expanded(
-                child: Container(
-                  padding: EdgeInsets.all(20),
-              decoration: BoxDecoration(color: Colors.grey[200]),
-                  child: Center(child: Column(children: [Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Container(
+                padding: EdgeInsets.all(20),
+                decoration: BoxDecoration(color: Colors.grey[200]),
+                child: Center(
+                  child: Column(
                     children: [
-                      Text("La liste des sources",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20)),
-                      Icon(Icons.more_horiz)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("La liste des sources",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20)),
+                          Icon(Icons.more_horiz)
+                        ],
+                      ),
+                      SizedBox(height: 20),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12)),
+                        child: ListTile(
+                            leading: Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.orange,
+                                    borderRadius: BorderRadius.circular(30)),
+                                child: Icon(Icons.favorite,
+                                    color: Colors.grey[200])),
+                            title: Text("Detection de la panne"),
+                            subtitle: Text('2 traductions'),
+                            trailing: Icon(Icons.arrow_forward_ios)),
+                      ),
+                      SizedBox(height: 20),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12)),
+                        child: ListTile(
+                            leading: Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.orange,
+                                    borderRadius: BorderRadius.circular(30)),
+                                child: Icon(Icons.favorite,
+                                    color: Colors.grey[200])),
+                            title: Text("Analyse tous les éléments "),
+                            subtitle: Text('10 traductions'),
+                            trailing: Icon(Icons.arrow_forward_ios)),
+                      ),
+                      SizedBox(height: 20),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12)),
+                        child: ListTile(
+                            leading: Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.orange,
+                                    borderRadius: BorderRadius.circular(30)),
+                                child: Icon(Icons.favorite,
+                                    color: Colors.grey[200])),
+                            title: Text("Contourner l'obstacle"),
+                            subtitle: Text('5 traductions'),
+                            trailing: Icon(Icons.arrow_forward_ios)),
+                      ),
+                      SizedBox(height: 20),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12)),
+                        child: ListTile(
+                          leading: Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.orange,
+                                  borderRadius: BorderRadius.circular(30)),
+                              child: Icon(Icons.favorite,
+                                  color: Colors.grey[200])),
+                          title: Text("Booster mes ventes"),
+                          subtitle: Text('20 traductions'),
+                          trailing: Icon(Icons.arrow_forward_ios),
+                        ),
+                      ),
                     ],
                   ),
-                  SizedBox(height: 20),
-                  Container(
-                    decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(12)),
-                    child: ListTile(leading: Container(decoration: BoxDecoration(color:Colors.orange,borderRadius: BorderRadius.circular(30)),child: Icon(Icons.favorite,color: Colors.grey[200])),title: Text("Detection de la panne"),subtitle: Text('2 traductions'),trailing: Icon(Icons.arrow_forward_ios)),
-                  ),
-                    SizedBox(height: 20),
-                    Container(
-                      decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(12)),
-                      child: ListTile(leading: Container(decoration: BoxDecoration(color:Colors.orange,borderRadius: BorderRadius.circular(30)),child: Icon(Icons.favorite,color: Colors.grey[200])),title: Text("Analyse tous les éléments "),subtitle: Text('10 traductions'),trailing: Icon(Icons.arrow_forward_ios)),
-                    ),
-                    SizedBox(height: 20),
-                    Container(
-                      decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(12)),
-                      child: ListTile(leading: Container(decoration: BoxDecoration(color:Colors.orange,borderRadius: BorderRadius.circular(30)),child: Icon(Icons.favorite,color: Colors.grey[200])),title: Text("Contourner l'obstacle"),subtitle: Text('5 traductions'),trailing: Icon(Icons.arrow_forward_ios)),
-                    ),
-                    SizedBox(height: 20),
-                    Container(
-                      decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(12)),
-                      child: ListTile(leading: Container(
-                        decoration: BoxDecoration(color:Colors.orange,borderRadius: BorderRadius.circular(30)),
-                          child: Icon(Icons.favorite,color:Colors.grey[200])),title: Text("Booster mes ventes"),subtitle: Text('20 traductions'),trailing: Icon(Icons.arrow_forward_ios),),
-                    ),
-                  ])),
-
-            ))
+                ),
+              ),
+            )
           ],
         ),
       ),
