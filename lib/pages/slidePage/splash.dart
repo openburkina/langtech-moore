@@ -18,7 +18,7 @@ class _ScreenPageState extends State<SplashScreen> {
             "De nos jours, aucun secteur d'activité n'est épargné par la montée en puissance de l'intelligence artificielle. \n\n Et pour cause, les algorithmes de machine learning se déclinent à tous les étages en fonction des problématiques business",
         footer: ElevatedButton(
             onPressed: () => {}, child: const Text("Commencez!")),
-        image: Center(child: Image.asset("images/ia1.webp")),
+        image: Center(child: Image.asset("assets/images/slide/slide3.png")),
         decoration: const PageDecoration(
             titleTextStyle:
                 TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold))),
@@ -28,7 +28,7 @@ class _ScreenPageState extends State<SplashScreen> {
             "Les données sont au cœur de la technologie de l'IA.\n\nL’intelligence humaine, l’IA a d’abord besoin d’apprendre pour se développer et réaliser son plein potentiel à travers ces données",
         footer: ElevatedButton(
             onPressed: () => {}, child: const Text("Commencer!")),
-        image: Center(child: Image.asset("images/ia2.jpg")),
+        image: Center(child: Image.asset("assets/images/slide/slide1.png")),
         decoration: const PageDecoration(
             titleTextStyle:
                 TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold))),
@@ -38,7 +38,7 @@ class _ScreenPageState extends State<SplashScreen> {
             "Il s’agit d’un bon plan pour ceux qui prennent le temps d’alimenter la plateforme avec leurs contributions en fournissant la traduction des données sources",
         footer: ElevatedButton(
             onPressed: () => {}, child: const Text("Commencer!")),
-        image: Center(child: Image.asset("images/ia3.webp")),
+        image: Center(child: Image.asset("assets/images/slide/slide2.png")),
         decoration: const PageDecoration(
             titleTextStyle:
                 TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)))
