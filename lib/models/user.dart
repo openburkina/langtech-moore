@@ -1,4 +1,5 @@
 class User {
+  int? id;
   String? nom;
   String? prenom;
   String? telephone;
@@ -40,4 +41,9 @@ class User {
         'typeUtilisateur': typeUtilisateur,
         'pointFidelite': pointFidelite,
       };
+
+  @override
+  String toString() {
+    return 'User{id: $id, nom: $nom, prenom: $prenom, telephone: $telephone, email: $email, login: $login, password: $password, typeUtilisateur: $typeUtilisateur, pointFidelite: $pointFidelite}';
+  }
 }

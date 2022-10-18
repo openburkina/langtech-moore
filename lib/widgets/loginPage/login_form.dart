@@ -5,6 +5,7 @@ import 'package:delayed_display/delayed_display.dart';
 import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefConfig.dart';
 import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefKeys.dart';
 import 'package:langtech_moore_mobile/models/loginVM.dart';
+import 'package:langtech_moore_mobile/models/user.dart';
 import 'package:langtech_moore_mobile/services/http.dart';
 import 'package:langtech_moore_mobile/widgets/loginPage/button_section.dart';
 import 'package:langtech_moore_mobile/widgets/loginPage/input_section.dart';
@@ -105,7 +106,7 @@ class _LoginFormState extends State<LoginForm> {
       Http.onAuthenticate(loginVM).then((response) {
         print(response.body);
         if (response.statusCode == 200) {
-          _saveToken(context, jsonDecode(response.body)['id_token']);
+          _saveUserInfos(context, response.body);
         } else if (response.statusCode == 401) {
           Toast.showFlutterToast(
               context, jsonDecode(response.body)['detail'], 'error');
@@ -125,8 +126,8 @@ class _LoginFormState extends State<LoginForm> {
     }
   }
 
-  void _saveToken(BuildContext context, String token) {
-    SharedPrefConfig.saveStringData(SharePrefKeys.JWT_TOKEN, token)
+  void _saveUserInfos(BuildContext context, String userInfos) {
+    SharedPrefConfig.saveStringData(SharePrefKeys.USER_INFOS, userInfos)
         .then((value) {
       if (value) {
         Toast.showFlutterToast(context, 'Bienvenue !', 'success');

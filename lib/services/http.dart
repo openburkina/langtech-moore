@@ -11,7 +11,7 @@ class Http {
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: json.encode(loginVM.toJson()));
+        body: json.encode(loginVM.toJson()),);
   }
 
   static Future onRegister(User user) async {

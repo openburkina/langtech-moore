@@ -1,12 +1,20 @@
+
+
 import 'package:flutter/material.dart';
+import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefConfig.dart';
+import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefKeys.dart';
+import 'package:langtech_moore_mobile/pages/loginPage/login_page.dart';
 import 'package:langtech_moore_mobile/pages/slidePage/splash.dart';
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  bool registeredStatus =  await SharedPrefConfig.getBoolData(SharePrefKeys.IS_REGISTERED);
+  runApp(MyApp(isRegistered: registeredStatus,));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  bool isRegistered;
+  MyApp({super.key, required this.isRegistered,});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +24,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: SplashScreen(),
+      home: isRegistered ? LoginPage() : SplashScreen(),
     );
   }
 }

@@ -13,35 +13,50 @@ class SplashScreen extends StatefulWidget {
 class _ScreenPageState extends State<SplashScreen> {
   final List<PageViewModel> pages = [
     PageViewModel(
-        title: "Qui utilise l'intelligence artificielle ?",
-        body:
-            "De nos jours, aucun secteur d'activité n'est épargné par la montée en puissance de l'intelligence artificielle. \n\n Et pour cause, les algorithmes de machine learning se déclinent à tous les étages en fonction des problématiques business",
-        footer: ElevatedButton(
-            onPressed: () => {}, child: const Text("Commencez!")),
-        image: Center(child: Image.asset("assets/images/slide/slide3.png")),
-        decoration: const PageDecoration(
-            titleTextStyle:
-                TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold))),
+      title: "Qui utilise l'intelligence artificielle ?",
+      body:
+          "De nos jours, aucun secteur d'activité n'est épargné par la montée en puissance de l'intelligence artificielle. \n\n Et pour cause, les algorithmes de machine learning se déclinent à tous les étages en fonction des problématiques business",
+      footer: ElevatedButton(
+        onPressed: () => {},
+        child: const Text("Commencez!"),
+      ),
+      image: Center(
+        child: Image.asset("assets/images/slide/slide3.png"),
+      ),
+      decoration: const PageDecoration(
+        titleTextStyle: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+      ),
+    ),
     PageViewModel(
-        title: "Comment entraîner une intelligence artificielle ?",
-        body:
-            "Les données sont au cœur de la technologie de l'IA.\n\nL’intelligence humaine, l’IA a d’abord besoin d’apprendre pour se développer et réaliser son plein potentiel à travers ces données",
-        footer: ElevatedButton(
-            onPressed: () => {}, child: const Text("Commencer!")),
-        image: Center(child: Image.asset("assets/images/slide/slide1.png")),
-        decoration: const PageDecoration(
-            titleTextStyle:
-                TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold))),
+      title: "Comment entraîner une intelligence artificielle ?",
+      body:
+          "Les données sont au cœur de la technologie de l'IA.\n\nL’intelligence humaine, l’IA a d’abord besoin d’apprendre pour se développer et réaliser son plein potentiel à travers ces données",
+      footer: ElevatedButton(
+        onPressed: () => {},
+        child: const Text("Commencer!"),
+      ),
+      image: Center(
+        child: Image.asset("assets/images/slide/slide1.png"),
+      ),
+      decoration: const PageDecoration(
+        titleTextStyle: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+      ),
+    ),
     PageViewModel(
-        title: "Bonus pour les contributeurs ?",
-        body:
-            "Il s’agit d’un bon plan pour ceux qui prennent le temps d’alimenter la plateforme avec leurs contributions en fournissant la traduction des données sources",
-        footer: ElevatedButton(
-            onPressed: () => {}, child: const Text("Commencer!")),
-        image: Center(child: Image.asset("assets/images/slide/slide2.png")),
-        decoration: const PageDecoration(
-            titleTextStyle:
-                TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)))
+      title: "Bonus pour les contributeurs ?",
+      body:
+          "Il s’agit d’un bon plan pour ceux qui prennent le temps d’alimenter la plateforme avec leurs contributions en fournissant la traduction des données sources",
+      footer: ElevatedButton(
+        onPressed: () => {},
+        child: const Text("Commencer!"),
+      ),
+      image: Center(
+        child: Image.asset("assets/images/slide/slide2.png"),
+      ),
+      decoration: const PageDecoration(
+        titleTextStyle: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+      ),
+    )
   ];
 
   @override

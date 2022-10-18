@@ -124,10 +124,10 @@ class _SigninForm extends State<SigninForm> {
               "Félicitations! Votre inscription a été effectué avec succès !",
               'success');
 
-          _login(context);
+          _saveRegisterStatus(context);
         } else {
           Toast.showFlutterToast(context,
-              "Une erreur est survenue lors de la connexion !", 'error');
+              "Une erreur est survenue lors de l'inscription !", 'error');
           setState(() {
             isEnaableSpinner = false;
           });
@@ -136,8 +136,22 @@ class _SigninForm extends State<SigninForm> {
     } catch (exception) {
       print(exception);
       Toast.showFlutterToast(
-          context, "Une erreur est survenue lors de la connexion !", 'error');
+          context, "Une erreur est survenue lors de l'inscription !", 'error');
     }
+  }
+
+  void _saveRegisterStatus(BuildContext context) {
+    SharedPrefConfig.saveBoolData(SharePrefKeys.IS_REGISTERED, true).then((value) {
+      if (value) {
+        _login(context);
+      } else {
+        Toast.showFlutterToast(context,
+            "Une erreur est survenue lors de l'inscription !", 'error');
+        setState(() {
+          isEnaableSpinner = false;
+        });
+      }
+    });
   }
 
   void _login(BuildContext context) {
