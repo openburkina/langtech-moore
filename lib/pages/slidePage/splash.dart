@@ -24,7 +24,10 @@ class _ScreenPageState extends State<SplashScreen> {
         child: Image.asset("assets/images/slide/slide3.png"),
       ),
       decoration: const PageDecoration(
-        titleTextStyle: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+        titleTextStyle: TextStyle(
+          fontSize: 20.0,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     ),
     PageViewModel(
@@ -39,7 +42,10 @@ class _ScreenPageState extends State<SplashScreen> {
         child: Image.asset("assets/images/slide/slide1.png"),
       ),
       decoration: const PageDecoration(
-        titleTextStyle: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+        titleTextStyle: TextStyle(
+          fontSize: 20.0,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     ),
     PageViewModel(
@@ -54,7 +60,10 @@ class _ScreenPageState extends State<SplashScreen> {
         child: Image.asset("assets/images/slide/slide2.png"),
       ),
       decoration: const PageDecoration(
-        titleTextStyle: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+        titleTextStyle: TextStyle(
+          fontSize: 20.0,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     )
   ];

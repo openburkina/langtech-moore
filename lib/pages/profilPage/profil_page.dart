@@ -6,24 +6,26 @@ class ProfilPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: SafeArea(
-        child: Column(
-          children: [
-            photoProfil,
-            const SizedBox(
-              height: 20,
-            ),
-            postFollowSection,
-            apropos,
-            buttonSection,
-          ],
+    return Scaffold(
+      backgroundColor: kBlue,
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: Column(
+            children: [
+              photoProfil,
+              const SizedBox(
+                height: 20,
+              ),
+              postFollowSection,
+              apropos,
+              buttonSection,
+            ],
+          ),
         ),
       ),
     );
   }
 }
-
 
 Widget photoProfil = Container(
   padding: const EdgeInsets.fromLTRB(0, 30, 0, 30),
@@ -55,7 +57,11 @@ Widget photoProfil = Container(
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(100),
-          child: Icon(Icons.person, size: 100, color: kBlue,),
+          child: Icon(
+            Icons.person,
+            size: 100,
+            color: kBlue,
+          ),
         ),
       ),
       usernameSection,
@@ -86,13 +92,16 @@ Widget fonctionSection = Container(
   ),
 );
 
-Widget postFollowSection = Row(
-  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  children: [
-    post,
-    followers,
-    follow,
-  ],
+Widget postFollowSection = Container(
+  color: kWhite,
+  child: Row(
+    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    children: [
+      post,
+      followers,
+      follow,
+    ],
+  ),
 );
 
 Widget post = Column(
@@ -160,6 +169,7 @@ Widget follow = Column(
 
 Widget apropos = Container(
   padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+  color: kWhite,
   child: Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: const [
