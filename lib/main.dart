@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefConfig.dart';
 import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefKeys.dart';
@@ -8,13 +6,20 @@ import 'package:langtech_moore_mobile/pages/slidePage/splash.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  bool registeredStatus =  await SharedPrefConfig.getBoolData(SharePrefKeys.IS_REGISTERED);
-  runApp(MyApp(isRegistered: registeredStatus,));
+  bool registeredStatus =
+      await SharedPrefConfig.getBoolData(SharePrefKeys.IS_REGISTERED);
+  runApp(MyApp(
+    isRegistered: registeredStatus,
+  ));
 }
 
+// ignore: must_be_immutable
 class MyApp extends StatelessWidget {
   bool isRegistered;
-  MyApp({super.key, required this.isRegistered,});
+  MyApp({
+    super.key,
+    required this.isRegistered,
+  });
 
   @override
   Widget build(BuildContext context) {

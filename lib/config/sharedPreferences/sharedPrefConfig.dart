@@ -1,3 +1,4 @@
+import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefKeys.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final sharedPreferences = SharedPreferences.getInstance();
@@ -45,5 +46,12 @@ class SharedPrefConfig {
   static Future<String> getStringData(String key) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString(key) ?? '';
+  }
+
+  // Remove Data
+  static Future<bool> removeData() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(SharePrefKeys.IS_REGISTERED, true);
+    return prefs.clear();
   }
 }

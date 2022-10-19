@@ -10,6 +10,7 @@ import 'package:langtech_moore_mobile/services/http.dart';
 import 'package:langtech_moore_mobile/widgets/loginPage/button_section.dart';
 import 'package:langtech_moore_mobile/widgets/loginPage/input_section.dart';
 import 'package:langtech_moore_mobile/widgets/shared/loadingSpinner.dart';
+import 'package:langtech_moore_mobile/widgets/shared/slidepage.dart';
 import 'package:langtech_moore_mobile/widgets/shared/tabs.dart';
 import 'package:langtech_moore_mobile/widgets/shared/toast.dart';
 
@@ -141,7 +142,8 @@ class _SigninForm extends State<SigninForm> {
   }
 
   void _saveRegisterStatus(BuildContext context) {
-    SharedPrefConfig.saveBoolData(SharePrefKeys.IS_REGISTERED, true).then((value) {
+    SharedPrefConfig.saveBoolData(SharePrefKeys.IS_REGISTERED, true)
+        .then((value) {
       if (value) {
         _login(context);
       } else {
@@ -166,7 +168,7 @@ class _SigninForm extends State<SigninForm> {
       Http.onAuthenticate(loginVM).then((response) {
         print(response.body);
         if (response.statusCode == 200) {
-          _saveToken(context, jsonDecode(response.body)['id_token']);
+          _saveUserInfos(context, response.body);
         } else if (response.statusCode == 401) {
           Toast.showFlutterToast(
               context, jsonDecode(response.body)['detail'], 'error');
@@ -188,16 +190,17 @@ class _SigninForm extends State<SigninForm> {
     }
   }
 
-  void _saveToken(BuildContext context, String token) {
-    SharedPrefConfig.saveStringData(SharePrefKeys.JWT_TOKEN, token)
+  void _saveUserInfos(BuildContext context, String userInfos) {
+    SharedPrefConfig.saveStringData(SharePrefKeys.USER_INFOS, userInfos)
         .then((value) {
       if (value) {
         Toast.showFlutterToast(context, 'Bienvenue !', 'success');
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) {
-            return Tabs();
-          }),
+        Navigator.of(context).pushReplacement(
+          SlideRightRoute(
+            child: const Tabs(),
+            page: const Tabs(),
+            direction: AxisDirection.left,
+          ),
         );
       } else {
         Toast.showFlutterToast(

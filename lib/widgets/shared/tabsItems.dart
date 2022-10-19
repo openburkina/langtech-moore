@@ -9,5 +9,5 @@ const List<Widget> tabsItems = [
   Center(
     child: const Text('Contributions Page'),
   ),
-  const ProfilPage(),
+  ProfilPage(),
 ];

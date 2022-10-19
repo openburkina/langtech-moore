@@ -5,12 +5,12 @@ import 'package:delayed_display/delayed_display.dart';
 import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefConfig.dart';
 import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefKeys.dart';
 import 'package:langtech_moore_mobile/models/loginVM.dart';
-import 'package:langtech_moore_mobile/models/user.dart';
 import 'package:langtech_moore_mobile/services/http.dart';
 import 'package:langtech_moore_mobile/widgets/loginPage/button_section.dart';
 import 'package:langtech_moore_mobile/widgets/loginPage/input_section.dart';
 import 'package:langtech_moore_mobile/widgets/loginPage/not_signup_section.dart';
 import 'package:langtech_moore_mobile/widgets/shared/loadingSpinner.dart';
+import 'package:langtech_moore_mobile/widgets/shared/slidepage.dart';
 import 'package:langtech_moore_mobile/widgets/shared/tabs.dart';
 import 'package:langtech_moore_mobile/widgets/shared/toast.dart';
 
@@ -131,11 +131,12 @@ class _LoginFormState extends State<LoginForm> {
         .then((value) {
       if (value) {
         Toast.showFlutterToast(context, 'Bienvenue !', 'success');
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) {
-            return Tabs();
-          }),
+        Navigator.of(context).pushReplacement(
+          SlideRightRoute(
+            child: const Tabs(),
+            page: const Tabs(),
+            direction: AxisDirection.left,
+          ),
         );
       } else {
         Toast.showFlutterToast(

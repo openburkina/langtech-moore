@@ -1,8 +1,104 @@
-import 'package:flutter/material.dart';
-import 'package:langtech_moore_mobile/constants/colors.dart';
+import 'dart:convert';
 
-class ProfilPage extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefConfig.dart';
+import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefKeys.dart';
+import 'package:langtech_moore_mobile/constants/colors.dart';
+import 'package:langtech_moore_mobile/models/user.dart';
+import 'package:langtech_moore_mobile/pages/loginPage/login_page.dart';
+import 'package:langtech_moore_mobile/widgets/profilPage/parameter.dart';
+import 'package:langtech_moore_mobile/widgets/shared/slidepage.dart';
+
+class ProfilPage extends StatefulWidget {
   const ProfilPage({super.key});
+
+  @override
+  State<ProfilPage> createState() => _ProfilPageState();
+}
+
+class _ProfilPageState extends State<ProfilPage> {
+  late User currentUser = new User();
+
+  void _getCurrentUserInfos() {
+    SharedPrefConfig.getStringData(SharePrefKeys.USER_INFOS).then((value) {
+      setState(() {
+        currentUser = User.fromJson(jsonDecode(value)['utilisateur']);
+      });
+    });
+  }
+
+  void _onLogout() async {
+    await showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) => new AlertDialog(
+        title: Row(
+          children: [
+            Image.asset(
+              "assets/images/logo.jpg",
+              width: 75,
+              height: 75,
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            Text(
+              'LangTech',
+              style: GoogleFonts.montserrat(
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+                color: kBlue,
+              ),
+            ),
+          ],
+        ),
+        content: Text(
+          "Voulez-vous vous déconnecter de l'application ?",
+          style: GoogleFonts.montserrat(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(
+              'Non',
+              style: GoogleFonts.montserrat(
+                fontSize: 20,
+                color: kBlue,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pushReplacement(
+              SlideRightRoute(
+                child: const LoginPage(),
+                page: const LoginPage(),
+                direction: AxisDirection.left,
+              ),
+            ),
+            child: Text(
+              'Oui',
+              style: GoogleFonts.montserrat(
+                fontSize: 20,
+                color: kRed,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentUserInfos();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -12,13 +108,103 @@ class ProfilPage extends StatelessWidget {
         child: SafeArea(
           child: Column(
             children: [
-              photoProfil,
-              const SizedBox(
-                height: 20,
+              Container(
+                margin: const EdgeInsets.fromLTRB(0, 30, 0, 30),
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [kBlue, kBlue],
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    Container(
+                      height: 100,
+                      width: 100,
+                      decoration: BoxDecoration(
+                        color: kWhite,
+                        borderRadius: BorderRadius.circular(100),
+                        border: Border.all(width: 5, color: kRed),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(100),
+                        child: Icon(
+                          Icons.person,
+                          size: 75,
+                          color: kBlue,
+                        ),
+                      ),
+                    ),
+                    Center(
+                      child: Container(
+                        margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                        child: Text(
+                          '${currentUser.prenom} ${currentUser.nom}',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Center(
+                      child: Container(
+                        child: Text(
+                          '${currentUser.email} | ${currentUser.telephone}',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
               postFollowSection,
-              apropos,
-              buttonSection,
+              Container(
+                color: kGris,
+                child: Column(
+                  children: [
+                    Parameter(
+                      icon: Icons.person,
+                      title: 'Mon Profil',
+                      subTitle: 'Modifier mon profil',
+                      function: () {},
+                    ),
+                    Parameter(
+                      icon: Icons.lock,
+                      title: 'Mon Mot de passe',
+                      subTitle: 'Modifier mon mot de passe',
+                      function: () {},
+                    ),
+                    Parameter(
+                      icon: Icons.share,
+                      title: 'Partager l\'application',
+                      subTitle: 'Partager avec mes amis',
+                      function: () {},
+                    ),
+                    Parameter(
+                      icon: Icons.info,
+                      title: 'A propos',
+                      subTitle: 'A propos de l\'application',
+                      function: () {},
+                    ),
+                    Parameter(
+                      icon: Icons.logout,
+                      title: 'Déconnexion',
+                      subTitle: 'Se déconnecter de l\'application',
+                      function: _onLogout,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
@@ -27,87 +213,22 @@ class ProfilPage extends StatelessWidget {
   }
 }
 
-Widget photoProfil = Container(
-  padding: const EdgeInsets.fromLTRB(0, 30, 0, 30),
-  width: double.infinity,
-  decoration: const BoxDecoration(
-    gradient: LinearGradient(
-      begin: Alignment.topCenter,
-      end: Alignment.bottomCenter,
-      colors: [kBlue, kRed],
-    ),
-  ),
-  child: Column(
-    children: [
-      Container(
-        height: 150,
-        width: 150,
-        decoration: BoxDecoration(
-          color: kWhite,
-          borderRadius: BorderRadius.circular(100),
-          border: Border.all(width: 2, color: kWhite),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.4),
-              spreadRadius: 1,
-              blurRadius: 2,
-              offset: const Offset(0, 1),
-            ),
-          ],
-        ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(100),
-          child: Icon(
-            Icons.person,
-            size: 100,
-            color: kBlue,
-          ),
-        ),
-      ),
-      usernameSection,
-      fonctionSection,
-    ],
-  ),
-);
-
-Widget usernameSection = Container(
-  margin: const EdgeInsets.fromLTRB(0, 20, 0, 5),
-  child: const Text(
-    'Hubert SAWADOGO',
-    style: TextStyle(
-      color: Colors.white,
-      fontSize: 25,
-      fontWeight: FontWeight.bold,
-    ),
-  ),
-);
-
-Widget fonctionSection = Container(
-  child: const Text(
-    'UI/UX Design - FrontEnd Developper',
-    style: TextStyle(
-      color: Colors.white,
-      fontSize: 20,
-    ),
-  ),
-);
-
 Widget postFollowSection = Container(
   color: kWhite,
+  padding: const EdgeInsets.symmetric(vertical: 20),
   child: Row(
     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
     children: [
-      post,
-      followers,
-      follow,
+      contributionSection,
+      pointFideliteSection,
     ],
   ),
 );
 
-Widget post = Column(
+Widget contributionSection = Column(
   children: const [
     Text(
-      'Posts',
+      'Contributions',
       style: TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.bold,
@@ -115,20 +236,20 @@ Widget post = Column(
       ),
     ),
     Text(
-      '21299',
+      '12',
       style: TextStyle(
-        fontSize: 16,
-        fontWeight: FontWeight.w600,
-        color: kBlue,
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
+        color: kRed,
       ),
     )
   ],
 );
 
-Widget followers = Column(
+Widget pointFideliteSection = Column(
   children: const [
     Text(
-      'Followers',
+      'Point de fidélité',
       style: TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.bold,
@@ -136,80 +257,12 @@ Widget followers = Column(
       ),
     ),
     Text(
-      '21299',
+      '10',
       style: TextStyle(
-        fontSize: 16,
-        fontWeight: FontWeight.w600,
-        color: kBlue,
-      ),
-    )
-  ],
-);
-
-Widget follow = Column(
-  children: const [
-    Text(
-      'Follow',
-      style: TextStyle(
-        fontSize: 20,
+        fontSize: 18,
         fontWeight: FontWeight.bold,
-        color: kBlue,
-      ),
-    ),
-    Text(
-      '21299',
-      style: TextStyle(
-        fontSize: 16,
-        fontWeight: FontWeight.w600,
-        color: kBlue,
+        color: kRed,
       ),
     )
   ],
-);
-
-Widget apropos = Container(
-  padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-  color: kWhite,
-  child: Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: const [
-      Text(
-        'A propos',
-        style: TextStyle(
-            fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue),
-      ),
-      Text(
-        "Elon Musk, né le 28 juin 1971 à Pretoria, est un entrepreneur, chef d'entreprise et ingénieur sud-africain, naturalisé canadien en 1988 puis américain en 2002.",
-        style: TextStyle(
-          fontSize: 16,
-          color: Colors.grey,
-        ),
-      )
-    ],
-  ),
-);
-
-Widget buttonSection = ElevatedButton(
-  style: ElevatedButton.styleFrom(
-      padding: const EdgeInsets.all(0),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
-  onPressed: () {},
-  child: Container(
-    padding: const EdgeInsets.fromLTRB(120, 15, 120, 15),
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(30),
-      gradient: const LinearGradient(
-        colors: [
-          Colors.blue,
-          Colors.cyan,
-        ],
-      ),
-    ),
-    child: const Text(
-      'Suivre',
-      style: TextStyle(
-        fontSize: 25,
-      ),
-    ),
-  ),
 );
