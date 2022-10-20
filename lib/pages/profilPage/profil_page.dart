@@ -137,28 +137,60 @@ class _ProfilPageState extends State<ProfilPage> {
                         ),
                       ),
                     ),
-                    Center(
-                      child: Container(
-                        margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                        child: Text(
-                          '${currentUser.prenom} ${currentUser.nom}',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          currentUser.prenom != ''
+                              ? Text(
+                                  '${currentUser.prenom}',
+                                  style: TextStyle(
+                                    color: kWhite,
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                )
+                              : Center(),
+                          const SizedBox(
+                            width: 5,
                           ),
-                        ),
+                          currentUser.nom != ''
+                              ? Text(
+                                  '${currentUser.nom}',
+                                  style: TextStyle(
+                                    color: kWhite,
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                )
+                              : Center(),
+                        ],
                       ),
                     ),
-                    Center(
-                      child: Container(
-                        child: Text(
-                          '${currentUser.email} | ${currentUser.telephone}',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                          ),
-                        ),
+                    Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          currentUser.email != ''
+                              ? Text(
+                                  '${currentUser.email}',
+                                  style: TextStyle(
+                                    color: kWhite,
+                                    fontSize: 18,
+                                  ),
+                                )
+                              : Center(),
+                          currentUser.telephone != ''
+                              ? Text(
+                                  '  |  ${currentUser.telephone}',
+                                  style: TextStyle(
+                                    color: kWhite,
+                                    fontSize: 18,
+                                  ),
+                                )
+                              : Center(),
+                        ],
                       ),
                     ),
                   ],

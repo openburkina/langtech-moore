@@ -28,7 +28,10 @@ class SearchSection extends StatelessWidget {
               fontSize: 16,
               fontWeight: FontWeight.w400,
             ),
-          )
+          ),
+          // Expanded(
+          //   child: TextField(),
+          // ),
         ],
       ),
     );
