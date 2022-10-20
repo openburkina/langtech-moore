@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:langtech_moore_mobile/pages/profilPage/profil_page.dart';
-import 'package:langtech_moore_mobile/widgets/home/home.dart';
+import 'package:langtech_moore_mobile/pages/homePage/home.dart';
 
 const List<Widget> tabsItems = [
   Center(
