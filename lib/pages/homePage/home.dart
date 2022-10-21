@@ -7,9 +7,9 @@ import 'package:langtech_moore_mobile/models/user.dart';
 import 'package:langtech_moore_mobile/widgets/home/search_section.dart';
 import 'package:langtech_moore_mobile/widgets/home/top_home.dart';
 import 'package:langtech_moore_mobile/widgets/shared/category.dart';
+import 'package:langtech_moore_mobile/widgets/shared/data_list_tile.dart';
 
 import '../../constants/colors.dart';
-import '../../widgets/home/emoticone.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -74,7 +74,6 @@ class _HomePageState extends State<Home> {
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
-                    // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Category(
                         icon: Icons.health_and_safety,
@@ -102,86 +101,55 @@ class _HomePageState extends State<Home> {
               ]),
             ),
             SizedBox(height: 20),
+            Container(
+              padding: const EdgeInsets.all(20),
+              color: kGris,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Sources de données recentes",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                  Icon(
+                    Icons.more_horiz,
+                  )
+                ],
+              ),
+            ),
             Expanded(
               child: Container(
-                padding: EdgeInsets.all(20),
-                decoration: BoxDecoration(color: Colors.grey[200]),
-                child: Center(
+                padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+                color: kGris,
+                child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("La liste des sources",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 20)),
-                          Icon(Icons.more_horiz)
-                        ],
+                      DataListTile(
+                        dataLibelle: "Bonjour",
+                        counter: 10,
                       ),
-                      SizedBox(height: 20),
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(12)),
-                        child: ListTile(
-                            leading: Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.orange,
-                                    borderRadius: BorderRadius.circular(30)),
-                                child: Icon(Icons.favorite,
-                                    color: Colors.grey[200])),
-                            title: Text("Detection de la panne"),
-                            subtitle: Text('2 traductions'),
-                            trailing: Icon(Icons.arrow_forward_ios)),
+                      DataListTile(
+                        dataLibelle: "Comment vous allez ?",
+                        counter: 0,
                       ),
-                      SizedBox(height: 20),
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(12)),
-                        child: ListTile(
-                            leading: Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.orange,
-                                    borderRadius: BorderRadius.circular(30)),
-                                child: Icon(Icons.favorite,
-                                    color: Colors.grey[200])),
-                            title: Text("Analyse tous les éléments "),
-                            subtitle: Text('10 traductions'),
-                            trailing: Icon(Icons.arrow_forward_ios)),
+                      DataListTile(
+                        dataLibelle: "Je vais bien et chez vous ?",
+                        counter: 6,
                       ),
-                      SizedBox(height: 20),
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(12)),
-                        child: ListTile(
-                            leading: Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.orange,
-                                    borderRadius: BorderRadius.circular(30)),
-                                child: Icon(Icons.favorite,
-                                    color: Colors.grey[200])),
-                            title: Text("Contourner l'obstacle"),
-                            subtitle: Text('5 traductions'),
-                            trailing: Icon(Icons.arrow_forward_ios)),
+                      DataListTile(
+                        dataLibelle: "Je pars au marché",
+                        counter: 3,
                       ),
-                      SizedBox(height: 20),
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(12)),
-                        child: ListTile(
-                          leading: Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.orange,
-                                  borderRadius: BorderRadius.circular(30)),
-                              child: Icon(Icons.favorite,
-                                  color: Colors.grey[200])),
-                          title: Text("Booster mes ventes"),
-                          subtitle: Text('20 traductions'),
-                          trailing: Icon(Icons.arrow_forward_ios),
-                        ),
+                      DataListTile(
+                        dataLibelle: "Mon enfant part à l'école",
+                        counter: 12,
+                      ),
+                      DataListTile(
+                        dataLibelle: "Le pardon est sacré",
+                        counter: 0,
                       ),
                     ],
                   ),

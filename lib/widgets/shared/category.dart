@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:langtech_moore_mobile/constants/colors.dart';
 
 class Category extends StatelessWidget {
   final IconData icon;
@@ -17,7 +18,7 @@ class Category extends StatelessWidget {
       children: [
         Container(
           decoration: BoxDecoration(
-            color: Colors.blue[600],
+            color: kRed.withOpacity(0.7),
             borderRadius: BorderRadius.circular(12),
           ),
           padding: EdgeInsets.all(12),
@@ -32,12 +33,11 @@ class Category extends StatelessWidget {
         SizedBox(
           height: 15,
         ),
-        Center(
-          child: Text(
-            title,
-            style: TextStyle(
-              color: Colors.white,
-            ),
+        Text(
+          title,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: kWhite,
           ),
         ),
       ],

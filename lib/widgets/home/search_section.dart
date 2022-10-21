@@ -11,7 +11,7 @@ class SearchSection extends StatelessWidget {
         color: kWhite,
         borderRadius: BorderRadius.circular(12),
       ),
-      padding: EdgeInsets.all(12),
+      padding: EdgeInsets.fromLTRB(10, 2, 10, 2),
       child: Row(
         children: [
           Icon(
@@ -21,17 +21,19 @@ class SearchSection extends StatelessWidget {
           SizedBox(
             width: 15,
           ),
-          Text(
-            "Rechercher par mot clé...",
-            style: TextStyle(
-              color: kRed,
-              fontSize: 16,
-              fontWeight: FontWeight.w400,
+          Expanded(
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: "Rechercher par mot clé...",
+                border: InputBorder.none,
+                hintStyle: TextStyle(
+                  color: kRed,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
             ),
           ),
-          // Expanded(
-          //   child: TextField(),
-          // ),
         ],
       ),
     );
