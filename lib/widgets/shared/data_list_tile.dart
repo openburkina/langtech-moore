@@ -41,6 +41,7 @@ class DataListTile extends StatelessWidget {
           ),
           title: Text(
             "$dataLibelle",
+            maxLines: 2,
             style: TextStyle(
               color: kBlue,
               fontWeight: FontWeight.w500,

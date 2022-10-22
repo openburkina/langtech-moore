@@ -29,7 +29,7 @@ class SearchSection extends StatelessWidget {
                 hintStyle: TextStyle(
                   color: kRed,
                   fontSize: 16,
-                  fontWeight: FontWeight.w400,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ),

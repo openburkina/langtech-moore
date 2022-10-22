@@ -20,7 +20,7 @@ class ButtonSection extends StatelessWidget {
         primary: buttonColor,
         padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(15),
         ),
       ),
       onPressed: buttonFonction,

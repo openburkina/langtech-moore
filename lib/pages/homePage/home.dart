@@ -6,7 +6,6 @@ import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefKeys.da
 import 'package:langtech_moore_mobile/models/user.dart';
 import 'package:langtech_moore_mobile/widgets/home/search_section.dart';
 import 'package:langtech_moore_mobile/widgets/home/top_home.dart';
-import 'package:langtech_moore_mobile/widgets/shared/category.dart';
 import 'package:langtech_moore_mobile/widgets/shared/data_list_tile.dart';
 
 import '../../constants/colors.dart';
@@ -43,64 +42,20 @@ class _HomePageState extends State<Home> {
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25.0),
-              child: Column(children: [
-                TopHome(),
-                SizedBox(
-                  height: 15,
-                ),
-                SearchSection(),
-                SizedBox(
-                  height: 15,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Les domaines de souces de données ?",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16),
-                    ),
-                    Icon(
-                      Icons.more_horiz,
-                      color: Colors.white,
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      Category(
-                        icon: Icons.health_and_safety,
-                        title: 'Santé',
-                      ),
-                      Category(
-                        icon: Icons.money,
-                        title: 'Banque',
-                      ),
-                      Category(
-                        icon: Icons.track_changes,
-                        title: 'Agriculture',
-                      ),
-                      Category(
-                        icon: Icons.car_rental,
-                        title: 'Transport',
-                      ),
-                      Category(
-                        icon: Icons.school,
-                        title: 'Education',
-                      ),
-                    ],
+              child: Column(
+                children: [
+                  TopHome(),
+                  SizedBox(
+                    height: 15,
                   ),
-                ),
-              ]),
+                  SearchSection(),
+                  SizedBox(
+                    height: 10,
+                  ),
+                ],
+              ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 10),
             Container(
               padding: const EdgeInsets.all(20),
               color: kGris,
@@ -149,6 +104,15 @@ class _HomePageState extends State<Home> {
                       ),
                       DataListTile(
                         dataLibelle: "Le pardon est sacré",
+                        counter: 0,
+                      ),
+                      DataListTile(
+                        dataLibelle: "Le pardon est sacré",
+                        counter: 0,
+                      ),
+                      DataListTile(
+                        dataLibelle:
+                            "Le Burkina Faso est un pays de paix et de prospérité. Le Burkina Faso est un pays de paix et de prospérité. Le Burkina Faso est un pays de paix et de prospérité.",
                         counter: 0,
                       ),
                     ],
