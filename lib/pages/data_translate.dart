@@ -4,23 +4,24 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:langtech_moore_mobile/constants/colors.dart';
+import 'package:langtech_moore_mobile/models/source_donnee.dart';
 import 'package:langtech_moore_mobile/widgets/loginPage/button_section.dart';
 
 class DataTranslate extends StatefulWidget {
-  final String dataLibelle;
+  final SourceDonnee sourceDonnee;
   const DataTranslate({
     super.key,
-    required this.dataLibelle,
+    required this.sourceDonnee,
   });
 
   @override
   State<DataTranslate> createState() => _DataTranslate(
-        dataLibelle: dataLibelle,
+        sourceDonnee: sourceDonnee,
       );
 }
 
 class _DataTranslate extends State<DataTranslate> {
-  final String dataLibelle;
+  final SourceDonnee sourceDonnee;
   final List<SelectedListItem> _listLanguages = [
     SelectedListItem(
       name: "MOORE",
@@ -41,7 +42,7 @@ class _DataTranslate extends State<DataTranslate> {
   ];
 
   _DataTranslate({
-    required this.dataLibelle,
+    required this.sourceDonnee,
   });
   @override
   Widget build(BuildContext context) {
@@ -89,7 +90,7 @@ class _DataTranslate extends State<DataTranslate> {
                   ),
                 ),
                 child: Text(
-                  '$dataLibelle',
+                  '${sourceDonnee.libelle}',
                   style: GoogleFonts.montserrat(
                     fontSize: 18,
                     color: kBlue,

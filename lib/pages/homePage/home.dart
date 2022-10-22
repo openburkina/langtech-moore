@@ -1,12 +1,16 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefConfig.dart';
 import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefKeys.dart';
+import 'package:langtech_moore_mobile/models/source_donnee.dart';
 import 'package:langtech_moore_mobile/models/user.dart';
+import 'package:langtech_moore_mobile/services/http.dart';
 import 'package:langtech_moore_mobile/widgets/home/search_section.dart';
 import 'package:langtech_moore_mobile/widgets/home/top_home.dart';
 import 'package:langtech_moore_mobile/widgets/shared/data_list_tile.dart';
+import 'package:langtech_moore_mobile/widgets/shared/loadingSpinner.dart';
 
 import '../../constants/colors.dart';
 
@@ -79,47 +83,35 @@ class _HomePageState extends State<Home> {
               child: Container(
                 padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
                 color: kGris,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      DataListTile(
-                        dataLibelle: "Bonjour",
-                        counter: 10,
-                      ),
-                      DataListTile(
-                        dataLibelle: "Comment vous allez ?",
-                        counter: 0,
-                      ),
-                      DataListTile(
-                        dataLibelle: "Je vais bien et chez vous ?",
-                        counter: 6,
-                      ),
-                      DataListTile(
-                        dataLibelle: "Je pars au marché",
-                        counter: 3,
-                      ),
-                      DataListTile(
-                        dataLibelle: "Mon enfant part à l'école",
-                        counter: 12,
-                      ),
-                      DataListTile(
-                        dataLibelle: "Le pardon est sacré",
-                        counter: 0,
-                      ),
-                      DataListTile(
-                        dataLibelle: "Le pardon est sacré",
-                        counter: 0,
-                      ),
-                      DataListTile(
-                        dataLibelle:
-                            "Le Burkina Faso est un pays de paix et de prospérité. Le Burkina Faso est un pays de paix et de prospérité. Le Burkina Faso est un pays de paix et de prospérité.",
-                        counter: 0,
-                      ),
-                    ],
-                  ),
+                child: FutureBuilder<List<SourceDonnee>>(
+                  future: Http.getAllSourcesDonnees(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return ListView.builder(
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, index) {
+                            return DataListTile(
+                              sourceDonnee: snapshot.data![index],
+                            );
+                          });
+                    } else if (snapshot.hasError) {
+                      return Center(
+                        child: Text(
+                          "Une erreur est survenue lors de la récupération des sources de données !",
+                          style: GoogleFonts.montserrat(
+                            fontSize: 16,
+                            color: kRed,
+                          ),
+                        ),
+                      );
+                    }
+                    return Center(
+                      child: LoadingSpinner(),
+                    );
+                  },
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

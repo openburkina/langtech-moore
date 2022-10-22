@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:langtech_moore_mobile/constants/colors.dart';
+import 'package:langtech_moore_mobile/models/source_donnee.dart';
 import 'package:langtech_moore_mobile/pages/data_translate.dart';
 
 class DataListTile extends StatelessWidget {
-  final String dataLibelle;
-  final int counter;
+  final SourceDonnee sourceDonnee;
   const DataListTile({
     super.key,
-    required this.dataLibelle,
-    required this.counter,
+    required this.sourceDonnee,
   });
 
   @override
@@ -17,7 +16,7 @@ class DataListTile extends StatelessWidget {
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
           return DataTranslate(
-            dataLibelle: dataLibelle,
+            sourceDonnee: sourceDonnee,
           );
         }));
       },
@@ -40,7 +39,7 @@ class DataListTile extends StatelessWidget {
             ),
           ),
           title: Text(
-            "$dataLibelle",
+            "${sourceDonnee.libelle}",
             maxLines: 2,
             style: TextStyle(
               color: kBlue,
@@ -48,7 +47,7 @@ class DataListTile extends StatelessWidget {
             ),
           ),
           subtitle: Text(
-            "${counter == 0 ? 'Aucune traduction' : '$counter traductions '}",
+            "${sourceDonnee.counter == 0 ? 'Aucune traduction' : '${sourceDonnee.counter} traductions '}",
           ),
           trailing: Icon(
             Icons.arrow_forward_ios,
