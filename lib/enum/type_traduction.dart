@@ -1,0 +1,4 @@
+enum TypeTraduction {
+  TEXTE,
+  AUDIO,
+}
