@@ -35,6 +35,7 @@ class _DataTranslate extends State<DataTranslate> {
 
   final recorder = FlutterSoundRecorder();
   bool isRecorderReady = false;
+  bool isRecorderFinished = false;
   bool isStartRecorder = false;
   bool isAudioPayed = false;
   final recordingPlayer = AssetsAudioPlayer();
@@ -89,24 +90,35 @@ class _DataTranslate extends State<DataTranslate> {
     await recorder.openRecorder();
 
     isRecorderReady = true;
+    isRecorderFinished = false;
     recorder.setSubscriptionDuration(
       const Duration(milliseconds: 500),
     );
   }
 
-  Future record() async {
+  Future startRecorder() async {
     if (!isRecorderReady) return;
+
+    setState(() {
+      isRecorderFinished = false;
+    });
+
+    if (recordingPlayer.isPlaying.value) {
+      await stopAudio();
+    }
 
     await recorder.startRecorder(toFile: 'audio.mp4');
   }
 
-  Future stop() async {
+  Future stopRecorder() async {
     if (!isRecorderReady) return;
 
     final path = await recorder.stopRecorder();
     final audioFile = File(path!);
     setState(() {
       pathToAudio = path;
+      isRecorderFinished = true;
+      isAudioPayed = false;
       // ignore: avoid_print
       print('Recorded audio path: $pathToAudio');
       // ignore: avoid_print
@@ -115,10 +127,11 @@ class _DataTranslate extends State<DataTranslate> {
   }
 
   Future<void> playAudio() async {
-    recordingPlayer.open(
+    await recordingPlayer.open(
       Audio.file(pathToAudio),
       autoStart: true,
       showNotification: true,
+      volume: 1,
     );
 
     setState(() {
@@ -134,7 +147,7 @@ class _DataTranslate extends State<DataTranslate> {
   }
 
   Future<void> pauseAudio() async {
-    recordingPlayer.pause();
+    recordingPlayer.playOrPause();
     setState(() {
       isAudioPayed = true;
     });
@@ -372,99 +385,106 @@ class _DataTranslate extends State<DataTranslate> {
                 isStartRecorder = !isStartRecorder;
               });
               if (recorder.isRecording) {
-                await stop();
+                await stopRecorder();
               } else {
-                await record();
+                await startRecorder();
               }
             },
           ),
           const SizedBox(
             height: 20,
           ),
-          StreamBuilder<Duration>(
-            stream: recordingPlayer.currentPosition,
-            builder: (context, snapshot) {
-              if (!snapshot.hasData || !recordingPlayer.current.hasValue) {
-                return Slider(
-                  value: 0.0,
-                  onChanged: (double value) => null,
-                  activeColor: kBlue,
-                  inactiveColor: kRed,
-                );
-              }
-
-              if (recordingPlayer.current.value == null) {
-                return Slider(
-                  value: 0.0,
-                  onChanged: (double value) => null,
-                  activeColor: kBlue,
-                  inactiveColor: kRed,
-                );
-              } else {
-                final PlayingAudio playing2 =
-                    recordingPlayer.current.value!.audio;
-                final Duration? position = snapshot.data;
-                // bool _finish = _assetsAudioPlayer.finished.value;
-
-                // print(playing2);
-
-                return Slider(
-                  min: 0.0,
-                  max: playing2.duration.inMilliseconds.toDouble() - 0.01,
-                  value: position!.inMilliseconds.toDouble() ==
-                          playing2.duration.inMilliseconds.toDouble()
-                      ? 0.0
-                      : position.inMilliseconds.toDouble(),
-                  onChanged: (double value) {
-                    recordingPlayer.seek(Duration(milliseconds: value.toInt()));
-                    value = value;
-                  },
-                  onChangeEnd: (double value) {},
-                  activeColor: kBlue,
-                  inactiveColor: kRed,
-                );
-              }
-            },
-          ),
-          Container(
-            child: Wrap(
-              spacing: 10,
-              children: [
-                ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    primary: kBlue,
-                  ),
-                  onPressed: () {
-                    if (pathToAudio != '') {
-                      if (recordingPlayer.isPlaying.value) {
-                        pauseAudio();
-                      } else {
-                        playAudio();
-                      }
-                    }
-                  },
-                  icon: Icon(isAudioPayed ? Icons.pause : Icons.play_arrow),
-                  label: Text(isAudioPayed ? "Pause" : "Jouer"),
-                ),
-                ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    primary: kRed,
-                  ),
-                  onPressed: () {
-                    if (pathToAudio != '') {
-                      if (isAudioPayed) {
-                        stopAudio();
-                      }
-                    }
-                  },
-                  icon: Icon(Icons.stop),
-                  label: Text("Arrêter"),
-                )
-              ],
-            ),
-          ),
+          isRecorderFinished ? playRecorderPart() : Container(),
         ],
       ),
+    );
+  }
+
+  Widget playRecorderPart() {
+    return Column(
+      children: [
+        StreamBuilder<Duration>(
+          stream: recordingPlayer.currentPosition,
+          builder: (context, snapshot) {
+            if (!snapshot.hasData || !recordingPlayer.current.hasValue) {
+              return Slider(
+                value: 0.0,
+                onChanged: (double value) => null,
+                activeColor: kBlue,
+                inactiveColor: kRed,
+              );
+            }
+
+            if (recordingPlayer.current.value == null) {
+              return Slider(
+                value: 0.0,
+                onChanged: (double value) => null,
+                activeColor: kBlue,
+                inactiveColor: kRed,
+              );
+            } else {
+              final PlayingAudio playing2 =
+                  recordingPlayer.current.value!.audio;
+              final Duration? position = snapshot.data;
+
+              return Slider(
+                min: 0.0,
+                max: playing2.duration.inMilliseconds.toDouble() - 0.01,
+                value: position!.inMilliseconds.toDouble() ==
+                        playing2.duration.inMilliseconds.toDouble()
+                    ? 0.0
+                    : position.inMilliseconds.toDouble(),
+                onChanged: (double value) {
+                  log("Slider ==> $value");
+                  recordingPlayer.seek(Duration(milliseconds: value.toInt()));
+                  value = value;
+                },
+                onChangeEnd: (double value) {},
+                activeColor: kBlue,
+                inactiveColor: kRed,
+              );
+            }
+          },
+        ),
+        Container(
+          child: Wrap(
+            spacing: 10,
+            children: [
+              !isAudioPayed
+                  ? ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        primary: kBlue,
+                      ),
+                      onPressed: () {
+                        if (pathToAudio != '') {
+                          if (!isAudioPayed) {
+                            playAudio();
+                          } else {
+                            stopAudio();
+                          }
+                        }
+                      },
+                      icon: Icon(Icons.play_arrow),
+                      label: Text("Ecouter l'enregistrement"),
+                    )
+                  : ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        primary: kRed,
+                      ),
+                      onPressed: () {
+                        if (pathToAudio != '') {
+                          if (isAudioPayed) {
+                            stopAudio();
+                          }
+                        }
+                      },
+                      icon: Icon(Icons.stop),
+                      label: Text("Arrêter l'audio"),
+                    )
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
