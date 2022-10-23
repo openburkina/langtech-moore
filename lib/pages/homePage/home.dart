@@ -6,6 +6,7 @@ import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefConfig.
 import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefKeys.dart';
 import 'package:langtech_moore_mobile/models/source_donnee.dart';
 import 'package:langtech_moore_mobile/models/user.dart';
+import 'package:langtech_moore_mobile/pages/source_donnes_page.dart';
 import 'package:langtech_moore_mobile/services/http.dart';
 import 'package:langtech_moore_mobile/widgets/home/search_section.dart';
 import 'package:langtech_moore_mobile/widgets/home/top_home.dart';
@@ -67,15 +68,39 @@ class _HomePageState extends State<Home> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Sources de données recentes",
+                    "Sources de données récentes",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
+                      color: kBlue,
                     ),
                   ),
-                  Icon(
-                    Icons.more_horiz,
-                  )
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) {
+                          return SourceDonneePage();
+                        }),
+                      );
+                    },
+                    child: Container(
+                      height: 32,
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        color: kBlue,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Center(
+                        child: Text(
+                          "Voir Plus",
+                          style: GoogleFonts.montserrat(
+                            color: kWhite,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
