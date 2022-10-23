@@ -7,10 +7,24 @@ import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefConfig.
 import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefKeys.dart';
 import 'package:langtech_moore_mobile/models/loginVM.dart';
 import 'package:langtech_moore_mobile/models/source_donnee.dart';
+import 'package:langtech_moore_mobile/models/traduction.dart';
 import 'package:langtech_moore_mobile/models/user.dart';
 
 class Http {
   static Map<String, String> headers = new Map();
+
+  static Future<void> _getHeaders() async {
+    headers = Map();
+    headers.addAll({
+      "Content-type": "application/json; charset=utf-8",
+    });
+    SharedPrefConfig.getStringData(SharePrefKeys.USER_INFOS).then((value) {
+      String jwtToken = jsonDecode(value)['id_token'];
+      headers.addAll({
+        "Authorization": "Bearer $jwtToken",
+      });
+    });
+  }
 
   static Future onAuthenticate(LoginVM loginVM) async {
     return await http.post(
@@ -52,16 +66,23 @@ class Http {
     }
   }
 
-  static Future<void> _getHeaders() async {
-    headers = Map();
-    headers.addAll({
-      "Content-type": "application/json; charset=utf-8",
+  static Future<List<Traduction>> getAllTraductons() async {
+    String url = '${Urls.TRADUCTION_DATA_URL}';
+    await _getHeaders();
+    final response = await http
+        .get(
+      Uri.parse(url),
+      headers: headers,
+    )
+        .timeout(const Duration(seconds: 5), onTimeout: () {
+      return http.Response("Délai d'attente depassé !", 403);
     });
-    SharedPrefConfig.getStringData(SharePrefKeys.USER_INFOS).then((value) {
-      String jwtToken = jsonDecode(value)['id_token'];
-      headers.addAll({
-        "Authorization": "Bearer $jwtToken",
-      });
-    });
+    if (response.statusCode == 200) {
+      List jsonResponse =
+          convert.jsonDecode(convert.utf8.decode(response.bodyBytes));
+      return jsonResponse.map((data) => new Traduction.fromJson(data)).toList();
+    } else {
+      throw Exception('Unexpected error occured!');
+    }
   }
 }
