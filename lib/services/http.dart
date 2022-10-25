@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:langtech_moore_mobile/config/http/urls.dart';
 import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefConfig.dart';
 import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefKeys.dart';
+import 'package:langtech_moore_mobile/models/langue.dart';
 import 'package:langtech_moore_mobile/models/loginVM.dart';
 import 'package:langtech_moore_mobile/models/source_donnee.dart';
 import 'package:langtech_moore_mobile/models/traduction.dart';
@@ -81,6 +82,30 @@ class Http {
       List jsonResponse =
           convert.jsonDecode(convert.utf8.decode(response.bodyBytes));
       return jsonResponse.map((data) => new Traduction.fromJson(data)).toList();
+    } else {
+      throw Exception('Unexpected error occured!');
+    }
+  }
+
+  static Future<List<Langue>> getLangues() async {
+    String url = '${Urls.LANGUES}';
+    await _getHeaders();
+    final response = await http
+        .get(
+      Uri.parse(url),
+      headers: headers,
+    )
+        .timeout(const Duration(seconds: 5), onTimeout: () {
+      return http.Response("Délai d'attente depassé !", 403);
+    });
+    if (response.statusCode == 200) {
+      List jsonResponse =
+          convert.jsonDecode(convert.utf8.decode(response.bodyBytes));
+      return jsonResponse
+          .map(
+            (data) => Langue.fromJson(data),
+          )
+          .toList();
     } else {
       throw Exception('Unexpected error occured!');
     }

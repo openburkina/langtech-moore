@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:langtech_moore_mobile/enum/etat.dart';
 import 'package:langtech_moore_mobile/enum/type_traduction.dart';
+import 'package:langtech_moore_mobile/models/langue.dart';
 
 class Traduction {
   int? id;
@@ -11,6 +12,7 @@ class Traduction {
   TypeTraduction? type;
   int? note;
   Etat? etat;
+  Langue? langue;
 
   Traduction({
     this.id,
@@ -21,6 +23,7 @@ class Traduction {
     this.type,
     this.note,
     this.etat,
+    this.langue,
   });
 
   Traduction.fromJson(Map<String, dynamic> json) {
@@ -32,6 +35,7 @@ class Traduction {
     this.type = json['type'] as TypeTraduction;
     this.note = json['note'] as int;
     this.etat = json['etat'] as Etat;
+    this.langue = Langue.fromJson(json[json['langue']]);
   }
 
   Map<String, dynamic> toJson() => {
@@ -43,5 +47,8 @@ class Traduction {
         'type': this.type,
         'note': this.note,
         'etat': this.etat,
+        'langue': {
+          'id': this.langue!.id,
+        }
       };
 }

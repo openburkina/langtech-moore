@@ -4,4 +4,5 @@ class Urls {
   static const String REGISTER_URL = API_BASE_URL + '/register';
   static const String SOURCES_DATA_URL = API_BASE_URL + '/source-donnees';
   static const String TRADUCTION_DATA_URL = API_BASE_URL + '/traductions';
+  static const String LANGUES = API_BASE_URL + '/langues';
 }
