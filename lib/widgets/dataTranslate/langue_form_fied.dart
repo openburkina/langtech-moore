@@ -4,9 +4,11 @@ import 'package:langtech_moore_mobile/constants/colors.dart';
 
 class LangueFormField extends StatelessWidget {
   final VoidCallback function;
+  final String languePlaceholderText;
   const LangueFormField({
     super.key,
     required this.function,
+    required this.languePlaceholderText,
   });
 
   @override
@@ -29,7 +31,7 @@ class LangueFormField extends StatelessWidget {
           children: [
             Expanded(
               child: Text(
-                "Sélectionner la langue",
+                "$languePlaceholderText",
                 style: GoogleFonts.montserrat(
                   fontSize: 18,
                   color: kBlue,

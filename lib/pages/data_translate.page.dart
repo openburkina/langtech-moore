@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
@@ -9,10 +10,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:langtech_moore_mobile/constants/colors.dart';
+import 'package:langtech_moore_mobile/enum/etat.dart';
+import 'package:langtech_moore_mobile/enum/type_traduction.dart';
+import 'package:langtech_moore_mobile/models/langue.dart';
 import 'package:langtech_moore_mobile/models/source_donnee.dart';
+import 'package:langtech_moore_mobile/models/traduction.dart';
+import 'package:langtech_moore_mobile/services/http.dart';
 import 'package:langtech_moore_mobile/widgets/dataTranslate/data_translate_action.dart';
 import 'package:langtech_moore_mobile/widgets/dataTranslate/langue_form_fied.dart';
 import 'package:langtech_moore_mobile/widgets/loginPage/button_section.dart';
+import 'package:langtech_moore_mobile/widgets/shared/toast.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class DataTranslate extends StatefulWidget {
@@ -44,25 +51,12 @@ class _DataTranslate extends State<DataTranslate> {
   int maxDuration = 100;
   int currentDuration = 0;
   String currentDurationLabel = "00:00";
+  var textTranslateController = TextEditingController();
 
-  final List<SelectedListItem> _listLanguages = [
-    SelectedListItem(
-      name: "MOORE",
-      value: "MOORE",
-    ),
-    SelectedListItem(
-      name: "DIOULA",
-      value: "DIOULA",
-    ),
-    SelectedListItem(
-      name: "FULFUDE",
-      value: "FULFUDE",
-    ),
-    SelectedListItem(
-      name: "GULMATCHE",
-      value: "GULMATCHE",
-    ),
-  ];
+  final List<SelectedListItem> _listLanguages = [];
+  late Traduction traduction = new Traduction();
+  String languePlaceholderText = "Sélectionner la langue";
+  List<Langue> _langues = [];
 
   _DataTranslate({
     required this.sourceDonnee,
@@ -71,7 +65,22 @@ class _DataTranslate extends State<DataTranslate> {
   @override
   void initState() {
     super.initState();
+    getLangues();
     initRecorder();
+  }
+
+  void getLangues() {
+    Http.getLangues().then((value) {
+      _langues = value;
+      value.forEach((langue) {
+        _listLanguages.add(
+          SelectedListItem(
+            name: "${langue.libelle}",
+            value: "${langue.id}",
+          ),
+        );
+      });
+    });
   }
 
   @override
@@ -153,6 +162,63 @@ class _DataTranslate extends State<DataTranslate> {
     });
   }
 
+  void _getTranslateInfos() {
+    traduction.libelle = sourceDonnee.libelle;
+    traduction.sourceDonnee = sourceDonnee;
+    traduction.etat = Etat.EN_ATTENTE.name;
+    traduction.note = 0;
+    if (isEnableText) {
+      if (traduction.langue == null) {
+        Toast.showFlutterToast(
+            context, "Veuillez choisir la langue à traduire !", 'warning');
+      } else if (textTranslateController.text.isEmpty) {
+        Toast.showFlutterToast(
+            context, "Veuillez saisir la traduction !", 'warning');
+      } else {
+        traduction.contenuTexte = textTranslateController.text;
+        traduction.type = TypeTraduction.TEXTE.name;
+        traduction.contenuAudio = null;
+        _saveTranslate();
+      }
+    } else if (isEnableAudio) {
+      if (pathToAudio == '') {
+        Toast.showFlutterToast(
+            context, "Veuillez enregistrer la traduction !", "warning");
+      } else {
+        traduction.contenuAudioContentType = 'audio/mp4';
+        traduction.contenuTexte = null;
+        traduction.langue = _langues[0];
+        traduction.type = TypeTraduction.AUDIO.name;
+        var fileContent = File(pathToAudio).readAsBytesSync();
+        var fileContentBase64 = base64.encode(fileContent);
+        traduction.contenuAudio = fileContentBase64;
+        _saveTranslate();
+      }
+    } else {
+      Toast.showFlutterToast(
+          context, "Veuillez choisir le type de traduction !", "warning");
+    }
+  }
+
+  void _saveTranslate() {
+    Http.onSaveTraduction(traduction).then((response) {
+      if (response.statusCode == 201) {
+        Toast.showFlutterToast(
+          context,
+          "Traduction enregistrée avec succès !",
+          "success",
+        );
+        Navigator.pop(context);
+      } else {
+        Toast.showFlutterToast(
+          context,
+          "Une erreur est survenue lors l'enregistrement de la traduction !",
+          "error",
+        );
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -160,12 +226,13 @@ class _DataTranslate extends State<DataTranslate> {
         backgroundColor: kBlue,
         title: Text(
           'Traduction de la données',
+          style: GoogleFonts.montserrat(),
         ),
       ),
       bottomNavigationBar: Container(
         padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
         child: ButtonSection(
-          buttonFonction: () {},
+          buttonFonction: _getTranslateInfos,
           buttonText: "Enregistrer",
         ),
       ),
@@ -243,7 +310,8 @@ class _DataTranslate extends State<DataTranslate> {
     return Column(
       children: [
         LangueFormField(
-          function: onTextFieldTap,
+          function: openLangueModal,
+          languePlaceholderText: languePlaceholderText,
         ),
         const SizedBox(
           height: 20,
@@ -261,6 +329,7 @@ class _DataTranslate extends State<DataTranslate> {
             ),
           ),
           child: TextField(
+            controller: textTranslateController,
             keyboardType: TextInputType.multiline,
             maxLines: null,
             decoration: InputDecoration(
@@ -284,12 +353,12 @@ class _DataTranslate extends State<DataTranslate> {
     );
   }
 
-  void onTextFieldTap() {
+  void openLangueModal() {
     DropDownState(
       DropDown(
         isSearchVisible: false,
         bottomSheetTitle: Text(
-          "Langue de traduction",
+          "Choisir la langue à traduire",
           style: GoogleFonts.montserrat(
             fontSize: 18,
             color: kBlue,
@@ -309,7 +378,13 @@ class _DataTranslate extends State<DataTranslate> {
           List<String> list = [];
           for (var item in selectedList) {
             if (item is SelectedListItem) {
-              setState(() {});
+              Langue selectedLangue = new Langue();
+              selectedLangue.id = int.parse(item.value!);
+              selectedLangue.libelle = item.name;
+              setState(() {
+                traduction.langue = selectedLangue;
+                languePlaceholderText = item.name;
+              });
               list.add(item.name);
             }
           }

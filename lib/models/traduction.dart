@@ -1,18 +1,19 @@
-import 'package:flutter/services.dart';
-import 'package:langtech_moore_mobile/enum/etat.dart';
-import 'package:langtech_moore_mobile/enum/type_traduction.dart';
 import 'package:langtech_moore_mobile/models/langue.dart';
+import 'package:langtech_moore_mobile/models/source_donnee.dart';
+import 'package:langtech_moore_mobile/models/user.dart';
 
 class Traduction {
   int? id;
   String? libelle;
   String? contenuTexte;
-  ByteData? contenuAudio;
+  String? contenuAudio;
   String? contenuAudioContentType;
-  TypeTraduction? type;
+  String? type;
   int? note;
-  Etat? etat;
+  String? etat;
   Langue? langue;
+  SourceDonnee? sourceDonnee;
+  User? utilisateur;
 
   Traduction({
     this.id,
@@ -24,6 +25,8 @@ class Traduction {
     this.note,
     this.etat,
     this.langue,
+    this.sourceDonnee,
+    this.utilisateur,
   });
 
   Traduction.fromJson(Map<String, dynamic> json) {
@@ -32,10 +35,11 @@ class Traduction {
     this.contenuTexte = json['contenuTexte'];
     this.contenuAudio = json['contenuAudio'];
     this.contenuAudioContentType = json['contenuAudioContentType'];
-    this.type = json['type'] as TypeTraduction;
-    this.note = json['note'] as int;
-    this.etat = json['etat'] as Etat;
-    this.langue = Langue.fromJson(json[json['langue']]);
+    this.type = json['type'];
+    this.note = json['note'] == Null ? 0 : json['note'] as int;
+    this.etat = json['etat'];
+    this.langue = Langue.fromJson(json['langue']);
+    this.sourceDonnee = SourceDonnee.fromJson(json['sourceDonnee']);
   }
 
   Map<String, dynamic> toJson() => {
@@ -48,7 +52,13 @@ class Traduction {
         'note': this.note,
         'etat': this.etat,
         'langue': {
-          'id': this.langue!.id,
+          'id': this.langue?.id,
+        },
+        'sourceDonnee': {
+          'id': this.sourceDonnee?.id,
+        },
+        'utilisateur': {
+          'id': this.utilisateur?.id,
         }
       };
 }

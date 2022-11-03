@@ -13,6 +13,7 @@ import 'package:langtech_moore_mobile/models/user.dart';
 
 class Http {
   static Map<String, String> headers = new Map();
+  static User currentUser = new User();
 
   static Future<void> _getHeaders() async {
     headers = Map();
@@ -20,10 +21,14 @@ class Http {
       "Content-type": "application/json; charset=utf-8",
     });
     SharedPrefConfig.getStringData(SharePrefKeys.USER_INFOS).then((value) {
+      // Get current user token
       String jwtToken = jsonDecode(value)['id_token'];
       headers.addAll({
         "Authorization": "Bearer $jwtToken",
       });
+
+      // Get current user instance
+      currentUser = User.fromJson(jsonDecode(value)['utilisateur']);
     });
   }
 
@@ -67,12 +72,18 @@ class Http {
     }
   }
 
-  static Future<List<Traduction>> getAllTraductons() async {
-    String url = '${Urls.TRADUCTION_DATA_URL}';
+  static Future<List<Traduction>> getAllTraductons({
+    int size = 10,
+    int page = 0,
+  }) async {
+    String url = '${Urls.GET_ALL_TRADUCTIONS}?page=${page}&size=${size}';
     await _getHeaders();
+    Traduction traduction = new Traduction();
+    traduction.utilisateur = currentUser;
     final response = await http
-        .get(
+        .post(
       Uri.parse(url),
+      body: jsonEncode(traduction.toJson()),
       headers: headers,
     )
         .timeout(const Duration(seconds: 5), onTimeout: () {
@@ -85,6 +96,35 @@ class Http {
     } else {
       throw Exception('Unexpected error occured!');
     }
+  }
+
+  static Future onSaveTraduction(Traduction traduction) async {
+    await _getHeaders();
+    traduction.utilisateur = currentUser;
+    return await http
+        .post(
+      Uri.parse(Urls.DEFAULT_TRADUCTION_URL),
+      headers: headers,
+      body: json.encode(
+        traduction.toJson(),
+      ),
+    )
+        .timeout(const Duration(seconds: 5), onTimeout: () {
+      return http.Response("Délai d'attente depassé !", 403);
+    });
+  }
+
+  static Future onDeleteTraduction(int traductionId) async {
+    String url = "${Urls.DEFAULT_TRADUCTION_URL}/$traductionId";
+    await _getHeaders();
+    return await http
+        .delete(
+      Uri.parse(url),
+      headers: headers,
+    )
+        .timeout(const Duration(seconds: 5), onTimeout: () {
+      return http.Response("Délai d'attente depassé !", 403);
+    });
   }
 
   static Future<List<Langue>> getLangues() async {

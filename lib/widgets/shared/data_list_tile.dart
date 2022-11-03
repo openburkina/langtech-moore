@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:langtech_moore_mobile/constants/colors.dart';
 import 'package:langtech_moore_mobile/models/source_donnee.dart';
-import 'package:langtech_moore_mobile/pages/data_translate.dart';
+import 'package:langtech_moore_mobile/pages/data_translate.page.dart';
 
 class DataListTile extends StatelessWidget {
   final SourceDonnee sourceDonnee;
@@ -14,11 +14,16 @@ class DataListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return DataTranslate(
-            sourceDonnee: sourceDonnee,
-          );
-        }));
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return DataTranslate(
+                sourceDonnee: sourceDonnee,
+              );
+            },
+          ),
+        );
       },
       child: Container(
         margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),

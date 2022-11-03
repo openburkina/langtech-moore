@@ -21,6 +21,7 @@ class User {
   });
 
   User.fromJson(Map<String, dynamic> json) {
+    this.id = json['id'];
     this.nom = json['nom'];
     this.prenom = json['prenom'];
     this.telephone = json['telephone'];

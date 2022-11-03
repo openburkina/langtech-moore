@@ -128,8 +128,9 @@ class _LoginFormState extends State<LoginForm> {
 
   void _saveUserInfos(BuildContext context, String userInfos) {
     SharedPrefConfig.saveStringData(SharePrefKeys.USER_INFOS, userInfos)
-        .then((value) {
+        .then((value) async {
       if (value) {
+        await SharedPrefConfig.saveBoolData(SharePrefKeys.IS_REGISTERED, true);
         Toast.showFlutterToast(context, 'Bienvenue !', 'success');
         Navigator.of(context).pushReplacement(
           SlideRightRoute(

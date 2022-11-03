@@ -1,25 +1,40 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:langtech_moore_mobile/constants/colors.dart';
-import 'package:langtech_moore_mobile/models/source_donnee.dart';
 import 'package:langtech_moore_mobile/models/traduction.dart';
-import 'package:langtech_moore_mobile/pages/data_translate.dart';
+import 'package:langtech_moore_mobile/pages/detail_contribution.page.dart';
 
-class TraductionListTile extends StatelessWidget {
+class TraductionListTile extends StatefulWidget {
   final Traduction traduction;
+  final VoidCallback update;
   const TraductionListTile({
     super.key,
     required this.traduction,
+    required this.update,
   });
 
   @override
+  State<TraductionListTile> createState() => _TraductionListTileState();
+}
+
+class _TraductionListTileState extends State<TraductionListTile> {
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return DataTranslate(
-            sourceDonnee: new SourceDonnee(),
-          );
-        }));
+      onTap: () async {
+        var returnResult = await Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) {
+            return DetailContribution(
+              traduction: widget.traduction,
+            );
+          }),
+        );
+
+        if (returnResult == true) {
+          super.widget.update.call();
+        }
       },
       child: Container(
         margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
@@ -31,24 +46,30 @@ class TraductionListTile extends StatelessWidget {
           leading: Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: kOrange,
+              color: getColor(widget.traduction.etat),
               borderRadius: BorderRadius.circular(30),
             ),
             child: Icon(
-              Icons.transcribe,
+              widget.traduction.type == 'TEXTE'
+                  ? CupertinoIcons.pencil_ellipsis_rectangle
+                  : Icons.mic,
               color: kWhite,
             ),
           ),
           title: Text(
-            "${traduction.libelle}",
+            "${widget.traduction.libelle}",
             maxLines: 2,
-            style: TextStyle(
+            style: GoogleFonts.montserrat(
               color: kBlue,
               fontWeight: FontWeight.w500,
             ),
           ),
           subtitle: Text(
-            "${traduction.etat}",
+            "${widget.traduction.etat}",
+            style: GoogleFonts.montserrat(
+              color: getColor(widget.traduction.etat),
+              fontWeight: FontWeight.bold,
+            ),
           ),
           trailing: Icon(
             Icons.arrow_forward_ios,
@@ -57,5 +78,18 @@ class TraductionListTile extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+Color getColor(String? status) {
+  switch (status) {
+    case 'EN_ATTENTE':
+      return kOrange;
+    case 'VALIDER':
+      return kGreen;
+    case 'REJETER':
+      return kRed;
+    default:
+      return kOrange;
   }
 }

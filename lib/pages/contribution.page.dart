@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:langtech_moore_mobile/constants/colors.dart';
@@ -38,7 +39,7 @@ class _ContributionPageState extends State<ContributionPage> {
             SizedBox(height: 16),
             Expanded(
               child: Container(
-                padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+                padding: EdgeInsets.fromLTRB(16, 18, 16, 0),
                 color: kGris,
                 child: FutureBuilder<List<Traduction>>(
                   future: Http.getAllTraductons(),
@@ -72,6 +73,7 @@ class _ContributionPageState extends State<ContributionPage> {
                           itemBuilder: (context, index) {
                             return TraductionListTile(
                               traduction: snapshot.data![index],
+                              update: _updateAfterDelete,
                             );
                           },
                         );
@@ -98,5 +100,9 @@ class _ContributionPageState extends State<ContributionPage> {
         ),
       ),
     );
+  }
+
+  void _updateAfterDelete() {
+    setState(() {});
   }
 }
