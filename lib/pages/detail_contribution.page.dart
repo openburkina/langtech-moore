@@ -22,7 +22,7 @@ class DetailContribution extends StatefulWidget {
 }
 
 class _DetailContributionState extends State<DetailContribution> {
-  final Traduction traduction;
+  Traduction traduction;
 
   _DetailContributionState({
     required this.traduction,

@@ -202,7 +202,7 @@ class _DataTranslate extends State<DataTranslate> {
 
   void _saveTranslate() {
     Http.onSaveTraduction(traduction).then((response) {
-      if (response.statusCode == 201) {
+      if (response.statusCode == 201 || response.statusCode == 200) {
         Toast.showFlutterToast(
           context,
           "Traduction enregistrée avec succès !",

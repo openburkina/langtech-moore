@@ -6,11 +6,13 @@ class ButtonSection extends StatelessWidget {
   final String buttonText;
   final VoidCallback buttonFonction;
   final Color buttonColor;
+  final double buttonSize;
   const ButtonSection({
     super.key,
     required this.buttonText,
     required this.buttonFonction,
     this.buttonColor = kBlue,
+    this.buttonSize = 24,
   });
 
   @override
@@ -27,7 +29,7 @@ class ButtonSection extends StatelessWidget {
       child: Text(
         buttonText,
         style: GoogleFonts.montserrat(
-          fontSize: 24,
+          fontSize: buttonSize,
           color: kWhite,
           fontWeight: FontWeight.w600,
         ),

@@ -98,12 +98,34 @@ class Http {
     }
   }
 
+  static Future<Traduction> getOneTraduction(int traductionId) async {
+    String url = '${Urls.GET_ONE_TRADUCTION}?traductionId=${traductionId}';
+    await _getHeaders();
+    Traduction traduction = new Traduction();
+    traduction.utilisateur = currentUser;
+    final response = await http
+        .get(
+      Uri.parse(url),
+      headers: headers,
+    )
+        .timeout(const Duration(seconds: 5), onTimeout: () {
+      return http.Response("Délai d'attente depassé !", 403);
+    });
+    if (response.statusCode == 200) {
+      Map<String, dynamic> jsonResponse =
+          convert.jsonDecode(convert.utf8.decode(response.bodyBytes));
+      return Traduction.fromJson(jsonResponse);
+    } else {
+      throw Exception('Unexpected error occured!');
+    }
+  }
+
   static Future onSaveTraduction(Traduction traduction) async {
     await _getHeaders();
     traduction.utilisateur = currentUser;
     return await http
         .post(
-      Uri.parse(Urls.DEFAULT_TRADUCTION_URL),
+      Uri.parse(Urls.TRADUCTION_SAVE_IN_FOLDER_URL),
       headers: headers,
       body: json.encode(
         traduction.toJson(),
@@ -112,6 +134,16 @@ class Http {
         .timeout(const Duration(seconds: 5), onTimeout: () {
       return http.Response("Délai d'attente depassé !", 403);
     });
+  }
+
+  static Future onUpdateProfil(User user) async {
+    String url = "${Urls.UPDATE_PROFIl_URL}/${user.id}";
+    await _getHeaders();
+    return await http.patch(
+        Uri.parse(url),
+      headers: headers,
+      body: json.encode(user.toJson()),
+    );
   }
 
   static Future onDeleteTraduction(int traductionId) async {

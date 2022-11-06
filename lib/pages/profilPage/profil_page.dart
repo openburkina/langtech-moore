@@ -6,7 +6,10 @@ import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefConfig.
 import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefKeys.dart';
 import 'package:langtech_moore_mobile/constants/colors.dart';
 import 'package:langtech_moore_mobile/models/user.dart';
+import 'package:langtech_moore_mobile/pages/a_propos.dart';
 import 'package:langtech_moore_mobile/pages/loginPage/login_page.dart';
+import 'package:langtech_moore_mobile/pages/update_password.dart';
+import 'package:langtech_moore_mobile/pages/update_profil.dart';
 import 'package:langtech_moore_mobile/widgets/profilPage/parameter.dart';
 import 'package:langtech_moore_mobile/widgets/shared/slidepage.dart';
 
@@ -205,13 +208,37 @@ class _ProfilPageState extends State<ProfilPage> {
                       icon: Icons.person,
                       title: 'Mon Profil',
                       subTitle: 'Modifier mon profil',
-                      function: () {},
+                      function: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return UpdateProfil(currentUser: currentUser,);
+                            },
+                          ),
+                        ).then((response) {
+                          if (response == true) {
+                            setState(() {
+                              _getCurrentUserInfos();
+                            });
+                          }
+                        });
+                      },
                     ),
                     Parameter(
                       icon: Icons.lock,
                       title: 'Mon Mot de passe',
                       subTitle: 'Modifier mon mot de passe',
-                      function: () {},
+                      function: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return UpdatePassword();
+                            },
+                          ),
+                        );
+                      },
                     ),
                     Parameter(
                       icon: Icons.share,
@@ -223,7 +250,16 @@ class _ProfilPageState extends State<ProfilPage> {
                       icon: Icons.info,
                       title: 'A propos',
                       subTitle: 'A propos de l\'application',
-                      function: () {},
+                      function: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return APropos();
+                            },
+                          ),
+                        );
+                      },
                     ),
                     Parameter(
                       icon: Icons.logout,

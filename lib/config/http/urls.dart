@@ -7,5 +7,10 @@ class Urls {
   static const String GET_ALL_TRADUCTIONS =
       API_BASE_URL + '/traductions/criteria';
   static const String DEFAULT_TRADUCTION_URL = API_BASE_URL + '/traductions';
+  static const String TRADUCTION_SAVE_IN_FOLDER_URL =
+      API_BASE_URL + '/upload/traduction/fichier';
   static const String LANGUES = API_BASE_URL + '/langues';
+  static const String GET_ONE_TRADUCTION =
+      API_BASE_URL + '/document/traduction';
+  static const String UPDATE_PROFIl_URL = API_BASE_URL + '/utilisateurs';
 }

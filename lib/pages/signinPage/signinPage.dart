@@ -28,14 +28,14 @@ class SigninPage extends StatelessWidget {
         child: Column(
           children: [
             SizedBox(
-              height: 50,
+              height: 10,
             ),
             AppLogo(),
             SizedBox(
-              height: 20,
+              height: 10,
             ),
             SigninForm(
-              delayDuration: 100,
+              delayDuration: 50,
             ),
           ],
         ),

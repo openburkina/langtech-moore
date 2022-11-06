@@ -24,6 +24,9 @@ class SigninForm extends StatefulWidget {
 
 class _SigninForm extends State<SigninForm> {
   final int delayDuration;
+  final nomController = TextEditingController();
+  final prenomController = TextEditingController();
+  final phoneController = TextEditingController();
   final emailController = TextEditingController();
   final pwdController = TextEditingController();
   final confirmPwdController = TextEditingController();
@@ -39,6 +42,45 @@ class _SigninForm extends State<SigninForm> {
         DelayedDisplay(
           delay: Duration(milliseconds: delayDuration * 3),
           child: InputSection(
+            icon: Icons.person,
+            hint: 'Entrez votre nom',
+            obscureText: false,
+            controller: nomController,
+            keyboardType: TextInputType.text,
+          ),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        DelayedDisplay(
+          delay: Duration(milliseconds: delayDuration * 4),
+          child: InputSection(
+            icon: Icons.person,
+            hint: 'Entrez votre prénom(s)',
+            obscureText: false,
+            controller: prenomController,
+            keyboardType: TextInputType.text,
+          ),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        DelayedDisplay(
+          delay: Duration(milliseconds: delayDuration * 5),
+          child: InputSection(
+            icon: Icons.phone,
+            hint: 'Entrez votre téléphone',
+            obscureText: false,
+            controller: phoneController,
+            keyboardType: TextInputType.phone,
+          ),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        DelayedDisplay(
+          delay: Duration(milliseconds: delayDuration * 6),
+          child: InputSection(
             icon: Icons.mail_outline,
             hint: 'Entrez votre email',
             obscureText: false,
@@ -50,7 +92,7 @@ class _SigninForm extends State<SigninForm> {
           height: 20,
         ),
         DelayedDisplay(
-          delay: Duration(milliseconds: delayDuration * 4),
+          delay: Duration(milliseconds: delayDuration * 7),
           child: InputSection(
             icon: Icons.lock_outline,
             hint: 'Entrez votre mot de passe',
@@ -63,7 +105,7 @@ class _SigninForm extends State<SigninForm> {
           height: 30,
         ),
         DelayedDisplay(
-          delay: Duration(milliseconds: delayDuration * 5),
+          delay: Duration(milliseconds: delayDuration * 8),
           child: InputSection(
             icon: Icons.lock_outline,
             hint: 'Confirmez le mot de passe',
@@ -76,7 +118,7 @@ class _SigninForm extends State<SigninForm> {
           height: 30,
         ),
         DelayedDisplay(
-          delay: Duration(milliseconds: delayDuration * 6),
+          delay: Duration(milliseconds: delayDuration * 9),
           child: ButtonSection(
             buttonText: "S'inscrire",
             buttonFonction: () => _onCheckFormValidate(context),
@@ -107,6 +149,9 @@ class _SigninForm extends State<SigninForm> {
       user.login = email;
       user.password = password;
       user.typeUtilisateur = 'CONTRIBUTEUR';
+      user.nom = nomController.text.trim().toUpperCase();
+      user.prenom = prenomController.text.trim();
+      user.telephone = phoneController.text.trim();
       _onSignIn(context);
     }
   }

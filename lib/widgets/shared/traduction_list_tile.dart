@@ -1,9 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:langtech_moore_mobile/constants/colors.dart';
 import 'package:langtech_moore_mobile/models/traduction.dart';
 import 'package:langtech_moore_mobile/pages/detail_contribution.page.dart';
+import 'package:langtech_moore_mobile/services/http.dart';
 
 class TraductionListTile extends StatefulWidget {
   final Traduction traduction;
@@ -15,27 +18,22 @@ class TraductionListTile extends StatefulWidget {
   });
 
   @override
-  State<TraductionListTile> createState() => _TraductionListTileState();
+  State<TraductionListTile> createState() => _TraductionListTileState(
+        traduction: traduction,
+      );
 }
 
 class _TraductionListTileState extends State<TraductionListTile> {
+  Traduction traduction;
+
+  _TraductionListTileState({
+    required this.traduction,
+  });
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () async {
-        var returnResult = await Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) {
-            return DetailContribution(
-              traduction: widget.traduction,
-            );
-          }),
-        );
-
-        if (returnResult == true) {
-          super.widget.update.call();
-        }
-      },
+      onTap: _getOneTraduction,
       child: Container(
         margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
         decoration: BoxDecoration(
@@ -78,6 +76,32 @@ class _TraductionListTileState extends State<TraductionListTile> {
         ),
       ),
     );
+  }
+
+  void _getOneTraduction() {
+    Http.getOneTraduction(widget.traduction.id!).then((value) {
+      traduction = value;
+      _onNavigateToDetail();
+    });
+  }
+
+  void _onNavigateToDetail() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) {
+        return DetailContribution(
+          traduction: traduction,
+        );
+      }),
+    ).then((value) {
+      if (value == true) {
+        super.widget.update.call();
+      }
+    });
+
+    // if (returnResult == true) {
+
+    // }
   }
 }
 
