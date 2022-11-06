@@ -7,6 +7,7 @@ import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefConfig.
 import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefKeys.dart';
 import 'package:langtech_moore_mobile/models/langue.dart';
 import 'package:langtech_moore_mobile/models/loginVM.dart';
+import 'package:langtech_moore_mobile/models/password.dart';
 import 'package:langtech_moore_mobile/models/source_donnee.dart';
 import 'package:langtech_moore_mobile/models/traduction.dart';
 import 'package:langtech_moore_mobile/models/user.dart';
@@ -143,6 +144,15 @@ class Http {
         Uri.parse(url),
       headers: headers,
       body: json.encode(user.toJson()),
+    );
+  }
+
+  static Future onUpdatePassword(Password password) async {
+    await _getHeaders();
+    return await http.post(
+      Uri.parse(Urls.UPDATE_PASSWORD),
+      headers: headers,
+      body: json.encode(password.toJson()),
     );
   }
 
