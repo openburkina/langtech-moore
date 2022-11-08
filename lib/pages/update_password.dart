@@ -8,7 +8,6 @@ import 'package:langtech_moore_mobile/widgets/loginPage/button_section.dart';
 import 'package:langtech_moore_mobile/widgets/loginPage/input_section.dart';
 import 'package:langtech_moore_mobile/widgets/shared/loadingSpinner.dart';
 import 'package:langtech_moore_mobile/widgets/shared/toast.dart';
-import 'dart:developer';
 
 class UpdatePassword extends StatefulWidget {
   UpdatePassword({Key? key}) : super(key: key);
@@ -48,11 +47,13 @@ class _UpdatePasswordState extends State<UpdatePassword> {
       ),
       bottomNavigationBar: Container(
         padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-        child: !isEnaableSpinner ? ButtonSection(
-          buttonFonction: _getPasswordInfos,
-          buttonText: "Enregistrer",
-          buttonSize: 20,
-        ) : SizedBox(),
+        child: !isEnaableSpinner
+            ? ButtonSection(
+                buttonFonction: _getPasswordInfos,
+                buttonText: "Enregistrer",
+                buttonSize: 20,
+              )
+            : SizedBox(),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -64,12 +65,11 @@ class _UpdatePasswordState extends State<UpdatePassword> {
             DelayedDisplay(
               delay: Duration(milliseconds: delayDuration * 3),
               child: InputSection(
-                icon: Icons.lock_outline,
-                hint: 'Entrez votre mot de passe actuel',
-                obscureText: true,
-                controller: currentPwdCtrl,
-                keyboardType: TextInputType.text
-              ),
+                  icon: Icons.lock_outline,
+                  hint: 'Entrez votre mot de passe actuel',
+                  obscureText: true,
+                  controller: currentPwdCtrl,
+                  keyboardType: TextInputType.text),
             ),
             const SizedBox(
               height: 20,
@@ -112,15 +112,24 @@ class _UpdatePasswordState extends State<UpdatePassword> {
     String newPassword = newPwdCtrl.text.trim();
     String confirmPassword = confirmPwdCtrl.text.trim();
     if (currentPassword == '') {
-      Toast.showFlutterToast(context, "L'ancien mot de passe est obligatoire !", "warning");
+      Toast.showFlutterToast(
+          context, "L'ancien mot de passe est obligatoire !", "warning");
     } else if (newPassword == '') {
-      Toast.showFlutterToast(context, "Le nouveau mot de passe est obligatoire !", "warning");
+      Toast.showFlutterToast(
+          context, "Le nouveau mot de passe est obligatoire !", "warning");
     } else if (confirmPassword == '') {
-      Toast.showFlutterToast(context, "La confirmation du nouveau mot de passe est obligatoire !", "warning");
+      Toast.showFlutterToast(
+          context,
+          "La confirmation du nouveau mot de passe est obligatoire !",
+          "warning");
     } else if (newPassword.length < 4) {
-      Toast.showFlutterToast(context, "Le nouveau mot de passe doit avoir au moins 4 caractères !", "warning");
+      Toast.showFlutterToast(
+          context,
+          "Le nouveau mot de passe doit avoir au moins 4 caractères !",
+          "warning");
     } else if (newPassword != confirmPassword) {
-      Toast.showFlutterToast(context, "La confirmation du nouveau mot de passe est incorrect !", "warning");
+      Toast.showFlutterToast(context,
+          "La confirmation du nouveau mot de passe est incorrect !", "warning");
     } else {
       password.currentPassword = currentPassword;
       password.newPassword = newPassword;
@@ -137,10 +146,14 @@ class _UpdatePasswordState extends State<UpdatePassword> {
         isEnaableSpinner = false;
       });
       if (response.statusCode == 200) {
-        Toast.showFlutterToast(context, "Votre mot de passe a été modifié avec succès !", "success");
+        Toast.showFlutterToast(context,
+            "Votre mot de passe a été modifié avec succès !", "success");
         Navigator.pop(context);
       } else {
-        Toast.showFlutterToast(context, "Une erreur est survenue lors de la modification de votre mot de passe", "error");
+        Toast.showFlutterToast(
+            context,
+            "Une erreur est survenue lors de la modification de votre mot de passe",
+            "error");
       }
     });
   }

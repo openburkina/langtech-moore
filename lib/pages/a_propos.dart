@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:langtech_moore_mobile/constants/colors.dart';
 import 'package:langtech_moore_mobile/widgets/apropos/AproposInfos.dart';
@@ -22,37 +23,64 @@ class APropos extends StatelessWidget {
           ),
         ),
       ),
-      body: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              "assets/images/logo.jpg",
-              width: 200,
-              height: 200,
-            ),
-            Text(
-              'LangTech',
-              style: GoogleFonts.montserrat(
-                fontSize: 48,
-                fontWeight: FontWeight.bold,
-                color: kBlue,
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                "assets/images/logo.jpg",
+                width: 200,
+                height: 200,
               ),
-            ),
-            const SizedBox(
-              width: 20,
-            ),
-            Text(
-              'v1.0.0',
-              style: GoogleFonts.montserrat(
-                fontSize: 24,
-                fontWeight: FontWeight.w500,
-                color: kBlue,
+              Text(
+                'LangTech',
+                style: GoogleFonts.montserrat(
+                  fontSize: 48,
+                  fontWeight: FontWeight.bold,
+                  color: kBlue,
+                ),
               ),
-            ),
-            AProposInfos(),
-          ],
+              const SizedBox(
+                width: 20,
+              ),
+              Text(
+                'v1.0.0',
+                style: GoogleFonts.montserrat(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w500,
+                  color: kBlue,
+                ),
+              ),
+              AProposInfos(
+                icon: Icons.location_on,
+                title: "Adresse",
+                content:
+                    "Avenue Charles De Gaulle, Dagnoen, Rue 29.13, Ouaga. 17 BP 85 Ouagadougou, BURKINA FASO",
+              ),
+              AProposInfos(
+                icon: Icons.phone,
+                title: "Téléphone",
+                content: "+226 60 67 58 58",
+              ),
+              AProposInfos(
+                icon: Icons.mail_outline,
+                title: "Email",
+                content: "contact@openburkina.bf",
+              ),
+              AProposInfos(
+                icon: Icons.facebook_outlined,
+                title: "Facebook",
+                content: "fb.com/openburkina",
+              ),
+              AProposInfos(
+                icon: FontAwesomeIcons.twitter,
+                title: "Twitter",
+                content: "@OpenBurkina",
+              ),
+            ],
+          ),
         ),
       ),
     );
