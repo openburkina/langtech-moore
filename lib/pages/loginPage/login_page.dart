@@ -105,4 +105,16 @@ class LoginPage extends StatelessWidget {
       ),
     );
   }
+
+  Widget loginBottomBar() {
+    return Container(
+      child: Row(
+        children: [
+          Icon(
+            Icons.info,
+          )
+        ],
+      ),
+    );
+  }
 }

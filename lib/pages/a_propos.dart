@@ -70,6 +70,11 @@ class APropos extends StatelessWidget {
                 content: "contact@openburkina.bf",
               ),
               AProposInfos(
+                icon: Icons.web_rounded,
+                title: "Site Web",
+                content: "https://www.openburkina.bf/",
+              ),
+              AProposInfos(
                 icon: Icons.facebook_outlined,
                 title: "Facebook",
                 content: "fb.com/openburkina",

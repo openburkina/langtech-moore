@@ -16,9 +16,8 @@ class AProposInfos extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // height: 75,
       width: double.infinity,
-      margin: const EdgeInsets.fromLTRB(10, 16, 10, 0),
+      margin: const EdgeInsets.fromLTRB(20, 16, 10, 0),
       decoration: BoxDecoration(
         color: kWhite,
       ),
