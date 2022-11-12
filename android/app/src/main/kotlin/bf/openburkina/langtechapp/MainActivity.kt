@@ -1,4 +1,4 @@
-package com.example.langtech_moore_mobile
+package bf.openburkina.langtechapp
 
 import io.flutter.embedding.android.FlutterActivity
 

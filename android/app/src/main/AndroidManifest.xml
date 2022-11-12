@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.langtech_moore_mobile">
+    package="bf.openburkina.langtechapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -11,7 +11,7 @@
     "android.permission.WRITE_EXTERNAL_STORAGE" />
     
    <application
-        android:label="langtech_moore_mobile"
+        android:label="LangTechApp"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
