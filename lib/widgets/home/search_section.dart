@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:langtech_moore_mobile/constants/colors.dart';
 
 class SearchSection extends StatelessWidget {
-  const SearchSection({super.key});
+  final bool advancedSearch;
+  final VoidCallback? function;
+  const SearchSection({
+    super.key,
+    this.advancedSearch = false,
+    this.function,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +41,20 @@ class SearchSection extends StatelessWidget {
               ),
             ),
           ),
+          advancedSearch
+              ? InkWell(
+                  onTap: function,
+                  child: Container(
+                    width: 50,
+                    child: Center(
+                      child: Icon(
+                        FontAwesomeIcons.sliders,
+                        color: kBlue,
+                      ),
+                    ),
+                  ),
+                )
+              : SizedBox(),
         ],
       ),
     );

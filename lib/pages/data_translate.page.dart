@@ -167,13 +167,13 @@ class _DataTranslate extends State<DataTranslate> {
     traduction.sourceDonnee = sourceDonnee;
     traduction.etat = Etat.EN_ATTENTE.name;
     traduction.note = 0;
-    if (isEnableText) {
-      if (traduction.langue == null) {
+    if (traduction.langue == null) {
+      Toast.showFlutterToast(
+          context, "Veuillez choisir la langue à traduire !", 'warning');
+    } else if (isEnableText) {
+      if (textTranslateController.text.isEmpty) {
         Toast.showFlutterToast(
-            context, "Veuillez choisir la langue à traduire !", 'warning');
-      } else if (textTranslateController.text.isEmpty) {
-        Toast.showFlutterToast(
-            context, "Veuillez saisir la traduction !", 'warning');
+            context, "Veuillez saisir la traduction textuelle !", 'warning');
       } else {
         traduction.contenuTexte = textTranslateController.text;
         traduction.type = TypeTraduction.TEXTE.name;
@@ -181,13 +181,13 @@ class _DataTranslate extends State<DataTranslate> {
         _saveTranslate();
       }
     } else if (isEnableAudio) {
+      log("LANGUE ==> ${traduction.langue?.libelle}");
       if (pathToAudio == '') {
         Toast.showFlutterToast(
             context, "Veuillez enregistrer la traduction !", "warning");
       } else {
         traduction.contenuAudioContentType = 'audio/mp4';
         traduction.contenuTexte = null;
-        traduction.langue = _langues[0];
         traduction.type = TypeTraduction.AUDIO.name;
         var fileContent = File(pathToAudio).readAsBytesSync();
         var fileContentBase64 = base64.encode(fileContent);
@@ -398,6 +398,13 @@ class _DataTranslate extends State<DataTranslate> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          LangueFormField(
+            function: openLangueModal,
+            languePlaceholderText: languePlaceholderText,
+          ),
+          const SizedBox(
+            height: 20,
+          ),
           StreamBuilder<RecordingDisposition>(
             stream: recorder.onProgress,
             builder: (context, snapshot) {

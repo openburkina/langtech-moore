@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:langtech_moore_mobile/constants/colors.dart';
@@ -32,7 +31,10 @@ class _ContributionPageState extends State<ContributionPage> {
                   SizedBox(
                     height: 15,
                   ),
-                  SearchSection(),
+                  SearchSection(
+                    advancedSearch: true,
+                    function: _openAdvancedSearchModal,
+                  ),
                 ],
               ),
             ),
@@ -104,5 +106,67 @@ class _ContributionPageState extends State<ContributionPage> {
 
   void _updateAfterDelete() {
     setState(() {});
+  }
+
+  void _openAdvancedSearchModal() {
+    _showMyDialog();
+  }
+
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Recherche avancée',
+            style: GoogleFonts.montserrat(
+              color: kBlue,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const <Widget>[
+                Text('This is a demo alert dialog.'),
+                Text('Would you like to approve of this message?'),
+                Text('Would you like to approve of this message?'),
+                Text('Would you like to approve of this message?'),
+                Text('Would you like to approve of this message?'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text(
+                'Annuler',
+                style: GoogleFonts.montserrat(
+                  color: kRed,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text(
+                'Rechercher',
+                style: GoogleFonts.montserrat(
+                  color: kBlue,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:langtech_moore_mobile/constants/colors.dart';
 import 'package:langtech_moore_mobile/widgets/shared/tabsItems.dart';
@@ -102,7 +103,7 @@ class _TabsState extends State<Tabs> {
             ),
             TabItem(
               icon: Icon(
-                Icons.mic_outlined,
+                FontAwesomeIcons.language,
                 size: _selectedIndex == 1 ? 35 : 25,
                 color: _selectedIndex == 1 ? kBlue : kWhite,
               ),
