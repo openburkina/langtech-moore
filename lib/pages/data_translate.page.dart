@@ -24,19 +24,27 @@ import 'package:permission_handler/permission_handler.dart';
 
 class DataTranslate extends StatefulWidget {
   final SourceDonnee sourceDonnee;
+  final String action;
+  final Traduction? updateTraduction;
   const DataTranslate({
     super.key,
     required this.sourceDonnee,
+    this.action = 'CREATE',
+    this.updateTraduction,
   });
 
   @override
   State<DataTranslate> createState() => _DataTranslate(
         sourceDonnee: sourceDonnee,
+        action: action,
+        updateTraduction: updateTraduction,
       );
 }
 
 class _DataTranslate extends State<DataTranslate> {
   final SourceDonnee sourceDonnee;
+  final String action;
+  final Traduction? updateTraduction;
   late bool isEnableText = false;
   late bool isEnableAudio = false;
 
@@ -60,13 +68,30 @@ class _DataTranslate extends State<DataTranslate> {
 
   _DataTranslate({
     required this.sourceDonnee,
+    required this.action,
+    required this.updateTraduction,
   });
 
   @override
   void initState() {
     super.initState();
+    _initData();
     getLangues();
     initRecorder();
+  }
+
+  void _initData() {
+    if (action == 'UPDATE') {
+      traduction = updateTraduction!;
+      languePlaceholderText = "${traduction.langue?.libelle}";
+
+      if (traduction.type == 'AUDIO') {
+        isEnableAudio = true;
+      } else {
+        isEnableText = true;
+        textTranslateController.text = traduction.contenuTexte!;
+      }
+    }
   }
 
   void getLangues() {
@@ -208,7 +233,7 @@ class _DataTranslate extends State<DataTranslate> {
           "Traduction enregistrée avec succès !",
           "success",
         );
-        Navigator.pop(context);
+        Navigator.pop(context, true);
       } else {
         Toast.showFlutterToast(
           context,

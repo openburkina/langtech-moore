@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:langtech_moore_mobile/constants/colors.dart';
 import 'package:langtech_moore_mobile/models/traduction.dart';
+import 'package:langtech_moore_mobile/pages/data_translate.page.dart';
 import 'package:langtech_moore_mobile/services/http.dart';
 import 'package:langtech_moore_mobile/widgets/detailContribution/bottom_button.dart';
 import 'package:langtech_moore_mobile/widgets/detailContribution/play_audio.dart';
@@ -30,6 +33,7 @@ class _DetailContributionState extends State<DetailContribution> {
 
   @override
   void initState() {
+    log("SOURCE DE DONNES ==> ${traduction.sourceDonnee?.libelle}");
     super.initState();
   }
 
@@ -46,8 +50,8 @@ class _DetailContributionState extends State<DetailContribution> {
       ),
       bottomNavigationBar: traduction.etat == 'EN_ATTENTE'
           ? BottomButtom(
-              deleteTraduction: _deleteTraduction,
-              updateTraduction: () {},
+              deleteTraduction: _showDeleteConfirm,
+              updateTraduction: _onNavigateToUpdate,
             )
           : SizedBox(),
       body: SingleChildScrollView(
@@ -75,10 +79,6 @@ class _DetailContributionState extends State<DetailContribution> {
               title: "Etat",
               content: "${traduction.etat}",
               contentColor: getColor(traduction.etat),
-            ),
-            TraductionInfos(
-              title: "Note",
-              content: "${traduction.note}",
             ),
             traduction.type == 'AUDIO'
                 ? PlayAudio(
@@ -108,6 +108,80 @@ class _DetailContributionState extends State<DetailContribution> {
         );
       }
     });
+  }
+
+  void _onNavigateToUpdate() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return DataTranslate(
+            sourceDonnee: traduction.sourceDonnee!,
+            action: 'UPDATE',
+            updateTraduction: traduction,
+          );
+        },
+      ),
+    ).then((value) {
+      if (value == true) {
+        setState(() {});
+      }
+    });
+  }
+
+  Future<void> _showDeleteConfirm() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Confirmation',
+            style: GoogleFonts.montserrat(
+              color: kBlue,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const <Widget>[
+                Text('Voulez-vous supprimer cette contribution ?'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text(
+                'Non',
+                style: GoogleFonts.montserrat(
+                  color: kRed,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text(
+                'Oui',
+                style: GoogleFonts.montserrat(
+                  color: kBlue,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+                _deleteTraduction();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }
 
