@@ -53,6 +53,7 @@ dependencies:
   audio_waveforms: ^0.1.5+1
   font_awesome_flutter: ^10.2.1
   change_app_package_name: ^1.1.0
+  intl: ^0.17.0
   # audioplayer: ^0.8.1
 
 dev_dependencies:

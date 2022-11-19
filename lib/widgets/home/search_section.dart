@@ -5,10 +5,12 @@ import 'package:langtech_moore_mobile/constants/colors.dart';
 class SearchSection extends StatelessWidget {
   final bool advancedSearch;
   final VoidCallback? function;
+  final String Function(String)? onSearch;
   const SearchSection({
     super.key,
     this.advancedSearch = false,
     this.function,
+    this.onSearch,
   });
 
   @override
@@ -30,6 +32,7 @@ class SearchSection extends StatelessWidget {
           ),
           Expanded(
             child: TextField(
+              onChanged: onSearch,
               decoration: InputDecoration(
                 hintText: "Rechercher par mot clé...",
                 border: InputBorder.none,

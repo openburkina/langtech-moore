@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:langtech_moore_mobile/constants/colors.dart';
@@ -15,6 +17,15 @@ class SourceDonneePage extends StatefulWidget {
 }
 
 class _SourceDonneePageState extends State<SourceDonneePage> {
+  late String searchKey = '';
+
+  String onSearch(String inputSearchKey) {
+    setState(() {
+      searchKey = inputSearchKey;
+    });
+    return searchKey;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +47,9 @@ class _SourceDonneePageState extends State<SourceDonneePage> {
               horizontal: 16.0,
               vertical: 16.0,
             ),
-            child: SearchSection(),
+            child: SearchSection(
+              onSearch: onSearch,
+            ),
           ),
           Expanded(
             child: Container(
@@ -46,23 +59,25 @@ class _SourceDonneePageState extends State<SourceDonneePage> {
                 future: Http.getAllSourcesDonnees(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    return ListView.builder(
+                    if (snapshot.data!.isEmpty) {
+                      return emptyContainer();
+                    } else {
+                      return ListView.builder(
                         itemCount: snapshot.data!.length,
                         itemBuilder: (context, index) {
-                          return DataListTile(
-                            sourceDonnee: snapshot.data![index],
-                          );
-                        });
+                          return snapshot.data![index].libelle
+                                  .toString()
+                                  .toLowerCase()
+                                  .contains(searchKey)
+                              ? DataListTile(
+                                  sourceDonnee: snapshot.data![index],
+                                )
+                              : Container();
+                        },
+                      );
+                    }
                   } else if (snapshot.hasError) {
-                    return Center(
-                      child: Text(
-                        "Une erreur est survenue lors de la récupération des sources de données !",
-                        style: GoogleFonts.montserrat(
-                          fontSize: 16,
-                          color: kRed,
-                        ),
-                      ),
-                    );
+                    return errorContainer();
                   }
                   return Center(
                     child: LoadingSpinner(),
@@ -75,4 +90,53 @@ class _SourceDonneePageState extends State<SourceDonneePage> {
       ),
     );
   }
+
+  Widget emptyContainer() {
+    return Center(
+      child: Container(
+        width: double.infinity,
+        height: 75,
+        decoration: BoxDecoration(
+          color: kOrange,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Center(
+          child: Text(
+            "Aucune source de donnée trouvée !",
+            style: GoogleFonts.montserrat(
+              fontSize: 16,
+              color: kWhite,
+              fontWeight: FontWeight.w500,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget errorContainer() {
+    return Center(
+      child: Container(
+        width: double.infinity,
+        height: 75,
+        decoration: BoxDecoration(
+          color: kRed,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Center(
+          child: Text(
+            "Une erreur est survenue lors de la récupération des sources de données !",
+            style: GoogleFonts.montserrat(
+              fontSize: 16,
+              color: kWhite,
+              fontWeight: FontWeight.w500,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ),
+    );
+  }
+
 }

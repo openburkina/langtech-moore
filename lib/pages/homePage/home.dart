@@ -23,6 +23,7 @@ class Home extends StatefulWidget {
 
 class _HomePageState extends State<Home> {
   late User currentUser = new User();
+  late String searchKey = '';
 
   void _getCurrentUserInfos() {
     SharedPrefConfig.getStringData(SharePrefKeys.USER_INFOS).then((value) {
@@ -30,6 +31,13 @@ class _HomePageState extends State<Home> {
         currentUser = User.fromJson(jsonDecode(value)['utilisateur']);
       });
     });
+  }
+
+  String onSearch(String inputSearchKey) {
+    setState(() {
+      searchKey = inputSearchKey;
+    });
+    return searchKey;
   }
 
   @override
@@ -53,7 +61,9 @@ class _HomePageState extends State<Home> {
                   SizedBox(
                     height: 15,
                   ),
-                  SearchSection(),
+                  SearchSection(
+                    onSearch: onSearch,
+                  ),
                   SizedBox(
                     height: 10,
                   ),
@@ -112,23 +122,25 @@ class _HomePageState extends State<Home> {
                   future: Http.getAllSourcesDonnees(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      return ListView.builder(
+                      if (snapshot.data!.isEmpty) {
+                        return emptyContainer();
+                      } else {
+                        return ListView.builder(
                           itemCount: snapshot.data!.length,
                           itemBuilder: (context, index) {
-                            return DataListTile(
-                              sourceDonnee: snapshot.data![index],
-                            );
-                          });
+                            return snapshot.data![index].libelle
+                                    .toString()
+                                    .toLowerCase()
+                                    .contains(searchKey)
+                                ? DataListTile(
+                                    sourceDonnee: snapshot.data![index],
+                                  )
+                                : Container();
+                          },
+                        );
+                      }
                     } else if (snapshot.hasError) {
-                      return Center(
-                        child: Text(
-                          "Une erreur est survenue lors de la récupération des sources de données !",
-                          style: GoogleFonts.montserrat(
-                            fontSize: 16,
-                            color: kRed,
-                          ),
-                        ),
-                      );
+                      return errorContainer();
                     }
                     return Center(
                       child: LoadingSpinner(),
@@ -138,6 +150,54 @@ class _HomePageState extends State<Home> {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget emptyContainer() {
+    return Center(
+      child: Container(
+        width: double.infinity,
+        height: 75,
+        decoration: BoxDecoration(
+          color: kOrange,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Center(
+          child: Text(
+            "Aucune source de donnée trouvée !",
+            style: GoogleFonts.montserrat(
+              fontSize: 16,
+              color: kWhite,
+              fontWeight: FontWeight.w500,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget errorContainer() {
+    return Center(
+      child: Container(
+        width: double.infinity,
+        height: 75,
+        decoration: BoxDecoration(
+          color: kRed,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Center(
+          child: Text(
+            "Une erreur est survenue lors de la récupération des sources de données !",
+            style: GoogleFonts.montserrat(
+              fontSize: 16,
+              color: kWhite,
+              fontWeight: FontWeight.w500,
+            ),
+            textAlign: TextAlign.center,
+          ),
         ),
       ),
     );

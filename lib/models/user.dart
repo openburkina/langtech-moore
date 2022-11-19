@@ -17,6 +17,7 @@ class User {
     this.login = '',
     this.password = '',
     this.typeUtilisateur = '',
+    this.pointFidelite = 0,
   });
 
   User.fromJson(Map<String, dynamic> json) {

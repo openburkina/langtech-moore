@@ -16,6 +16,15 @@ class ContributionPage extends StatefulWidget {
 }
 
 class _ContributionPageState extends State<ContributionPage> {
+  late String searchKey = '';
+
+  String onSearch(String inputSearchKey) {
+    setState(() {
+      searchKey = inputSearchKey;
+    });
+    return searchKey;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,6 +43,7 @@ class _ContributionPageState extends State<ContributionPage> {
                   SearchSection(
                     advancedSearch: true,
                     function: _openAdvancedSearchModal,
+                    onSearch: onSearch,
                   ),
                 ],
               ),
@@ -48,48 +58,25 @@ class _ContributionPageState extends State<ContributionPage> {
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       if (snapshot.data!.isEmpty) {
-                        return Center(
-                          child: Container(
-                            width: double.infinity,
-                            height: 75,
-                            decoration: BoxDecoration(
-                              color: kOrange,
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: Center(
-                              child: Text(
-                                "Vous n'avez pas fait de contributions !",
-                                style: GoogleFonts.montserrat(
-                                  fontSize: 16,
-                                  color: kWhite,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ),
-                        );
+                        return emptyContainer();
                       } else {
                         return ListView.builder(
                           itemCount: snapshot.data!.length,
                           itemBuilder: (context, index) {
-                            return TraductionListTile(
-                              traduction: snapshot.data![index],
-                              update: _updateAfterDelete,
-                            );
+                            return snapshot.data![index].libelle
+                                    .toString()
+                                    .toLowerCase()
+                                    .contains(searchKey)
+                                ? TraductionListTile(
+                                    traduction: snapshot.data![index],
+                                    update: _updateAfterDelete,
+                                  )
+                                : Container();
                           },
                         );
                       }
                     } else if (snapshot.hasError) {
-                      return Center(
-                        child: Text(
-                          "Une erreur est survenue lors de la récupération des traductions !",
-                          style: GoogleFonts.montserrat(
-                            fontSize: 16,
-                            color: kRed,
-                          ),
-                        ),
-                      );
+                      return errorContainer();
                     }
                     return Center(
                       child: LoadingSpinner(),
@@ -128,7 +115,8 @@ class _ContributionPageState extends State<ContributionPage> {
           ),
           content: SingleChildScrollView(
             child: ListBody(
-              children: const <Widget>[
+              children: <Widget>[
+                Radio(value: 'AUDIO', groupValue: 3, onChanged: (value) {}),
                 Text('This is a demo alert dialog.'),
                 Text('Would you like to approve of this message?'),
                 Text('Would you like to approve of this message?'),
@@ -167,6 +155,54 @@ class _ContributionPageState extends State<ContributionPage> {
           ],
         );
       },
+    );
+  }
+
+  Widget emptyContainer() {
+    return Center(
+      child: Container(
+        width: double.infinity,
+        height: 75,
+        decoration: BoxDecoration(
+          color: kOrange,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Center(
+          child: Text(
+            "Aucune contribution trouvée !",
+            style: GoogleFonts.montserrat(
+              fontSize: 16,
+              color: kWhite,
+              fontWeight: FontWeight.w500,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget errorContainer() {
+    return Center(
+      child: Container(
+        width: double.infinity,
+        height: 75,
+        decoration: BoxDecoration(
+          color: kRed,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Center(
+          child: Text(
+            "Une erreur est survenue lors de la récupération des contributions !",
+            style: GoogleFonts.montserrat(
+              fontSize: 16,
+              color: kWhite,
+              fontWeight: FontWeight.w500,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ),
     );
   }
 }

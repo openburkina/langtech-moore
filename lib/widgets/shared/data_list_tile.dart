@@ -51,9 +51,6 @@ class DataListTile extends StatelessWidget {
               fontWeight: FontWeight.w500,
             ),
           ),
-          subtitle: Text(
-            "${sourceDonnee.counter == 0 ? 'Aucune traduction' : '${sourceDonnee.counter} traductions '}",
-          ),
           trailing: Icon(
             Icons.arrow_forward_ios,
             color: kBlue,
