@@ -61,7 +61,7 @@ class _TraductionListTileState extends State<TraductionListTile> {
             ),
           ),
           subtitle: Text(
-            "${widget.traduction.etat}",
+            "${getContributionStatus(widget.traduction.etat)}",
             style: GoogleFonts.montserrat(
               color: getColor(widget.traduction.etat),
               fontWeight: FontWeight.bold,
@@ -100,6 +100,19 @@ class _TraductionListTileState extends State<TraductionListTile> {
     // if (returnResult == true) {
 
     // }
+  }
+}
+
+String getContributionStatus(String? etat) {
+  switch (etat) {
+    case 'EN_ATTENTE':
+      return 'En attente de validation';
+    case 'VALIDER':
+      return 'Validée';
+    case 'REJETER':
+      return 'Rejettée';
+    default:
+      return '';
   }
 }
 

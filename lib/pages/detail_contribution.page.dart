@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:langtech_moore_mobile/constants/colors.dart';
 import 'package:langtech_moore_mobile/models/traduction.dart';
 import 'package:langtech_moore_mobile/pages/data_translate.page.dart';
@@ -26,6 +27,7 @@ class DetailContribution extends StatefulWidget {
 
 class _DetailContributionState extends State<DetailContribution> {
   Traduction traduction;
+  String createdDate = '';
 
   _DetailContributionState({
     required this.traduction,
@@ -33,7 +35,8 @@ class _DetailContributionState extends State<DetailContribution> {
 
   @override
   void initState() {
-    log("SOURCE DE DONNES ==> ${traduction.sourceDonnee?.libelle}");
+    String createdDate = "${traduction.createdDate!.substring(0, 10)} ${traduction.createdDate!.substring(11, 19)}";
+    this.createdDate = DateFormat("dd/MM/yyyy").format(DateTime.parse(createdDate)) + ' à ' + traduction.createdDate!.substring(11, 19);
     super.initState();
   }
 
@@ -77,8 +80,12 @@ class _DetailContributionState extends State<DetailContribution> {
             ),
             TraductionInfos(
               title: "Etat",
-              content: "${traduction.etat}",
+              content: "${getContributionStatus(traduction.etat)}",
               contentColor: getColor(traduction.etat),
+            ),
+            TraductionInfos(
+                title: 'Date de création',
+              content: '${createdDate}',
             ),
             traduction.type == 'AUDIO'
                 ? PlayAudio(
@@ -182,6 +189,19 @@ class _DetailContributionState extends State<DetailContribution> {
         );
       },
     );
+  }
+}
+
+String getContributionStatus(String? etat) {
+  switch (etat) {
+    case 'EN_ATTENTE':
+      return 'En attente de validation';
+    case 'VALIDER':
+      return 'Validée';
+    case 'REJETER':
+      return 'Rejettée';
+    default:
+      return '';
   }
 }
 

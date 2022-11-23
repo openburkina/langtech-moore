@@ -180,7 +180,7 @@ class _ProfilPageState extends State<ProfilPage> {
                                   '${currentUser.email}',
                                   style: TextStyle(
                                     color: kWhite,
-                                    fontSize: 18,
+                                    fontSize: 16,
                                   ),
                                 )
                               : Center(),
@@ -189,7 +189,7 @@ class _ProfilPageState extends State<ProfilPage> {
                                   '  |  ${currentUser.telephone}',
                                   style: TextStyle(
                                     color: kWhite,
-                                    fontSize: 18,
+                                    fontSize: 16,
                                   ),
                                 )
                               : Center(),

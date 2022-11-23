@@ -98,9 +98,9 @@ class _PlayAudioState extends State<PlayAudio> {
     log("directory ==> $directory");
     log("PATH ==> $path");
     Uint8List decodedbytes = base64.decode(traduction.contenuAudio!);
-    File decodedimgfile = await File(
-            "/data/user/0/com.example.langtech_moore_mobile/cache/audio.mp4")
-        .writeAsBytes(decodedbytes);
+    File decodedimgfile =
+        await File("/data/user/0/bf.openburkina.langtechapp/cache/audio.mp4")
+            .writeAsBytes(decodedbytes);
     await recordingPlayer.open(
       Audio.file(decodedimgfile.path),
       autoStart: true,

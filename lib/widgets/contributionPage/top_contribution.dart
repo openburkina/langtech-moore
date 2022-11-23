@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:langtech_moore_mobile/constants/colors.dart';
-import 'dart:developer';
 
 class TopContribution extends StatefulWidget {
   const TopContribution({super.key});
@@ -14,7 +13,7 @@ class _TopContributionState extends State<TopContribution> {
   String currentDate = '';
 
   String getCurrentMonth(int month) {
-    switch(month) {
+    switch (month) {
       case 1:
         return 'Janvier';
       case 2:
@@ -41,12 +40,12 @@ class _TopContributionState extends State<TopContribution> {
         return 'Decembre';
       default:
         return '';
-
     }
   }
 
   void _getCurrentDate() {
     DateTime now = new DateTime.now();
+
     String month = getCurrentMonth(now.month);
     currentDate = "${now.day} $month ${now.year}";
   }
@@ -56,9 +55,9 @@ class _TopContributionState extends State<TopContribution> {
     super.initState();
     _getCurrentDate();
   }
+
   @override
   Widget build(BuildContext context) {
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -87,7 +86,5 @@ class _TopContributionState extends State<TopContribution> {
         ),
       ],
     );
-
-
   }
 }

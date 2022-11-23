@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:convert' as convert;
-import 'dart:developer';
 
 import 'package:http/http.dart' as http;
 import 'package:langtech_moore_mobile/config/http/urls.dart';

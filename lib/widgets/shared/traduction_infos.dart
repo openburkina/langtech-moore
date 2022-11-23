@@ -42,6 +42,7 @@ class TraductionInfos extends StatelessWidget {
             style: GoogleFonts.montserrat(
               fontSize: 16,
               color: contentColor,
+              fontWeight: FontWeight.w500,
             ),
           ),
         ],
