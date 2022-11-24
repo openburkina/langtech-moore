@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:convert' as convert;
+import 'dart:developer';
 
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 import 'package:langtech_moore_mobile/config/http/urls.dart';
 import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefConfig.dart';
 import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefKeys.dart';
@@ -74,7 +76,7 @@ class Http {
     }
   }
 
-  static Future<List<Traduction>> getAllTraductons({
+  static Future<Response> getAllTraductons({
     int size = 10,
     int page = 0,
   }) async {
@@ -92,9 +94,11 @@ class Http {
       return http.Response("Délai d'attente depassé !", 403);
     });
     if (response.statusCode == 200) {
+      log("${response.headers['x-total-count']}");
       List jsonResponse =
           convert.jsonDecode(convert.utf8.decode(response.bodyBytes));
-      return jsonResponse.map((data) => new Traduction.fromJson(data)).toList();
+      // return jsonResponse.map((data) => new Traduction.fromJson(data)).toList();
+      return response;
     } else {
       throw Exception('Unexpected error occured!');
     }

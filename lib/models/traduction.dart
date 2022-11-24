@@ -64,4 +64,9 @@ class Traduction {
           'id': this.utilisateur?.id,
         }
       };
+
+  @override
+  String toString() {
+    return 'Traduction{id: $id, libelle: $libelle, contenuTexte: $contenuTexte, contenuAudio: $contenuAudio, contenuAudioContentType: $contenuAudioContentType, type: $type, note: $note, etat: $etat, createdDate: $createdDate, langue: $langue, sourceDonnee: $sourceDonnee, utilisateur: $utilisateur}';
+  }
 }
