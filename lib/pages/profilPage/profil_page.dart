@@ -13,6 +13,8 @@ import 'package:langtech_moore_mobile/pages/update_profil.dart';
 import 'package:langtech_moore_mobile/widgets/profilPage/parameter.dart';
 import 'package:langtech_moore_mobile/widgets/shared/slidepage.dart';
 
+import 'package:share_plus/share_plus.dart';
+
 class ProfilPage extends StatefulWidget {
   const ProfilPage({super.key});
 
@@ -244,7 +246,9 @@ class _ProfilPageState extends State<ProfilPage> {
                       icon: Icons.share,
                       title: 'Partager l\'application',
                       subTitle: 'Partager avec mes amis',
-                      function: () {},
+                      function: () {
+                        Share.share('https://www.openburkina.bf/');
+                      },
                     ),
                     Parameter(
                       icon: Icons.info,

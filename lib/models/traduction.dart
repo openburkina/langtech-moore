@@ -12,6 +12,8 @@ class Traduction {
   int? note;
   String? etat;
   String? createdDate;
+  String? motif;
+  String? mois;
   Langue? langue;
   SourceDonnee? sourceDonnee;
   User? utilisateur;
@@ -26,6 +28,8 @@ class Traduction {
     this.note,
     this.etat,
     this.createdDate,
+    this.motif,
+    this.mois,
     this.langue,
     this.sourceDonnee,
     this.utilisateur,
@@ -41,6 +45,8 @@ class Traduction {
     this.note = json['note'] == Null ? 0 : json['note'] as int;
     this.etat = json['etat'];
     this.createdDate = json['createdDate'];
+    this.motif = json['motif'];
+    this.mois = json['mois'];
     this.langue = Langue.fromJson(json['langue']);
     this.sourceDonnee = SourceDonnee.fromJson(json['sourceDonnee']);
   }

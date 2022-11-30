@@ -25,7 +25,7 @@ class DataTranslateAction extends StatelessWidget {
           onTap: textFunction,
           child: Container(
             height: 75,
-            width: (width / 10) * 2,
+            width: (width / 10) * 4,
             decoration: BoxDecoration(
               color: isEnableText ? kBlue : kWhite,
               borderRadius: BorderRadius.circular(10),
@@ -47,7 +47,7 @@ class DataTranslateAction extends StatelessWidget {
           onTap: audioFunction,
           child: Container(
             height: 75,
-            width: (width / 10) * 2,
+            width: (width / 10) * 4,
             decoration: BoxDecoration(
               color: isEnableAudio ? kBlue : kWhite,
               borderRadius: BorderRadius.circular(10),

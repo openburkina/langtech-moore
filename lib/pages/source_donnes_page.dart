@@ -1,12 +1,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:langtech_moore_mobile/constants/colors.dart';
 import 'package:langtech_moore_mobile/models/source_donnee.dart';
 import 'package:langtech_moore_mobile/services/http.dart';
 import 'package:langtech_moore_mobile/widgets/home/search_section.dart';
 import 'package:langtech_moore_mobile/widgets/shared/data_list_tile.dart';
 import 'package:langtech_moore_mobile/widgets/shared/loadingSpinner.dart';
+import 'dart:developer';
 
 class SourceDonneePage extends StatefulWidget {
   const SourceDonneePage({super.key});
@@ -17,12 +19,39 @@ class SourceDonneePage extends StatefulWidget {
 
 class _SourceDonneePageState extends State<SourceDonneePage> {
   late String searchKey = '';
+  final int _numberOfPage = 10;
+  final PagingController<int, SourceDonnee> _pagingController = PagingController(firstPageKey: 0);
 
   String onSearch(String inputSearchKey) {
     setState(() {
       searchKey = inputSearchKey;
     });
     return searchKey;
+  }
+
+  Future<void> _getSourceDeDonnees(int pageKey) async {
+    List<SourceDonnee> sourcesDonnees = await Http.getAllSourcesDonnees( page: pageKey, size: _numberOfPage,);
+    final isLastPage = sourcesDonnees.length < _numberOfPage;
+    if (isLastPage) {
+      _pagingController.appendLastPage(sourcesDonnees);
+    } else {
+      final nextPageKey = pageKey + sourcesDonnees.length;
+      _pagingController.appendPage(sourcesDonnees, nextPageKey);
+    }
+  }
+
+  @override
+  void initState() {
+    _pagingController.addPageRequestListener((pageKey) {
+      _getSourceDeDonnees(pageKey);
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _pagingController.dispose();
+    super.dispose();
   }
 
   @override
@@ -54,34 +83,19 @@ class _SourceDonneePageState extends State<SourceDonneePage> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               color: kGris,
-              child: FutureBuilder<List<SourceDonnee>>(
-                future: Http.getAllSourcesDonnees(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    if (snapshot.data!.isEmpty) {
-                      return emptyContainer();
-                    } else {
-                      return ListView.builder(
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (context, index) {
-                          return snapshot.data![index].libelle
-                                  .toString()
-                                  .toLowerCase()
-                                  .contains(searchKey)
-                              ? DataListTile(
-                                  sourceDonnee: snapshot.data![index],
-                                )
-                              : Container();
-                        },
-                      );
-                    }
-                  } else if (snapshot.hasError) {
-                    return errorContainer();
-                  }
-                  return Center(
-                    child: LoadingSpinner(),
-                  );
-                },
+              child: RefreshIndicator(
+                onRefresh: () => Future.sync(() => _pagingController.refresh()),
+                child: PagedListView<int, SourceDonnee>(
+                  pagingController: _pagingController,
+                  builderDelegate: PagedChildBuilderDelegate<SourceDonnee>(
+                    itemBuilder: (context, item, index) =>
+                      item.libelle
+                      .toString()
+                      .toLowerCase()
+                      .contains(searchKey)
+                      ? DataListTile(sourceDonnee: item,) : Container(),
+                  ),
+                ),
               ),
             ),
           ),
@@ -138,4 +152,46 @@ class _SourceDonneePageState extends State<SourceDonneePage> {
     );
   }
 
+
+
 }
+
+/**
+ *
+ * Expanded(
+    child: Container(
+    padding: const EdgeInsets.symmetric(horizontal: 16),
+    color: kGris,
+    child: FutureBuilder<List<SourceDonnee>>(
+    future: Http.getAllSourcesDonnees(),
+    builder: (context, snapshot) {
+    if (snapshot.hasData) {
+    if (snapshot.data!.isEmpty) {
+    return emptyContainer();
+    } else {
+    return ListView.builder(
+    itemCount: snapshot.data!.length,
+    itemBuilder: (context, index) {
+    return snapshot.data![index].libelle
+    .toString()
+    .toLowerCase()
+    .contains(searchKey)
+    ? DataListTile(
+    sourceDonnee: snapshot.data![index],
+    )
+    : Container();
+    },
+    );
+    }
+    } else if (snapshot.hasError) {
+    return errorContainer();
+    }
+    return Center(
+    child: LoadingSpinner(),
+    );
+    },
+    ),
+    ),
+    ),
+ *
+ */

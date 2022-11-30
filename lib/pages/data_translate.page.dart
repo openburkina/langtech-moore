@@ -230,7 +230,7 @@ class _DataTranslate extends State<DataTranslate> {
       if (response.statusCode == 201 || response.statusCode == 200) {
         Toast.showFlutterToast(
           context,
-          "Traduction enregistrée avec succès !",
+          "Traduction ${!isEnableAudio && isEnableText ? 'texte' : 'audio'} enregistrée avec succès !",
           "success",
         );
         Navigator.pop(context, true);
@@ -258,7 +258,8 @@ class _DataTranslate extends State<DataTranslate> {
         padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
         child: ButtonSection(
           buttonFonction: _getTranslateInfos,
-          buttonText: "Enregistrer",
+          buttonText: isEnableAudio || isEnableText ? "Enregistrer ${!isEnableAudio && isEnableText ? 'un texte' : 'un audio'}" : "Enregistrer",
+          buttonSize: 16,
         ),
       ),
       body: SingleChildScrollView(
@@ -294,7 +295,6 @@ class _DataTranslate extends State<DataTranslate> {
                   style: GoogleFonts.montserrat(
                     fontSize: 18,
                     color: kBlue,
-                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ),

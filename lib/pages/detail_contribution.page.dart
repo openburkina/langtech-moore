@@ -83,6 +83,11 @@ class _DetailContributionState extends State<DetailContribution> {
               content: "${getContributionStatus(traduction.etat)}",
               contentColor: getColor(traduction.etat),
             ),
+            traduction.etat == 'REJETER' ?
+            TraductionInfos(
+              title: "Motif du rejet",
+              content: "${traduction.motif}",
+            ) : const SizedBox.shrink(),
             TraductionInfos(
                 title: 'Date de création',
               content: '${createdDate}',

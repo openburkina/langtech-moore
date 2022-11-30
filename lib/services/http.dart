@@ -54,8 +54,13 @@ class Http {
         body: json.encode(user.toJson()));
   }
 
-  static Future<List<SourceDonnee>> getAllSourcesDonnees() async {
-    String url = '${Urls.SOURCES_DATA_URL}';
+  static Future<List<SourceDonnee>> getAllSourcesDonnees(
+      {
+        int size = 10,
+        int page = 0,
+      }
+      ) async {
+    String url = '${Urls.SOURCES_DATA_URL}?page=${page}&size=${size}';
     await _getHeaders();
     final response = await http
         .get(
