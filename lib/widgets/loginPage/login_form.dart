@@ -41,11 +41,11 @@ class _LoginFormState extends State<LoginForm> {
           DelayedDisplay(
             delay: Duration(milliseconds: delayDuration * 3),
             child: InputSection(
-              icon: Icons.mail_outline,
-              hint: 'Entrez votre email',
+              icon: Icons.phone,
+              hint: 'Numéro de téléphone',
               obscureText: false,
               controller: emailController,
-              keyboardType: TextInputType.emailAddress,
+              keyboardType: TextInputType.phone,
             ),
           ),
           const SizedBox(
@@ -55,7 +55,7 @@ class _LoginFormState extends State<LoginForm> {
             delay: Duration(milliseconds: delayDuration * 4),
             child: InputSection(
               icon: Icons.lock_outline,
-              hint: 'Entrez votre mot de passe',
+              hint: 'Mot de passe',
               obscureText: true,
               controller: pwdController,
               keyboardType: TextInputType.text,

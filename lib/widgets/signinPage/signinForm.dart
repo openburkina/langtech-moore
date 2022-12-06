@@ -69,7 +69,7 @@ class _SigninForm extends State<SigninForm> {
           delay: Duration(milliseconds: delayDuration * 5),
           child: InputSection(
             icon: Icons.phone,
-            hint: 'Entrez votre téléphone',
+            hint: 'Entrez votre téléphone (00226xxx)',
             obscureText: false,
             controller: phoneController,
             keyboardType: TextInputType.phone,
@@ -130,10 +130,10 @@ class _SigninForm extends State<SigninForm> {
   }
 
   void _onCheckFormValidate(BuildContext context) {
-    String email = emailController.text.trim().toLowerCase();
+    String phone = phoneController.text.trim().toLowerCase();
     String password = pwdController.text.trim().toLowerCase();
     String confirmPassword = confirmPwdController.text.trim().toLowerCase();
-    if (email == '') {
+    if (phone == '') {
       Toast.showFlutterToast(context, "L'email est obligatoire !", 'error');
     } else if (password == '') {
       Toast.showFlutterToast(
@@ -145,13 +145,13 @@ class _SigninForm extends State<SigninForm> {
       Toast.showFlutterToast(
           context, "La confirmation du mot de passe est incorrecte !", 'error');
     } else {
-      user.email = email;
-      user.login = email;
+      user.telephone = phone;
+      user.login = phone;
       user.password = password;
       user.typeUtilisateur = 'CONTRIBUTEUR';
       user.nom = nomController.text.trim().toUpperCase();
       user.prenom = prenomController.text.trim();
-      user.telephone = phoneController.text.trim();
+      user.email = emailController.text.trim().toLowerCase();
       _onSignIn(context);
     }
   }
