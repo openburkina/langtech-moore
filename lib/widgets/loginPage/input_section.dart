@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:langtech_moore_mobile/constants/colors.dart';
@@ -8,6 +10,7 @@ class InputSection extends StatefulWidget {
   final bool obscureText;
   final TextInputType keyboardType;
   final TextEditingController controller;
+  final bool required;
   const InputSection({
     super.key,
     required this.icon,
@@ -15,6 +18,7 @@ class InputSection extends StatefulWidget {
     required this.obscureText,
     required this.controller,
     required this.keyboardType,
+    this.required = false,
   });
 
   @override
@@ -24,6 +28,7 @@ class InputSection extends StatefulWidget {
         obscureText: obscureText,
         controller: controller,
         keyboardType: keyboardType,
+        required: required,
       );
 }
 
@@ -34,12 +39,15 @@ class _InputSectionState extends State<InputSection> {
   final TextInputType keyboardType;
   final TextEditingController controller;
   late bool showObscureText = false;
+  late Color borderColor = required ? kRed : kBlue;
+  final bool required;
   _InputSectionState({
     required this.icon,
     required this.hint,
     required this.obscureText,
     required this.controller,
     required this.keyboardType,
+    required this.required,
   });
 
   @override
@@ -48,7 +56,7 @@ class _InputSectionState extends State<InputSection> {
       height: 55,
       margin: const EdgeInsets.symmetric(horizontal: 30),
       decoration: BoxDecoration(
-        border: Border.all(color: kBlue, width: 2),
+        border: Border.all(color: borderColor, width: 2),
         borderRadius: BorderRadius.circular(30),
       ),
       child: Row(
@@ -81,6 +89,17 @@ class _InputSectionState extends State<InputSection> {
                 fontSize: 20,
                 color: kBlue,
               ),
+              onChanged: (value) {
+                if (required && value.isEmpty) {
+                  setState(() {
+                    borderColor = kRed;
+                  });
+                } else {
+                  setState(() {
+                    borderColor = kBlue;
+                  });
+                }
+              },
               obscureText: obscureText ? !showObscureText : showObscureText,
               obscuringCharacter: '*',
               decoration: InputDecoration(

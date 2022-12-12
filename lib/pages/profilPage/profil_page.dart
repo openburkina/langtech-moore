@@ -201,7 +201,7 @@ class _ProfilPageState extends State<ProfilPage> {
                   ],
                 ),
               ),
-              postFollowSection,
+              pointFideliteSection(),
               Container(
                 color: kGris,
                 child: Column(
@@ -215,7 +215,9 @@ class _ProfilPageState extends State<ProfilPage> {
                           context,
                           MaterialPageRoute(
                             builder: (context) {
-                              return UpdateProfil(currentUser: currentUser,);
+                              return UpdateProfil(
+                                currentUser: currentUser,
+                              );
                             },
                           ),
                         ).then((response) {
@@ -283,58 +285,45 @@ class _ProfilPageState extends State<ProfilPage> {
       ),
     );
   }
+
+  Container pointFideliteSection() {
+    return Container(
+      color: kWhite,
+      padding: const EdgeInsets.symmetric(
+        vertical: 20,
+        horizontal: 16,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            'Point de fidélité',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: kBlue,
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 8,
+              vertical: 8,
+            ),
+            decoration: BoxDecoration(
+              color: kRed,
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: Text(
+              "${currentUser.pointFidelite}",
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: kWhite,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
-
-Widget postFollowSection = Container(
-  color: kWhite,
-  padding: const EdgeInsets.symmetric(vertical: 20),
-  child: Row(
-    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-    children: [
-      contributionSection,
-      pointFideliteSection,
-    ],
-  ),
-);
-
-Widget contributionSection = Column(
-  children: const [
-    Text(
-      'Contributions',
-      style: TextStyle(
-        fontSize: 20,
-        fontWeight: FontWeight.bold,
-        color: kBlue,
-      ),
-    ),
-    Text(
-      '12',
-      style: TextStyle(
-        fontSize: 18,
-        fontWeight: FontWeight.bold,
-        color: kRed,
-      ),
-    )
-  ],
-);
-
-Widget pointFideliteSection = Column(
-  children: const [
-    Text(
-      'Point de fidélité',
-      style: TextStyle(
-        fontSize: 20,
-        fontWeight: FontWeight.bold,
-        color: kBlue,
-      ),
-    ),
-    Text(
-      '10',
-      style: TextStyle(
-        fontSize: 18,
-        fontWeight: FontWeight.bold,
-        color: kRed,
-      ),
-    )
-  ],
-);

@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:convert' as convert;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -20,7 +19,6 @@ class ContributionPage extends StatefulWidget {
   State<ContributionPage> createState() => _ContributionPageState();
 }
 
-
 class _ContributionPageState extends State<ContributionPage> {
   late String searchKey = '';
   late Traduction searchTraduction = new Traduction();
@@ -32,24 +30,29 @@ class _ContributionPageState extends State<ContributionPage> {
   late Future<List<Traduction>> _futureTraduction;
 
   Future<List<Traduction>> getTraduction(int page) async {
-    Response response = await Http.getAllTraductons(page: page, size: size);
-    List jsonResponse = convert.jsonDecode(convert.utf8.decode(response.bodyBytes));
-    this._traductions.insertAll(0, jsonResponse.map((data) => new Traduction.fromJson(data)).toList());
+    Response response = await Http.getAllTraductons(
+      page: page,
+      size: size,
+      etat: searchTraduction.etat == null ? '' : searchTraduction.etat!,
+      type: searchTraduction.type == null ? '' : searchTraduction.type!,
+    );
+    _traductions = [];
+    List jsonResponse =
+        convert.jsonDecode(convert.utf8.decode(response.bodyBytes));
+    this._traductions.insertAll(
+        0, jsonResponse.map((data) => new Traduction.fromJson(data)).toList());
     this.currentPage++;
     this.totalItems = int.parse(response.headers['x-total-count']!);
-    log("SIZE ==> ${_traductions.length}");
-    log("TOTAL ==> ${totalItems}");
     return _traductions;
   }
 
-
   @override
   void initState() {
-    _futureTraduction = getTraduction(currentPage);
     super.initState();
-
+    _futureTraduction = getTraduction(currentPage);
     _scrollController.addListener(() {
-      if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
         setState(() {
           if (totalItems > _traductions.length) {
             _futureTraduction = getTraduction(currentPage);
@@ -88,7 +91,7 @@ class _ContributionPageState extends State<ContributionPage> {
                     height: 15,
                   ),
                   SearchSection(
-                    advancedSearch: true,
+                    advancedSearch: false,
                     function: _openAdvancedSearchModal,
                     onSearch: onSearch,
                   ),
@@ -155,7 +158,8 @@ class _ContributionPageState extends State<ContributionPage> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return StatefulBuilder(
-          builder: (BuildContext context, void Function(void Function()) setState) {
+          builder:
+              (BuildContext context, void Function(void Function()) setState) {
             return AlertDialog(
               title: Text(
                 'Recherche avancée',
@@ -232,7 +236,9 @@ class _ContributionPageState extends State<ContributionPage> {
                         },
                       ),
                     ),
-                    const SizedBox(height: 16,),
+                    const SizedBox(
+                      height: 16,
+                    ),
                     Text(
                       'Type de la traduction',
                       style: GoogleFonts.montserrat(
@@ -291,7 +297,10 @@ class _ContributionPageState extends State<ContributionPage> {
                     ),
                   ),
                   onPressed: () {
+                    searchTraduction.etat = null;
+                    searchTraduction.type = null;
                     Navigator.of(context).pop();
+                    _futureTraduction = getTraduction(0);
                   },
                 ),
                 TextButton(
@@ -305,13 +314,13 @@ class _ContributionPageState extends State<ContributionPage> {
                   ),
                   onPressed: () {
                     Navigator.of(context).pop();
+                    _futureTraduction = getTraduction(0);
                   },
                 ),
               ],
             );
           },
         );
-
       },
     );
   }

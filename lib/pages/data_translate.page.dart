@@ -64,7 +64,6 @@ class _DataTranslate extends State<DataTranslate> {
   final List<SelectedListItem> _listLanguages = [];
   late Traduction traduction = new Traduction();
   String languePlaceholderText = "Sélectionner la langue";
-  List<Langue> _langues = [];
 
   _DataTranslate({
     required this.sourceDonnee,
@@ -96,7 +95,6 @@ class _DataTranslate extends State<DataTranslate> {
 
   void getLangues() {
     Http.getLangues().then((value) {
-      _langues = value;
       value.forEach((langue) {
         _listLanguages.add(
           SelectedListItem(

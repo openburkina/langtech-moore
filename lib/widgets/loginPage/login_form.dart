@@ -24,7 +24,7 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   final int delayDuration;
-  final emailController = TextEditingController();
+  final phoneController = TextEditingController();
   final pwdController = TextEditingController();
   late bool isEnaableSpinner = false;
   final _formKey = GlobalKey<FormState>();
@@ -44,7 +44,7 @@ class _LoginFormState extends State<LoginForm> {
               icon: Icons.phone,
               hint: 'Numéro de téléphone',
               obscureText: false,
-              controller: emailController,
+              controller: phoneController,
               keyboardType: TextInputType.phone,
             ),
           ),
@@ -85,13 +85,20 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   void _onValidateForm(BuildContext context) {
-    loginVM.username = emailController.text.trim().toLowerCase();
-    loginVM.password = pwdController.text.trim().toLowerCase();
+    loginVM.username = phoneController.text.trim().toLowerCase();
+    loginVM.password = pwdController.text.trim();
     if (loginVM.username == null || loginVM.username == '') {
-      Toast.showFlutterToast(context, "L'email est obligatoire !", 'error');
+      Toast.showFlutterToast(
+        context,
+        "Le numéro de téléphone est obligatoire !",
+        'error',
+      );
     } else if (loginVM.password == null || loginVM.password == '') {
       Toast.showFlutterToast(
-          context, "Le mot de passe est obligatoire !", 'error');
+        context,
+        "Le mot de passe est obligatoire !",
+        'error',
+      );
     } else {
       _login(context);
     }

@@ -45,44 +45,50 @@ class _ScreenPageState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(0),
+          child: Container(
+            color: kBlue,
+          ),
+        ),
         body: IntroductionScreen(
-      pages: pages,
-      dotsDecorator: const DotsDecorator(
-        size: Size(15, 15),
-        color: kBlue,
-        activeSize: Size.square(15),
-        activeColor: kRed,
-      ),
-      showDoneButton: true,
-      done: Text(
-        "Lancer",
-        style: GoogleFonts.montserrat(
-          fontWeight: FontWeight.bold,
-          fontSize: 20,
-          color: kBlue,
-        ),
-      ),
-      showNextButton: true,
-      next: Text(
-        "Suivant",
-        style: GoogleFonts.montserrat(
-          fontWeight: FontWeight.bold,
-          fontSize: 20,
-          color: kBlue,
-        ),
-      ),
-      showSkipButton: true,
-      skip: Text(
-        "Ignorer",
-        style: GoogleFonts.montserrat(
-          fontWeight: FontWeight.bold,
-          fontSize: 20,
-          color: kRed,
-        ),
-      ),
-      onDone: () => done(context),
-      onSkip: () => {},
-    ));
+          pages: pages,
+          dotsDecorator: const DotsDecorator(
+            size: Size(15, 15),
+            color: kBlue,
+            activeSize: Size.square(15),
+            activeColor: kRed,
+          ),
+          showDoneButton: true,
+          done: Text(
+            "Lancer",
+            style: GoogleFonts.montserrat(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+              color: kBlue,
+            ),
+          ),
+          showNextButton: true,
+          next: Text(
+            "Suivant",
+            style: GoogleFonts.montserrat(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+              color: kBlue,
+            ),
+          ),
+          showSkipButton: true,
+          skip: Text(
+            "Ignorer",
+            style: GoogleFonts.montserrat(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+              color: kRed,
+            ),
+          ),
+          onDone: () => done(context),
+          onSkip: () => done(context),
+        ));
   }
 
   void done(context) {

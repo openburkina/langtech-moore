@@ -12,7 +12,7 @@ class _TopHomeState extends State<TopHome> {
   String currentDate = '';
 
   String getCurrentMonth(int month) {
-    switch(month) {
+    switch (month) {
       case 1:
         return 'Janvier';
       case 2:
@@ -39,7 +39,6 @@ class _TopHomeState extends State<TopHome> {
         return 'Decembre';
       default:
         return '';
-
     }
   }
 
@@ -83,17 +82,17 @@ class _TopHomeState extends State<TopHome> {
             )
           ],
         ),
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.blue[600],
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Icon(
-            Icons.notifications,
-            color: Colors.white,
-          ),
-          padding: const EdgeInsets.all(8),
-        )
+        // Container(
+        //   decoration: BoxDecoration(
+        //     color: Colors.blue[600],
+        //     borderRadius: BorderRadius.circular(12),
+        //   ),
+        //   child: Icon(
+        //     Icons.notifications,
+        //     color: Colors.white,
+        //   ),
+        //   padding: const EdgeInsets.all(8),
+        // )
       ],
     );
   }

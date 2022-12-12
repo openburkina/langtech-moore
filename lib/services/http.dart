@@ -30,7 +30,6 @@ class Http {
         "Authorization": "Bearer $jwtToken",
       });
 
-
       // Get current user instance
       currentUser = User.fromJson(jsonDecode(value)['utilisateur']);
     });
@@ -54,12 +53,10 @@ class Http {
         body: json.encode(user.toJson()));
   }
 
-  static Future<List<SourceDonnee>> getAllSourcesDonnees(
-      {
-        int size = 10,
-        int page = 0,
-      }
-      ) async {
+  static Future<List<SourceDonnee>> getAllSourcesDonnees({
+    int size = 10,
+    int page = 0,
+  }) async {
     String url = '${Urls.SOURCES_DATA_URL}?page=${page}&size=${size}';
     await _getHeaders();
     final response = await http
@@ -84,11 +81,15 @@ class Http {
   static Future<Response> getAllTraductons({
     int size = 10,
     int page = 0,
+    String etat = '',
+    String type = '',
   }) async {
     String url = '${Urls.GET_ALL_TRADUCTIONS}?page=${page}&size=${size}';
     await _getHeaders();
     Traduction traduction = new Traduction();
     traduction.utilisateur = currentUser;
+    traduction.etat = etat == '' ? null : etat;
+    traduction.type = type == '' ? null : type;
     final response = await http
         .post(
       Uri.parse(url),
@@ -100,8 +101,7 @@ class Http {
     });
     if (response.statusCode == 200) {
       log("${response.headers['x-total-count']}");
-      List jsonResponse =
-          convert.jsonDecode(convert.utf8.decode(response.bodyBytes));
+      // List jsonResponse = convert.jsonDecode(convert.utf8.decode(response.bodyBytes));
       // return jsonResponse.map((data) => new Traduction.fromJson(data)).toList();
       return response;
     } else {
@@ -151,7 +151,7 @@ class Http {
     String url = "${Urls.UPDATE_PROFIl_URL}/${user.id}";
     await _getHeaders();
     return await http.patch(
-        Uri.parse(url),
+      Uri.parse(url),
       headers: headers,
       body: json.encode(user.toJson()),
     );

@@ -73,6 +73,7 @@ class _SigninForm extends State<SigninForm> {
             obscureText: false,
             controller: phoneController,
             keyboardType: TextInputType.phone,
+            required: true,
           ),
         ),
         const SizedBox(
@@ -99,6 +100,7 @@ class _SigninForm extends State<SigninForm> {
             obscureText: true,
             controller: pwdController,
             keyboardType: TextInputType.text,
+            required: true,
           ),
         ),
         const SizedBox(
@@ -112,6 +114,7 @@ class _SigninForm extends State<SigninForm> {
             obscureText: true,
             controller: confirmPwdController,
             keyboardType: TextInputType.text,
+            required: true,
           ),
         ),
         const SizedBox(
@@ -134,16 +137,29 @@ class _SigninForm extends State<SigninForm> {
     String password = pwdController.text.trim().toLowerCase();
     String confirmPassword = confirmPwdController.text.trim().toLowerCase();
     if (phone == '') {
-      Toast.showFlutterToast(context, "L'email est obligatoire !", 'error');
+      Toast.showFlutterToast(
+        context,
+        "Le numéro de téléphone est obligatoire !",
+        'error',
+      );
     } else if (password == '') {
       Toast.showFlutterToast(
-          context, "Le mot de passe est obligatoire !", 'error');
+        context,
+        "Le mot de passe est obligatoire !",
+        'error',
+      );
     } else if (confirmPassword == '') {
-      Toast.showFlutterToast(context,
-          "La confirmation du mot de passe est obligatoire !", 'error');
+      Toast.showFlutterToast(
+        context,
+        "La confirmation du mot de passe est obligatoire !",
+        'error',
+      );
     } else if (confirmPassword != password) {
       Toast.showFlutterToast(
-          context, "La confirmation du mot de passe est incorrecte !", 'error');
+        context,
+        "La confirmation du mot de passe ne correspond pas !",
+        'error',
+      );
     } else {
       user.telephone = phone;
       user.login = phone;

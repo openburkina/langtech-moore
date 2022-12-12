@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:langtech_moore_mobile/constants/colors.dart';
 
 class TopContribution extends StatefulWidget {
