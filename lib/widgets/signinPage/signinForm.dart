@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ import 'package:langtech_moore_mobile/services/http.dart';
 import 'package:langtech_moore_mobile/widgets/loginPage/button_section.dart';
 import 'package:langtech_moore_mobile/widgets/loginPage/input_section.dart';
 import 'package:langtech_moore_mobile/widgets/shared/loadingSpinner.dart';
+import 'package:langtech_moore_mobile/widgets/shared/phone_input_section.dart';
 import 'package:langtech_moore_mobile/widgets/shared/slidepage.dart';
 import 'package:langtech_moore_mobile/widgets/shared/tabs.dart';
 import 'package:langtech_moore_mobile/widgets/shared/toast.dart';
@@ -30,6 +32,8 @@ class _SigninForm extends State<SigninForm> {
   final emailController = TextEditingController();
   final pwdController = TextEditingController();
   final confirmPwdController = TextEditingController();
+  final phoneIndicatifController = TextEditingController();
+  final phoneNumberController = TextEditingController();
   late User user = new User();
   late bool isEnaableSpinner = false;
 
@@ -66,16 +70,26 @@ class _SigninForm extends State<SigninForm> {
           height: 20,
         ),
         DelayedDisplay(
-          delay: Duration(milliseconds: delayDuration * 5),
-          child: InputSection(
-            icon: Icons.phone,
-            hint: 'Entrez votre téléphone (00226xxx)',
-            obscureText: false,
-            controller: phoneController,
-            keyboardType: TextInputType.phone,
+          delay: Duration(milliseconds: delayDuration * 3),
+          child: PhoneInputSection(
+            icon: Icons.add,
+            hint: 'Numéro de téléphone',
+            phoneIndicatifController: phoneIndicatifController,
+            phoneNumberController: phoneNumberController,
             required: true,
           ),
         ),
+        // DelayedDisplay(
+        //   delay: Duration(milliseconds: delayDuration * 5),
+        //   child: InputSection(
+        //     icon: Icons.phone,
+        //     hint: 'Entrez votre téléphone (00226xxx)',
+        //     obscureText: false,
+        //     controller: phoneController,
+        //     keyboardType: TextInputType.phone,
+        //     required: true,
+        //   ),
+        // ),
         const SizedBox(
           height: 20,
         ),
@@ -133,13 +147,21 @@ class _SigninForm extends State<SigninForm> {
   }
 
   void _onCheckFormValidate(BuildContext context) {
-    String phone = phoneController.text.trim().toLowerCase();
+    String phone = phoneIndicatifController.text.replaceAll('+', '') +
+        phoneNumberController.text.trim();
+    log("PHONE ===> $phone");
     String password = pwdController.text.trim().toLowerCase();
     String confirmPassword = confirmPwdController.text.trim().toLowerCase();
     if (phone == '') {
       Toast.showFlutterToast(
         context,
         "Le numéro de téléphone est obligatoire !",
+        'error',
+      );
+    } else if (phone.length < 8) {
+      Toast.showFlutterToast(
+        context,
+        "Le numéro de téléphone doit avoir au moins 8 caractères !",
         'error',
       );
     } else if (password == '') {

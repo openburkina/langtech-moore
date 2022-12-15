@@ -13,5 +13,6 @@ class Urls {
   static const String GET_ONE_TRADUCTION =
       API_BASE_URL + '/document/traduction';
   static const String UPDATE_PROFIl_URL = API_BASE_URL + '/utilisateurs';
-  static const String UPDATE_PASSWORD  = API_BASE_URL + '/account/change-password';
+  static const String UPDATE_PASSWORD =
+      API_BASE_URL + '/account/change-password';
 }

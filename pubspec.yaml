@@ -56,6 +56,7 @@ dependencies:
   intl: ^0.17.0
   infinite_scroll_pagination: ^3.2.0
   share_plus: ^6.3.0
+  intl_phone_number_input: ^0.7.1
   # audioplayer: ^0.8.1
 
 dev_dependencies:

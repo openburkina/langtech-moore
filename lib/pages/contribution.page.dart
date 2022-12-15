@@ -10,7 +10,6 @@ import 'package:langtech_moore_mobile/widgets/home/search_section.dart';
 import 'package:langtech_moore_mobile/widgets/shared/loadingSpinner.dart';
 import 'package:langtech_moore_mobile/widgets/shared/traduction_list_tile.dart';
 
-import 'dart:developer';
 
 class ContributionPage extends StatefulWidget {
   const ContributionPage({super.key});

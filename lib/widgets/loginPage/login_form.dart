@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:delayed_display/delayed_display.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefConfig.dart';
 import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefKeys.dart';
 import 'package:langtech_moore_mobile/models/loginVM.dart';
@@ -10,6 +12,7 @@ import 'package:langtech_moore_mobile/widgets/loginPage/button_section.dart';
 import 'package:langtech_moore_mobile/widgets/loginPage/input_section.dart';
 import 'package:langtech_moore_mobile/widgets/loginPage/not_signup_section.dart';
 import 'package:langtech_moore_mobile/widgets/shared/loadingSpinner.dart';
+import 'package:langtech_moore_mobile/widgets/shared/phone_input_section.dart';
 import 'package:langtech_moore_mobile/widgets/shared/slidepage.dart';
 import 'package:langtech_moore_mobile/widgets/shared/tabs.dart';
 import 'package:langtech_moore_mobile/widgets/shared/toast.dart';
@@ -24,11 +27,16 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   final int delayDuration;
-  final phoneController = TextEditingController();
+  final phoneIndicatifController = TextEditingController();
+  final phoneNumberController = TextEditingController();
   final pwdController = TextEditingController();
   late bool isEnaableSpinner = false;
   final _formKey = GlobalKey<FormState>();
   late LoginVM loginVM = new LoginVM();
+
+  final TextEditingController controller = TextEditingController();
+  String initialCountry = 'BF';
+  PhoneNumber number = PhoneNumber(isoCode: 'BF');
 
   _LoginFormState(this.delayDuration);
 
@@ -40,12 +48,11 @@ class _LoginFormState extends State<LoginForm> {
         children: [
           DelayedDisplay(
             delay: Duration(milliseconds: delayDuration * 3),
-            child: InputSection(
-              icon: Icons.phone,
+            child: PhoneInputSection(
+              icon: Icons.add,
               hint: 'Numéro de téléphone',
-              obscureText: false,
-              controller: phoneController,
-              keyboardType: TextInputType.phone,
+              phoneIndicatifController: phoneIndicatifController,
+              phoneNumberController: phoneNumberController,
             ),
           ),
           const SizedBox(
@@ -85,7 +92,8 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   void _onValidateForm(BuildContext context) {
-    loginVM.username = phoneController.text.trim().toLowerCase();
+    loginVM.username = phoneIndicatifController.text.replaceAll('+', '') +
+        phoneNumberController.text.trim();
     loginVM.password = pwdController.text.trim();
     if (loginVM.username == null || loginVM.username == '') {
       Toast.showFlutterToast(
