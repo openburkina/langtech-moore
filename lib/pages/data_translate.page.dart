@@ -256,8 +256,11 @@ class _DataTranslate extends State<DataTranslate> {
         padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
         child: ButtonSection(
           buttonFonction: _getTranslateInfos,
-          buttonText: isEnableAudio || isEnableText ? "Enregistrer ${!isEnableAudio && isEnableText ? 'un texte' : 'un audio'}" : "Enregistrer",
+          buttonText: isEnableAudio || isEnableText
+              ? "Enregistrer ${!isEnableAudio && isEnableText ? 'un texte' : 'un audio'}"
+              : "Enregistrer",
           buttonSize: 16,
+          buttonColor: !isEnableAudio && isEnableText ? kBlue : kOrange,
         ),
       ),
       body: SingleChildScrollView(
