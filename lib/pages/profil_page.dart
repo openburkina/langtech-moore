@@ -1,17 +1,16 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefConfig.dart';
 import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefKeys.dart';
 import 'package:langtech_moore_mobile/constants/colors.dart';
-import 'package:langtech_moore_mobile/models/user.dart';
+import 'package:langtech_moore_mobile/models/utilisateur.dart';
 import 'package:langtech_moore_mobile/pages/a_propos.dart';
-import 'package:langtech_moore_mobile/pages/loginPage/login_page.dart';
 import 'package:langtech_moore_mobile/pages/update_password.dart';
 import 'package:langtech_moore_mobile/pages/update_profil.dart';
 import 'package:langtech_moore_mobile/widgets/profilPage/parameter.dart';
-import 'package:langtech_moore_mobile/widgets/shared/slidepage.dart';
 
 import 'package:share_plus/share_plus.dart';
 
@@ -23,12 +22,12 @@ class ProfilPage extends StatefulWidget {
 }
 
 class _ProfilPageState extends State<ProfilPage> {
-  late User currentUser = new User();
+  late Utilisateur currentUser = new Utilisateur();
 
   void _getCurrentUserInfos() {
     SharedPrefConfig.getStringData(SharePrefKeys.USER_INFOS).then((value) {
       setState(() {
-        currentUser = User.fromJson(jsonDecode(value)['utilisateur']);
+        currentUser = Utilisateur.fromJson(jsonDecode(value)['utilisateur']);
       });
     });
   }
@@ -78,13 +77,7 @@ class _ProfilPageState extends State<ProfilPage> {
             ),
           ),
           TextButton(
-            onPressed: () => Navigator.of(context).pushReplacement(
-              SlideRightRoute(
-                child: const LoginPage(),
-                page: const LoginPage(),
-                direction: AxisDirection.left,
-              ),
-            ),
+            onPressed: () => SystemNavigator.pop(),
             child: Text(
               'Oui',
               style: GoogleFonts.montserrat(
@@ -177,24 +170,22 @@ class _ProfilPageState extends State<ProfilPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          currentUser.email != ''
+                          Text(
+                            '${currentUser.telephone}',
+                            style: TextStyle(
+                              color: kWhite,
+                              fontSize: 16,
+                            ),
+                          ),
+                          currentUser.email != '' && currentUser.email != null
                               ? Text(
-                                  '${currentUser.email}',
+                                  '  |  ${currentUser.email}',
                                   style: TextStyle(
                                     color: kWhite,
                                     fontSize: 16,
                                   ),
                                 )
-                              : Center(),
-                          currentUser.telephone != ''
-                              ? Text(
-                                  '  |  ${currentUser.telephone}',
-                                  style: TextStyle(
-                                    color: kWhite,
-                                    fontSize: 16,
-                                  ),
-                                )
-                              : Center(),
+                              : const SizedBox.shrink(),
                         ],
                       ),
                     ),

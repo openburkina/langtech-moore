@@ -252,17 +252,7 @@ class _DataTranslate extends State<DataTranslate> {
           style: GoogleFonts.montserrat(),
         ),
       ),
-      bottomNavigationBar: Container(
-        padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-        child: ButtonSection(
-          buttonFonction: _getTranslateInfos,
-          buttonText: isEnableAudio || isEnableText
-              ? "Enregistrer ${!isEnableAudio && isEnableText ? 'un texte' : 'un audio'}"
-              : "Enregistrer",
-          buttonSize: 16,
-          buttonColor: !isEnableAudio && isEnableText ? kBlue : kOrange,
-        ),
-      ),
+      bottomNavigationBar: saveContributionBtn(),
       body: SingleChildScrollView(
         child: Container(
           margin: const EdgeInsets.all(10),
@@ -321,6 +311,23 @@ class _DataTranslate extends State<DataTranslate> {
               const SizedBox(
                 height: 20,
               ),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.fromLTRB(5, 10, 0, 10),
+                child: Text(
+                  isEnableAudio || isEnableText
+                      ? "Enregistrement ${!isEnableAudio && isEnableText ? 'du texte' : ' audio'}"
+                      : "",
+                  style: GoogleFonts.montserrat(
+                    fontSize: 18,
+                    color: !isEnableAudio && isEnableText ? kBlue : kRed,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 8,
+              ),
               !isEnableAudio && isEnableText
                   ? textTranslateForm()
                   : Container(),
@@ -329,6 +336,22 @@ class _DataTranslate extends State<DataTranslate> {
           ),
         ),
       ),
+    );
+  }
+
+  Container saveContributionBtn() {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+      child: isEnableAudio || isEnableText
+          ? ButtonSection(
+              buttonFonction: _getTranslateInfos,
+              buttonText: isEnableAudio || isEnableText
+                  ? "Enregistrer ${!isEnableAudio && isEnableText ? 'un texte' : 'un audio'}"
+                  : "Enregistrer",
+              buttonSize: 16,
+              buttonColor: !isEnableAudio && isEnableText ? kBlue : kRed,
+            )
+          : const SizedBox.shrink(),
     );
   }
 

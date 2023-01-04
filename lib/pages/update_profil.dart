@@ -6,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefConfig.dart';
 import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefKeys.dart';
 import 'package:langtech_moore_mobile/constants/colors.dart';
-import 'package:langtech_moore_mobile/models/user.dart';
+import 'package:langtech_moore_mobile/models/utilisateur.dart';
 import 'package:langtech_moore_mobile/services/http.dart';
 import 'package:langtech_moore_mobile/widgets/loginPage/button_section.dart';
 import 'package:langtech_moore_mobile/widgets/loginPage/input_section.dart';
@@ -15,7 +15,7 @@ import 'package:langtech_moore_mobile/widgets/shared/loadingSpinner.dart';
 import 'package:langtech_moore_mobile/widgets/shared/toast.dart';
 
 class UpdateProfil extends StatefulWidget {
-  final User currentUser;
+  final Utilisateur currentUser;
   const UpdateProfil({Key? key, required this.currentUser}) : super(key: key);
 
   @override
@@ -28,7 +28,7 @@ class _UpdateProfilState extends State<UpdateProfil> {
   final nomController = TextEditingController();
   final prenomController = TextEditingController();
   final phoneController = TextEditingController();
-  User user = new User();
+  Utilisateur user = new Utilisateur();
 
   void _initForm() {
     nomController.text = "${widget.currentUser.nom}";

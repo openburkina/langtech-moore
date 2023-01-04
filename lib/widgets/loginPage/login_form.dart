@@ -1,20 +1,19 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:delayed_display/delayed_display.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
-import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefConfig.dart';
-import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefKeys.dart';
+import 'package:langtech_moore_mobile/bloc/user.bloc.dart';
 import 'package:langtech_moore_mobile/models/loginVM.dart';
-import 'package:langtech_moore_mobile/services/http.dart';
+import 'package:langtech_moore_mobile/pages/finish_password_reset.page.dart';
 import 'package:langtech_moore_mobile/widgets/loginPage/button_section.dart';
+import 'package:langtech_moore_mobile/widgets/loginPage/forgot_password.dart';
 import 'package:langtech_moore_mobile/widgets/loginPage/input_section.dart';
-import 'package:langtech_moore_mobile/widgets/loginPage/not_signup_section.dart';
 import 'package:langtech_moore_mobile/widgets/shared/loadingSpinner.dart';
 import 'package:langtech_moore_mobile/widgets/shared/phone_input_section.dart';
 import 'package:langtech_moore_mobile/widgets/shared/slidepage.dart';
 import 'package:langtech_moore_mobile/widgets/shared/tabs.dart';
 import 'package:langtech_moore_mobile/widgets/shared/toast.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginForm extends StatefulWidget {
   final int delayDuration;
@@ -26,9 +25,9 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   final int delayDuration;
-  final phoneIndicatifController = TextEditingController();
-  final phoneNumberController = TextEditingController();
-  final pwdController = TextEditingController();
+  TextEditingController normalPhoneNumberController = TextEditingController();
+  TextEditingController formatPhoneNumberController = TextEditingController();
+  final passwordController = TextEditingController();
   late bool isEnaableSpinner = false;
   final _formKey = GlobalKey<FormState>();
   late LoginVM loginVM = new LoginVM();
@@ -50,8 +49,8 @@ class _LoginFormState extends State<LoginForm> {
             child: PhoneInputSection(
               icon: Icons.add,
               hint: 'Numéro de téléphone',
-              phoneIndicatifController: phoneIndicatifController,
-              phoneNumberController: phoneNumberController,
+              normalPhoneNumberController: normalPhoneNumberController,
+              formatPhoneNumberController: formatPhoneNumberController,
             ),
           ),
           const SizedBox(
@@ -63,89 +62,82 @@ class _LoginFormState extends State<LoginForm> {
               icon: Icons.lock_outline,
               hint: 'Mot de passe',
               obscureText: true,
-              controller: pwdController,
+              controller: passwordController,
               keyboardType: TextInputType.text,
-            ),
-          ),
-          const SizedBox(
-            height: 30,
-          ),
-          DelayedDisplay(
-            delay: Duration(milliseconds: delayDuration * 5),
-            child: ButtonSection(
-              buttonText: 'Se connecter',
-              buttonFonction: () => _onValidateForm(context),
             ),
           ),
           const SizedBox(
             height: 20,
           ),
           DelayedDisplay(
-            delay: Duration(milliseconds: delayDuration * 6),
-            child: const NotSignupSection(),
+            delay: Duration(milliseconds: delayDuration * 5),
+            child: ForgotPassword(),
           ),
-          isEnaableSpinner ? LoadingSpinner() : Center(),
+          const SizedBox(
+            height: 30,
+          ),
+          DelayedDisplay(
+            delay: Duration(milliseconds: delayDuration * 6),
+            child: BlocBuilder<UserBloc, UserStates>(
+              builder: (blocContext, state) {
+                if (state is UserLoadingState) {
+                  return const LoadingSpinner();
+                } else if (state is UserErrorState) {
+                  showToast(
+                    blocContext,
+                    state.errorMessage,
+                    "error",
+                  );
+                } else if (state is UserSuccessState) {
+                  showToast(
+                    blocContext,
+                    state.successMessage,
+                    "success",
+                  );
+                  onNavigatorToHomePage(context);
+                } else if (state is SigninResetPasswordState) {
+                  onNavigatorToUpdatePassword(
+                    context,
+                    state.resetKey,
+                  );
+                }
+
+                return ButtonSection(
+                  buttonText: 'Se connecter',
+                  buttonSize: 20,
+                  buttonFonction: () {
+                    String phoneNumber =
+                        normalPhoneNumberController.text.replaceAll('+', '');
+                    String password = passwordController.text.trim();
+                    blocContext.read<UserBloc>().add(
+                          SigninEvent(
+                            username: phoneNumber,
+                            password: password,
+                          ),
+                        );
+                  },
+                );
+              },
+            ),
+          ),
         ],
       ),
     );
   }
 
-  void _onValidateForm(BuildContext context) {
-    loginVM.username = phoneIndicatifController.text.replaceAll('+', '') +
-        phoneNumberController.text.trim();
-    loginVM.password = pwdController.text.trim();
-    if (loginVM.username == null || loginVM.username == '') {
+  void showToast(BuildContext context, String message, String type) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       Toast.showFlutterToast(
         context,
-        "Le numéro de téléphone est obligatoire !",
-        'error',
+        message,
+        type,
       );
-    } else if (loginVM.password == null || loginVM.password == '') {
-      Toast.showFlutterToast(
-        context,
-        "Le mot de passe est obligatoire !",
-        'error',
-      );
-    } else {
-      _login(context);
-    }
-  }
-
-  void _login(BuildContext context) {
-    setState(() {
-      isEnaableSpinner = true;
     });
-    print(loginVM.toJson());
-    try {
-      Http.onAuthenticate(loginVM).then((response) {
-        print(response.body);
-        if (response.statusCode == 200) {
-          _saveUserInfos(context, response.body);
-        } else if (response.statusCode == 401) {
-          Toast.showFlutterToast(
-              context, jsonDecode(response.body)['detail'], 'error');
-          setState(() {
-            isEnaableSpinner = false;
-          });
-        } else {
-          Toast.showFlutterToast(context,
-              "Une erreur est survenue lors de la connexion !", 'error');
-          setState(() {
-            isEnaableSpinner = false;
-          });
-        }
-      });
-    } catch (exception) {
-      print(exception);
-    }
   }
 
-  void _saveUserInfos(BuildContext context, String userInfos) {
-    SharedPrefConfig.saveStringData(SharePrefKeys.USER_INFOS, userInfos)
-        .then((value) async {
-      if (value) {
-        await SharedPrefConfig.saveBoolData(SharePrefKeys.IS_REGISTERED, true);
-        Toast.showFlutterToast(context, 'Bienvenue !', 'success');
+  void onNavigatorToHomePage(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
         Navigator.of(context).pushReplacement(
           SlideRightRoute(
             child: const Tabs(),
@@ -153,14 +145,25 @@ class _LoginFormState extends State<LoginForm> {
             direction: AxisDirection.left,
           ),
         );
-      } else {
-        Toast.showFlutterToast(
-            context, "Une erreur est survenue lors de la connexion !", 'error');
-      }
+      },
+    );
+  }
 
-      setState(() {
-        isEnaableSpinner = false;
-      });
-    });
+  void onNavigatorToUpdatePassword(BuildContext context, String resetKey) {
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        Navigator.of(context).pushReplacement(
+          SlideRightRoute(
+            child: FinishPasswordResetPage(
+              resetKey: resetKey,
+            ),
+            page: FinishPasswordResetPage(
+              resetKey: resetKey,
+            ),
+            direction: AxisDirection.left,
+          ),
+        );
+      },
+    );
   }
 }

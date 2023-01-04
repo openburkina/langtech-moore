@@ -1,6 +1,6 @@
 import 'package:langtech_moore_mobile/models/langue.dart';
 import 'package:langtech_moore_mobile/models/source_donnee.dart';
-import 'package:langtech_moore_mobile/models/user.dart';
+import 'package:langtech_moore_mobile/models/utilisateur.dart';
 
 class Traduction {
   int? id;
@@ -16,7 +16,7 @@ class Traduction {
   String? mois;
   Langue? langue;
   SourceDonnee? sourceDonnee;
-  User? utilisateur;
+  Utilisateur? utilisateur;
 
   Traduction({
     this.id,

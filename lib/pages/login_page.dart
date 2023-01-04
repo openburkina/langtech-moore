@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:langtech_moore_mobile/constants/colors.dart';
 import 'package:langtech_moore_mobile/widgets/loginPage/app_logo.dart';
 import 'package:langtech_moore_mobile/widgets/loginPage/login_form.dart';
+import 'package:langtech_moore_mobile/widgets/loginPage/not_signup_section.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -80,6 +81,7 @@ class LoginPage extends StatelessWidget {
             color: kBlue,
           ),
         ),
+        bottomNavigationBar: const NotSignupSection(),
         body: SingleChildScrollView(
             child: Center(
           child: Column(
@@ -108,18 +110,6 @@ class LoginPage extends StatelessWidget {
             ],
           ),
         )),
-      ),
-    );
-  }
-
-  Widget loginBottomBar() {
-    return Container(
-      child: Row(
-        children: [
-          Icon(
-            Icons.info,
-          )
-        ],
       ),
     );
   }

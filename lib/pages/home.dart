@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefConfig.dart';
 import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefKeys.dart';
 import 'package:langtech_moore_mobile/models/source_donnee.dart';
-import 'package:langtech_moore_mobile/models/user.dart';
+import 'package:langtech_moore_mobile/models/utilisateur.dart';
 import 'package:langtech_moore_mobile/pages/source_donnes_page.dart';
 import 'package:langtech_moore_mobile/services/http.dart';
 import 'package:langtech_moore_mobile/widgets/home/search_section.dart';
@@ -13,7 +13,7 @@ import 'package:langtech_moore_mobile/widgets/home/top_home.dart';
 import 'package:langtech_moore_mobile/widgets/shared/data_list_tile.dart';
 import 'package:langtech_moore_mobile/widgets/shared/loadingSpinner.dart';
 
-import '../../constants/colors.dart';
+import '../constants/colors.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -22,13 +22,13 @@ class Home extends StatefulWidget {
 }
 
 class _HomePageState extends State<Home> {
-  late User currentUser = new User();
+  late Utilisateur currentUser = Utilisateur();
   late String searchKey = '';
 
   void _getCurrentUserInfos() {
     SharedPrefConfig.getStringData(SharePrefKeys.USER_INFOS).then((value) {
       setState(() {
-        currentUser = User.fromJson(jsonDecode(value)['utilisateur']);
+        currentUser = Utilisateur.fromJson(jsonDecode(value)['utilisateur']);
       });
     });
   }

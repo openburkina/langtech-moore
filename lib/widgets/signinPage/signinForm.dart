@@ -1,12 +1,11 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/material.dart';
 import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefConfig.dart';
 import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefKeys.dart';
 import 'package:langtech_moore_mobile/models/loginVM.dart';
-import 'package:langtech_moore_mobile/models/user.dart';
+import 'package:langtech_moore_mobile/models/utilisateur.dart';
 import 'package:langtech_moore_mobile/services/http.dart';
 import 'package:langtech_moore_mobile/widgets/loginPage/button_section.dart';
 import 'package:langtech_moore_mobile/widgets/loginPage/input_section.dart';
@@ -32,9 +31,9 @@ class _SigninForm extends State<SigninForm> {
   final emailController = TextEditingController();
   final pwdController = TextEditingController();
   final confirmPwdController = TextEditingController();
-  final phoneIndicatifController = TextEditingController();
-  final phoneNumberController = TextEditingController();
-  late User user = new User();
+  TextEditingController normalPhoneNumberController = TextEditingController();
+  TextEditingController formatPhoneNumberController = TextEditingController();
+  late Utilisateur user = new Utilisateur();
   late bool isEnaableSpinner = false;
 
   _SigninForm(this.delayDuration);
@@ -74,35 +73,24 @@ class _SigninForm extends State<SigninForm> {
           child: PhoneInputSection(
             icon: Icons.add,
             hint: 'Numéro de téléphone',
-            phoneIndicatifController: phoneIndicatifController,
-            phoneNumberController: phoneNumberController,
-            required: true,
+            normalPhoneNumberController: normalPhoneNumberController,
+            formatPhoneNumberController: formatPhoneNumberController,
+            required: false,
           ),
         ),
+        // const SizedBox(
+        //   height: 20,
+        // ),
         // DelayedDisplay(
-        //   delay: Duration(milliseconds: delayDuration * 5),
+        //   delay: Duration(milliseconds: delayDuration * 6),
         //   child: InputSection(
-        //     icon: Icons.phone,
-        //     hint: 'Entrez votre téléphone (00226xxx)',
+        //     icon: Icons.mail_outline,
+        //     hint: 'Entrez votre email',
         //     obscureText: false,
-        //     controller: phoneController,
-        //     keyboardType: TextInputType.phone,
-        //     required: true,
+        //     controller: emailController,
+        //     keyboardType: TextInputType.emailAddress,
         //   ),
         // ),
-        const SizedBox(
-          height: 20,
-        ),
-        DelayedDisplay(
-          delay: Duration(milliseconds: delayDuration * 6),
-          child: InputSection(
-            icon: Icons.mail_outline,
-            hint: 'Entrez votre email',
-            obscureText: false,
-            controller: emailController,
-            keyboardType: TextInputType.emailAddress,
-          ),
-        ),
         const SizedBox(
           height: 20,
         ),
@@ -114,7 +102,6 @@ class _SigninForm extends State<SigninForm> {
             obscureText: true,
             controller: pwdController,
             keyboardType: TextInputType.text,
-            required: true,
           ),
         ),
         const SizedBox(
@@ -128,7 +115,6 @@ class _SigninForm extends State<SigninForm> {
             obscureText: true,
             controller: confirmPwdController,
             keyboardType: TextInputType.text,
-            required: true,
           ),
         ),
         const SizedBox(
@@ -147,9 +133,7 @@ class _SigninForm extends State<SigninForm> {
   }
 
   void _onCheckFormValidate(BuildContext context) {
-    String phone = phoneIndicatifController.text.replaceAll('+', '') +
-        phoneNumberController.text.trim();
-    log("PHONE ===> $phone");
+    String phone = normalPhoneNumberController.text.replaceAll('+', '').trim();
     String password = pwdController.text.trim().toLowerCase();
     String confirmPassword = confirmPwdController.text.trim().toLowerCase();
     if (phone == '') {
@@ -200,18 +184,20 @@ class _SigninForm extends State<SigninForm> {
     });
     try {
       Http.onRegister(user).then((response) {
-        print(response.body);
-        print(response.statusCode);
         if (response.statusCode == 201) {
           Toast.showFlutterToast(
-              context,
-              "Félicitations! Votre inscription a été effectué avec succès !",
-              'success');
+            context,
+            "Félicitations! Votre inscription a été effectué avec succès !",
+            'success',
+          );
 
           _saveRegisterStatus(context);
         } else {
-          Toast.showFlutterToast(context,
-              "Une erreur est survenue lors de l'inscription !", 'error');
+          Toast.showFlutterToast(
+            context,
+            "Une erreur est survenue lors de l'inscription !",
+            'error',
+          );
           setState(() {
             isEnaableSpinner = false;
           });
@@ -220,7 +206,10 @@ class _SigninForm extends State<SigninForm> {
     } catch (exception) {
       print(exception);
       Toast.showFlutterToast(
-          context, "Une erreur est survenue lors de l'inscription !", 'error');
+        context,
+        "Une erreur est survenue lors de l'inscription !",
+        'error',
+      );
     }
   }
 

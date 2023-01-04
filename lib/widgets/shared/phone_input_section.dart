@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,15 +7,15 @@ import 'package:langtech_moore_mobile/constants/colors.dart';
 class PhoneInputSection extends StatefulWidget {
   final IconData icon;
   final String hint;
-  final TextEditingController phoneIndicatifController;
-  final TextEditingController phoneNumberController;
+  final TextEditingController? normalPhoneNumberController;
+  final TextEditingController? formatPhoneNumberController;
   final bool required;
   const PhoneInputSection({
     super.key,
     required this.icon,
     required this.hint,
-    required this.phoneIndicatifController,
-    required this.phoneNumberController,
+    this.normalPhoneNumberController,
+    this.formatPhoneNumberController,
     this.required = false,
   });
 
@@ -24,8 +23,8 @@ class PhoneInputSection extends StatefulWidget {
   _PhoneInputSectionState createState() => _PhoneInputSectionState(
         icon: icon,
         hint: hint,
-        phoneIndicatifController: phoneIndicatifController,
-        phoneNumberController: phoneNumberController,
+        normalPhoneNumberController: normalPhoneNumberController,
+        formatPhoneNumberController: formatPhoneNumberController,
         required: required,
       );
 }
@@ -33,8 +32,8 @@ class PhoneInputSection extends StatefulWidget {
 class _PhoneInputSectionState extends State<PhoneInputSection> {
   final IconData icon;
   final String hint;
-  final TextEditingController phoneIndicatifController;
-  final TextEditingController phoneNumberController;
+  final TextEditingController? normalPhoneNumberController;
+  final TextEditingController? formatPhoneNumberController;
   late Color borderColor = required ? kRed : kBlue;
   final bool required;
 
@@ -45,8 +44,8 @@ class _PhoneInputSectionState extends State<PhoneInputSection> {
   _PhoneInputSectionState({
     required this.icon,
     required this.hint,
-    required this.phoneIndicatifController,
-    required this.phoneNumberController,
+    this.normalPhoneNumberController,
+    this.formatPhoneNumberController,
     required this.required,
   });
 
@@ -57,7 +56,6 @@ class _PhoneInputSectionState extends State<PhoneInputSection> {
       isoCode: initialCountry,
       dialCode: initialDialCode,
     );
-    log("IND ==> ${currentNumber.dialCode}");
   }
 
   @override
@@ -77,14 +75,10 @@ class _PhoneInputSectionState extends State<PhoneInputSection> {
       ),
       child: InternationalPhoneNumberInput(
         onInputChanged: (PhoneNumber number) {
-          setState(() {
-            currentNumber = number;
-            phoneIndicatifController.text = "${currentNumber.dialCode}";
-          });
+          normalPhoneNumberController?.text = "${number.phoneNumber}";
         },
         onFieldSubmitted: (String value) {
-          phoneIndicatifController.text = "${currentNumber.dialCode}";
-          phoneNumberController.text = "$value";
+          formatPhoneNumberController?.text = "$value";
         },
         onInputValidated: (bool value) {},
         selectorConfig: SelectorConfig(
@@ -98,13 +92,14 @@ class _PhoneInputSectionState extends State<PhoneInputSection> {
           fontSize: 20,
           color: kBlue,
         ),
+        cursorColor: kRed,
         textStyle: GoogleFonts.montserrat(
           fontSize: 20,
           color: kBlue,
         ),
         initialValue: currentNumber,
-        textFieldController: phoneNumberController,
-        formatInput: false,
+        textFieldController: formatPhoneNumberController,
+        formatInput: true,
         keyboardType: TextInputType.numberWithOptions(
           signed: true,
           decimal: true,
@@ -118,15 +113,13 @@ class _PhoneInputSectionState extends State<PhoneInputSection> {
           ),
         ),
         searchBoxDecoration: InputDecoration(
-          hintText: 'Rechercher un pays par code ou par libellé',
+          hintText: 'Rechercher par code ou par nom ...',
           hintStyle: GoogleFonts.montserrat(
             fontSize: 16,
             color: kBlue,
           ),
         ),
-        onSaved: (PhoneNumber number) {
-          print('On Saved: $number');
-        },
+        onSaved: (PhoneNumber number) {},
       ),
     );
   }

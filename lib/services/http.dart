@@ -7,16 +7,17 @@ import 'package:http/http.dart';
 import 'package:langtech_moore_mobile/config/http/urls.dart';
 import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefConfig.dart';
 import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefKeys.dart';
+import 'package:langtech_moore_mobile/models/keyAndPassword.model.dart';
 import 'package:langtech_moore_mobile/models/langue.dart';
 import 'package:langtech_moore_mobile/models/loginVM.dart';
 import 'package:langtech_moore_mobile/models/password.dart';
 import 'package:langtech_moore_mobile/models/source_donnee.dart';
 import 'package:langtech_moore_mobile/models/traduction.dart';
-import 'package:langtech_moore_mobile/models/user.dart';
+import 'package:langtech_moore_mobile/models/utilisateur.dart';
 
 class Http {
   static Map<String, String> headers = new Map();
-  static User currentUser = new User();
+  static Utilisateur currentUser = Utilisateur();
 
   static Future<void> _getHeaders() async {
     headers = Map();
@@ -31,7 +32,7 @@ class Http {
       });
 
       // Get current user instance
-      currentUser = User.fromJson(jsonDecode(value)['utilisateur']);
+      currentUser = Utilisateur.fromJson(jsonDecode(value)['utilisateur']);
     });
   }
 
@@ -45,7 +46,7 @@ class Http {
     );
   }
 
-  static Future onRegister(User user) async {
+  static Future onRegister(Utilisateur user) async {
     return await http.post(Uri.parse(Urls.REGISTER_URL),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -147,7 +148,7 @@ class Http {
     });
   }
 
-  static Future onUpdateProfil(User user) async {
+  static Future onUpdateProfil(Utilisateur user) async {
     String url = "${Urls.UPDATE_PROFIl_URL}/${user.id}";
     await _getHeaders();
     return await http.patch(
@@ -201,5 +202,27 @@ class Http {
     } else {
       throw Exception('Unexpected error occured!');
     }
+  }
+
+  static Future onInitResetPassword(String phone) async {
+    return await http.post(
+      Uri.parse(Urls.RESET_PASSWORD_INIT),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: phone,
+    );
+  }
+
+  static Future onFinishPasswordReset(KeyAndPassword keyAndPassword) async {
+    return await http.post(
+      Uri.parse(Urls.RESET_PASSWORD_FINISH),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: json.encode(
+        keyAndPassword.toJon(),
+      ),
+    );
   }
 }

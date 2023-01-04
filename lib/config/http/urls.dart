@@ -15,4 +15,6 @@ class Urls {
   static const String UPDATE_PROFIl_URL = API_BASE_URL + '/utilisateurs';
   static const String UPDATE_PASSWORD =
       API_BASE_URL + '/account/change-password';
+  static const String RESET_PASSWORD_INIT = API_BASE_URL + "/account/reset-password/init";
+  static const String RESET_PASSWORD_FINISH = API_BASE_URL + "/account/reset-password/finish";
 }

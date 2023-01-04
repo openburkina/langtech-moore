@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-import 'package:langtech_moore_mobile/pages/loginPage/login_page.dart';
+import 'package:langtech_moore_mobile/pages/login_page.dart';
 
-import '../../constants/colors.dart';
+import '../constants/colors.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
