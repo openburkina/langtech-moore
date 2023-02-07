@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefConfig.dart';
 import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefKeys.dart';
@@ -101,13 +102,19 @@ class _ProfilPageState extends State<ProfilPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kBlue,
+      backgroundColor: kGris,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(2),
+        child: Container(
+          color: kBlue,
+        ),
+      ),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Column(
             children: [
               Container(
-                margin: const EdgeInsets.fromLTRB(0, 30, 0, 30),
+                padding: const EdgeInsets.fromLTRB(0, 30, 0, 30),
                 width: double.infinity,
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
@@ -124,15 +131,56 @@ class _ProfilPageState extends State<ProfilPage> {
                       decoration: BoxDecoration(
                         color: kWhite,
                         borderRadius: BorderRadius.circular(100),
-                        border: Border.all(width: 5, color: kRed),
+                        // border: Border.all(width: 5, color: kRed),
                       ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(100),
-                        child: Icon(
-                          Icons.person,
-                          size: 75,
-                          color: kBlue,
-                        ),
+                      child: Stack(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(100),
+                            child: Center(
+                              child: Icon(
+                                FontAwesomeIcons.userTie,
+                                size: 75,
+                                color: kBlue,
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.bottomRight,
+                            child: FloatingActionButton(
+                              heroTag: null,
+                              mini: true,
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return UpdateProfil(
+                                        currentUser: currentUser,
+                                      );
+                                    },
+                                  ),
+                                ).then(
+                                  (response) {
+                                    if (response == true) {
+                                      setState(() {
+                                        _getCurrentUserInfos();
+                                      });
+                                    }
+                                  },
+                                );
+                              },
+                              backgroundColor: kRed,
+                              elevation: 0,
+                              materialTapTargetSize:
+                                  MaterialTapTargetSize.padded,
+                              child: const Icon(
+                                FontAwesomeIcons.pencil,
+                                size: 25.0,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     Container(
@@ -197,29 +245,31 @@ class _ProfilPageState extends State<ProfilPage> {
                 color: kGris,
                 child: Column(
                   children: [
-                    Parameter(
-                      icon: Icons.person,
-                      title: 'Mon Profil',
-                      subTitle: 'Modifier mon profil',
-                      function: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return UpdateProfil(
-                                currentUser: currentUser,
-                              );
-                            },
-                          ),
-                        ).then((response) {
-                          if (response == true) {
-                            setState(() {
-                              _getCurrentUserInfos();
-                            });
-                          }
-                        });
-                      },
-                    ),
+                    // Parameter(
+                    //   icon: Icons.person,
+                    //   title: 'Mon Profil',
+                    //   subTitle: 'Modifier mon profil',
+                    //   function: () {
+                    //     Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute(
+                    //         builder: (context) {
+                    //           return UpdateProfil(
+                    //             currentUser: currentUser,
+                    //           );
+                    //         },
+                    //       ),
+                    //     ).then(
+                    //       (response) {
+                    //         if (response == true) {
+                    //           setState(() {
+                    //             _getCurrentUserInfos();
+                    //           });
+                    //         }
+                    //       },
+                    //     );
+                    //   },
+                    // ),
                     Parameter(
                       icon: Icons.lock,
                       title: 'Mon Mot de passe',
@@ -281,7 +331,7 @@ class _ProfilPageState extends State<ProfilPage> {
     return Container(
       color: kWhite,
       padding: const EdgeInsets.symmetric(
-        vertical: 20,
+        vertical: 8,
         horizontal: 16,
       ),
       child: Row(
@@ -289,8 +339,8 @@ class _ProfilPageState extends State<ProfilPage> {
         children: [
           Text(
             'Point de fidélité',
-            style: TextStyle(
-              fontSize: 24,
+            style: GoogleFonts.montserrat(
+              fontSize: 18,
               fontWeight: FontWeight.bold,
               color: kBlue,
             ),
@@ -307,7 +357,7 @@ class _ProfilPageState extends State<ProfilPage> {
             child: Text(
               "${currentUser.pointFidelite}",
               style: TextStyle(
-                fontSize: 24,
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
                 color: kWhite,
               ),

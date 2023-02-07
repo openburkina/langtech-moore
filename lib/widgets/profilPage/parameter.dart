@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:langtech_moore_mobile/constants/colors.dart';
 
 class Parameter extends StatelessWidget {
@@ -27,11 +28,10 @@ class Parameter extends StatelessWidget {
           color: kWhite,
         ),
         child: Row(
-          // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Container(
-              height: 60,
-              width: 60,
+              height: 50,
+              width: 50,
               margin: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 color: kBlue.withOpacity(0.2),
@@ -41,7 +41,7 @@ class Parameter extends StatelessWidget {
                 child: Icon(
                   icon,
                   color: kBlue,
-                  size: 30,
+                  size: 25,
                 ),
               ),
             ),
@@ -54,16 +54,16 @@ class Parameter extends StatelessWidget {
                   children: [
                     Text(
                       '$title',
-                      style: TextStyle(
-                        fontSize: 18,
+                      style: GoogleFonts.montserrat(
+                        fontSize: 16,
                         color: kBlue,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     Text(
                       '$subTitle',
-                      style: TextStyle(
-                        fontSize: 14,
+                      style: GoogleFonts.montserrat(
+                        fontSize: 12,
                       ),
                     ),
                   ],

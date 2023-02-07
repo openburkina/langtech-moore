@@ -5,64 +5,29 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:http/http.dart';
+import 'package:langtech_moore_mobile/bloc/user/user_event.dart';
+import 'package:langtech_moore_mobile/bloc/user/user_state.dart';
 import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefConfig.dart';
 import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefKeys.dart';
 import 'package:langtech_moore_mobile/models/loginVM.dart';
 import 'package:langtech_moore_mobile/models/utilisateur.dart';
 import 'package:langtech_moore_mobile/services/http.dart';
+import 'package:langtech_moore_mobile/services/user.service.dart';
 
-abstract class UserEvent {}
-
-class SigninEvent extends UserEvent {
-  final String username;
-  final String password;
-  SigninEvent({
-    required this.username,
-    required this.password,
-  });
-}
-
-class SignupEvent extends UserEvent {
-  final Utilisateur utilisateur;
-  SignupEvent({
-    required this.utilisateur,
-  });
-}
-
-// States
-abstract class UserStates {}
-
-class UserSuccessState extends UserStates {
-  final String successMessage;
-  UserSuccessState({
-    required this.successMessage,
-  });
-}
-
-class UserErrorState extends UserStates {
-  final String errorMessage;
-  UserErrorState({
-    required this.errorMessage,
-  });
-}
-
-class SigninResetPasswordState extends UserStates {
-  final String resetKey;
-  SigninResetPasswordState({
-    required this.resetKey,
-  });
-}
-
-class UserInitialState extends UserStates {}
-
-class UserLoadingState extends UserStates {}
-
-// Bloc
 class UserBloc extends Bloc<UserEvent, UserStates> {
   UserBloc() : super(UserInitialState()) {
-    on((SigninEvent event, emit) async {
-      await getSigninInfos(event, emit);
-    });
+    on(
+      (SigninEvent event, emit) async {
+        await getSigninInfos(event, emit);
+      },
+    );
+
+    on(
+      (GetUserInfoEvent event, emit) async {
+        Utilisateur currentUser = await UserService.getCurrentUserInfos();
+        emit(GetUserInfoState(currentUser: currentUser));
+      },
+    );
   }
 
   /**
@@ -106,8 +71,8 @@ class UserBloc extends Bloc<UserEvent, UserStates> {
       Response response = await Http.onAuthenticate(loginVM);
       if (response.statusCode == 200) {
         var body = response.body;
-        var bodyBytes = response.bodyBytes;
-        var jsonResponse = jsonDecode(convert.utf8.decode(response.bodyBytes));
+        // var bodyBytes = response.bodyBytes;
+        // var jsonResponse = jsonDecode(convert.utf8.decode(response.bodyBytes));
         var prenomEncoded =
             convert.utf8.encode(jsonDecode(body)["utilisateur"]["prenom"]);
         log("${convert.utf8.decode(prenomEncoded)}");

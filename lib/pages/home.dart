@@ -2,13 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefConfig.dart';
-import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefKeys.dart';
 import 'package:langtech_moore_mobile/models/source_donnee.dart';
-import 'package:langtech_moore_mobile/models/utilisateur.dart';
 import 'package:langtech_moore_mobile/pages/source_donnes_page.dart';
 import 'package:langtech_moore_mobile/services/http.dart';
-import 'package:langtech_moore_mobile/widgets/home/search_section.dart';
 import 'package:langtech_moore_mobile/widgets/home/top_home.dart';
 import 'package:langtech_moore_mobile/widgets/shared/data_list_tile.dart';
 import 'package:langtech_moore_mobile/widgets/shared/loadingSpinner.dart';
@@ -22,34 +18,16 @@ class Home extends StatefulWidget {
 }
 
 class _HomePageState extends State<Home> {
-  late Utilisateur currentUser = Utilisateur();
-  late String searchKey = '';
-
-  void _getCurrentUserInfos() {
-    SharedPrefConfig.getStringData(SharePrefKeys.USER_INFOS).then((value) {
-      setState(() {
-        currentUser = Utilisateur.fromJson(jsonDecode(value)['utilisateur']);
-      });
-    });
-  }
-
-  String onSearch(String inputSearchKey) {
-    setState(() {
-      searchKey = inputSearchKey;
-    });
-    return searchKey;
-  }
-
-  @override
-  void initState() {
-    _getCurrentUserInfos();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kBlue,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(2),
+        child: Container(
+          color: kBlue,
+        ),
+      ),
       body: SafeArea(
         child: Column(
           children: [
@@ -60,12 +38,6 @@ class _HomePageState extends State<Home> {
                   TopHome(),
                   SizedBox(
                     height: 15,
-                  ),
-                  SearchSection(
-                    onSearch: onSearch,
-                  ),
-                  SizedBox(
-                    height: 10,
                   ),
                 ],
               ),
@@ -79,9 +51,9 @@ class _HomePageState extends State<Home> {
                 children: [
                   Text(
                     "Sources de données récentes",
-                    style: TextStyle(
+                    style: GoogleFonts.montserrat(
                       fontWeight: FontWeight.bold,
-                      fontSize: 18,
+                      fontSize: 16,
                       color: kBlue,
                     ),
                   ),
@@ -96,7 +68,8 @@ class _HomePageState extends State<Home> {
                     },
                     child: Container(
                       height: 32,
-                      padding: const EdgeInsets.all(5),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 5, horizontal: 8),
                       decoration: BoxDecoration(
                         color: kBlue,
                         borderRadius: BorderRadius.circular(5),
@@ -106,6 +79,7 @@ class _HomePageState extends State<Home> {
                           "Voir Plus",
                           style: GoogleFonts.montserrat(
                             color: kWhite,
+                            fontSize: 12,
                           ),
                         ),
                       ),
@@ -128,14 +102,9 @@ class _HomePageState extends State<Home> {
                         return ListView.builder(
                           itemCount: snapshot.data!.length,
                           itemBuilder: (context, index) {
-                            return snapshot.data![index].libelle
-                                    .toString()
-                                    .toLowerCase()
-                                    .contains(searchKey)
-                                ? DataListTile(
-                                    sourceDonnee: snapshot.data![index],
-                                  )
-                                : Container();
+                            return DataListTile(
+                              sourceDonnee: snapshot.data![index],
+                            );
                           },
                         );
                       }

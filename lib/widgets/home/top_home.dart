@@ -1,4 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:langtech_moore_mobile/bloc/user/user.bloc.dart';
+import 'package:langtech_moore_mobile/bloc/user/user_event.dart';
+import 'package:langtech_moore_mobile/bloc/user/user_state.dart';
 import 'package:langtech_moore_mobile/constants/colors.dart';
 
 class TopHome extends StatefulWidget {
@@ -52,6 +59,7 @@ class _TopHomeState extends State<TopHome> {
   void initState() {
     super.initState();
     _getCurrentDate();
+    context.read<UserBloc>().add(GetUserInfoEvent());
   }
 
   @override
@@ -66,17 +74,33 @@ class _TopHomeState extends State<TopHome> {
               height: 10,
             ),
             Text(
-              "Bienvenue",
-              style: TextStyle(
+              "Bienvenue !",
+              style: GoogleFonts.montserrat(
                 color: kWhite,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
+                fontSize: 20,
               ),
+            ),
+            SizedBox(height: 8),
+            BlocBuilder<UserBloc, UserStates>(
+              builder: (context, state) {
+                String name = "";
+                if (state is GetUserInfoState) {
+                  name = "${state.currentUser.nom} ${state.currentUser.prenom}";
+                }
+                return Text(
+                  name,
+                  style: GoogleFonts.montserrat(
+                    color: kWhite,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w600,
+                  ),
+                );
+              },
             ),
             SizedBox(height: 8),
             Text(
               "$currentDate",
-              style: TextStyle(
+              style: GoogleFonts.montserrat(
                 color: kWhite,
               ),
             )

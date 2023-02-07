@@ -1,8 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:delayed_display/delayed_display.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
-import 'package:langtech_moore_mobile/bloc/user.bloc.dart';
+import 'package:langtech_moore_mobile/bloc/user/user.bloc.dart';
+import 'package:langtech_moore_mobile/bloc/user/user_event.dart';
+import 'package:langtech_moore_mobile/bloc/user/user_state.dart';
 import 'package:langtech_moore_mobile/models/loginVM.dart';
 import 'package:langtech_moore_mobile/pages/finish_password_reset.page.dart';
 import 'package:langtech_moore_mobile/widgets/loginPage/button_section.dart';

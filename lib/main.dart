@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:langtech_moore_mobile/bloc/forgot_password.bloc.dart';
 import 'package:langtech_moore_mobile/bloc/loading_spinner.bloc.dart';
-import 'package:langtech_moore_mobile/bloc/user.bloc.dart';
+import 'package:langtech_moore_mobile/bloc/user/user.bloc.dart';
 import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefConfig.dart';
 import 'package:langtech_moore_mobile/config/sharedPreferences/sharedPrefKeys.dart';
 import 'package:langtech_moore_mobile/pages/login_page.dart';
