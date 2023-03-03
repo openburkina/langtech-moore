@@ -10,6 +10,7 @@ class APropos extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kWhite,
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: kBlue,
