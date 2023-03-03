@@ -75,6 +75,7 @@ class LoginPage extends StatelessWidget {
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
+        backgroundColor: kWhite,
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(0),
           child: Container(

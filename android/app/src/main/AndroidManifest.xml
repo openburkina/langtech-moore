@@ -11,7 +11,7 @@
     "android.permission.WRITE_EXTERNAL_STORAGE" />
     
    <application
-        android:label="LangTechApp"
+        android:label="LangTech"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

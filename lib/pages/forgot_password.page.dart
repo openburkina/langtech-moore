@@ -19,6 +19,7 @@ class ForgotPasswordPage extends StatelessWidget {
     TextEditingController normalPhoneNumberController = TextEditingController();
     TextEditingController formatPhoneNumberController = TextEditingController();
     return Scaffold(
+      backgroundColor: kWhite,
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: kBlue,
