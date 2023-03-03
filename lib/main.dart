@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:langtech_moore_mobile/bloc/forgot_password.bloc.dart';
 import 'package:langtech_moore_mobile/bloc/loading_spinner.bloc.dart';
@@ -29,6 +30,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+      ),
+    );
     return MultiBlocProvider(
       providers: [
         BlocProvider(
