@@ -79,6 +79,12 @@ class _DataTranslate extends State<DataTranslate> {
     initRecorder();
   }
 
+  @override
+  void dispose() {
+    recorder.closeRecorder();
+    super.dispose();
+  }
+
   void _initData() {
     if (action == 'UPDATE') {
       traduction = updateTraduction!;
@@ -104,12 +110,6 @@ class _DataTranslate extends State<DataTranslate> {
         );
       });
     });
-  }
-
-  @override
-  void dispose() {
-    recorder.closeRecorder();
-    super.dispose();
   }
 
   Future initRecorder() async {
