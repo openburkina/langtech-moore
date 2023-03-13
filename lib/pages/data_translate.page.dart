@@ -260,7 +260,7 @@ class _DataTranslate extends State<DataTranslate> {
             children: [
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.fromLTRB(5, 10, 0, 10),
+                padding: const EdgeInsets.fromLTRB(5, 0, 0, 10),
                 child: Text(
                   'Données à traduire',
                   style: GoogleFonts.montserrat(
@@ -452,7 +452,7 @@ class _DataTranslate extends State<DataTranslate> {
             languePlaceholderText: languePlaceholderText,
           ),
           const SizedBox(
-            height: 20,
+            height: 16,
           ),
           StreamBuilder<RecordingDisposition>(
             stream: recorder.onProgress,
@@ -470,14 +470,14 @@ class _DataTranslate extends State<DataTranslate> {
               return Text(
                 "${twoDigitsMinutes.length < 2 ? '0$twoDigitsMinutes' : twoDigitsMinutes}:${twoDigitsSeconds.length < 2 ? '0$twoDigitsSeconds' : twoDigitsSeconds}",
                 style: const TextStyle(
-                  fontSize: 50,
+                  fontSize: 32,
                   color: kBlue,
                 ),
               );
             },
           ),
           const SizedBox(
-            height: 20,
+            height: 16,
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
@@ -485,27 +485,27 @@ class _DataTranslate extends State<DataTranslate> {
               elevation: 0,
             ),
             child: Container(
-              height: 200,
-              width: 200,
+              height: 128,
+              width: 128,
               decoration: BoxDecoration(
                 color: kBlue.withOpacity(0.4),
                 borderRadius: BorderRadius.circular(100),
               ),
               child: Container(
-                margin: const EdgeInsets.all(20),
+                margin: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: kBlue.withOpacity(0.6),
                   borderRadius: BorderRadius.circular(100),
                 ),
                 child: Container(
-                  margin: const EdgeInsets.all(20),
+                  margin: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: kBlue.withOpacity(0.8),
                     borderRadius: BorderRadius.circular(100),
                   ),
                   child: Icon(
                     isStartRecorder ? Icons.stop : Icons.mic,
-                    size: 75,
+                    size: 32,
                     color: Colors.white,
                   ),
                 ),
@@ -523,7 +523,7 @@ class _DataTranslate extends State<DataTranslate> {
             },
           ),
           const SizedBox(
-            height: 20,
+            height: 16,
           ),
           isRecorderFinished ? playRecorderPart() : Container(),
         ],

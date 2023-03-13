@@ -26,6 +26,7 @@ class FinishPasswordResetPage extends StatelessWidget {
     final confirmPasswordController = TextEditingController();
 
     return Scaffold(
+      backgroundColor: kWhite,
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: kBlue,

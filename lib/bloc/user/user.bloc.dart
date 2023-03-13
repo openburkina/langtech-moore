@@ -70,19 +70,16 @@ class UserBloc extends Bloc<UserEvent, UserStates> {
     try {
       Response response = await Http.onAuthenticate(loginVM);
       if (response.statusCode == 200) {
-        var body = response.body;
-        // var bodyBytes = response.bodyBytes;
-        // var jsonResponse = jsonDecode(convert.utf8.decode(response.bodyBytes));
-        var prenomEncoded =
-            convert.utf8.encode(jsonDecode(body)["utilisateur"]["prenom"]);
-        log("${convert.utf8.decode(prenomEncoded)}");
-        log("${jsonDecode(convert.utf8.decode(response.bodyBytes))["utilisateur"]["prenom"]}");
-        // log("${Utilisateur.fromJson(jsonResponse)}");
         await _saveUserInfos(response.body, emit);
       } else if (response.statusCode == 401) {
+        String errorMessage =
+            jsonDecode(convert.utf8.decode(response.bodyBytes))['detail'];
+        bool isBadCredentials = errorMessage.contains("Bad credentials");
         emit(
           UserErrorState(
-            errorMessage: jsonDecode(response.body)['detail'],
+            errorMessage: isBadCredentials
+                ? 'Désolé! Vos identifiants sont incorrects !'
+                : jsonDecode(convert.utf8.decode(response.bodyBytes))['detail'],
           ),
         );
       } else {
@@ -118,9 +115,9 @@ class UserBloc extends Bloc<UserEvent, UserStates> {
         Utilisateur registerUser = Utilisateur.fromJson(
           jsonDecode(userInfos)['utilisateur'],
         );
+        String resetKey = "${registerUser.user!.resetKey}";
 
-        if (registerUser.user?.resetKey == null ||
-            registerUser.user?.resetKey == '') {
+        if (resetKey == 'null' || resetKey == '') {
           emit(
             UserSuccessState(
               successMessage: "Bienvenue ${registerUser.prenom} !",

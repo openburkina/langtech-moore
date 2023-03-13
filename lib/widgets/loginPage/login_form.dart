@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:delayed_display/delayed_display.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
@@ -81,6 +83,7 @@ class _LoginFormState extends State<LoginForm> {
             delay: Duration(milliseconds: delayDuration * 6),
             child: BlocBuilder<UserBloc, UserStates>(
               builder: (blocContext, state) {
+                log("LoginState: $state");
                 if (state is UserLoadingState) {
                   return const LoadingSpinner();
                 } else if (state is UserErrorState) {
@@ -107,6 +110,7 @@ class _LoginFormState extends State<LoginForm> {
                   buttonText: 'Se connecter',
                   buttonSize: 20,
                   buttonFonction: () {
+                    log("Call ButtonSection");
                     String phoneNumber =
                         normalPhoneNumberController.text.replaceAll('+', '');
                     String password = passwordController.text.trim();
@@ -124,6 +128,11 @@ class _LoginFormState extends State<LoginForm> {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   void showToast(BuildContext context, String message, String type) {
